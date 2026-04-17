@@ -381,7 +381,7 @@ deckdone
 
 | Component | Size |
 |-----------|------|
-| deckdone-style SKILL.md | ~350-400 lines |
+| deckdone-style SKILL.md | ~80-100 lines (thin entry point, details in references) |
 | references/icon-catalog.md | ~100 lines |
 | references/illustration-sources.md | ~80 lines |
 | references/enhanced-presets.md | ~600 lines (expanded from 445) |

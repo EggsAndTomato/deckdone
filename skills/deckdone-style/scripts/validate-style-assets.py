@@ -17,13 +17,23 @@ def parse_icon_catalog(catalog_path):
         print(f"Error reading catalog: {e}", file=sys.stderr)
         return None
 
-    for match in re.finditer(r"\|\s*`?([\w-]+)`?\s*\|", text):
+    skip = {
+        "icon name",
+        "theme",
+        "also good for",
+        "page type",
+        "default icon",
+        "zone position",
+        "icon size",
+        "when to use",
+        "name",
+        "required",
+    }
+    for match in re.finditer(
+        r"^\|[^|]+\|\s*([a-z][a-z0-9-]+)\s*\|", text, re.MULTILINE
+    ):
         name = match.group(1).strip()
-        if (
-            name
-            and not name.startswith("-")
-            and name not in ("Icon Name", "name", "Required")
-        ):
+        if name and name.lower() not in skip:
             icons.add(name)
     return icons
 

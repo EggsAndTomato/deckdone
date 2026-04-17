@@ -29,6 +29,7 @@
 - [ ] **Audience profile includes all three dimensions**: role level (e.g. C-suite, IC), familiarity (none/basic/expert), AND tendency (skeptic, supporter, neutral)
 - [ ] **Narrative framework is selected with reasoning** — the chosen framework name is stated and a one-line justification ties it to the audience/purpose
 - [ ] **Scale includes estimated page count** with a min–max range (e.g. 12–15 pages) rather than a single number
+- [ ] **Density level is specified** in brief.md — one of `presentation`, `detailed-presentation`, or `reading` is recorded with a one-sentence reasoning
 
 ## Step 2: materials/ Validation
 
@@ -73,11 +74,12 @@
 ## Step 7: content-plan.md Validation
 
 - [ ] **Every zone on every page has content** — no zone contains "TBD", "TODO", or is left blank
-- [ ] **No zone exceeds the max character limit** defined in `layout-types.md` for its zone type
+- [ ] **No zone exceeds the max character limit** defined in `density-presets.md` for the chosen density level and page type
 - [ ] **Chart data specs are complete** — every chart zone has values array, labels array, and chart type; non-chart zones are N/A
 - [ ] **Pre-render elements are listed per slide** — each slide's pre-render manifest matches `layout-system.md`
 - [ ] **Acceptance criteria checkboxes exist for each slide** — at least two binary criteria per slide that define "done"
 - [ ] **Visual narrative path is described for each slide** — a one-line note on how the slide advances the overall story
+- [ ] **Zone max lengths comply with density preset** — no zone exceeds the capacity limit for the chosen density level from `references/density-presets.md`
 
 ## Step 9: test-slides/ Validation
 

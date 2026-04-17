@@ -120,7 +120,8 @@ After each gate or phase transition:
    - Pending items for next session
 2. Keep Context Summary under 500 words.
 3. Always include the brief.md Key Message in Context Summary.
-4. Write the state file **before** proceeding to the next step — not after.
+4. Always include the brief.md Density level in Context Summary.
+5. Write the state file **before** proceeding to the next step — not after.
 
 ---
 
@@ -154,6 +155,7 @@ Goal: Understand what the presentation must communicate and gather the raw mater
      - Audience tendency (data-driven / story-driven / action-oriented / detail-oriented)
    - **Context:** Formal meeting / Informal sharing / Training / Bidding / Other
    - **Scale:** Estimated page count, time limit
+   - **Density:** 演讲辅助型 (presentation) / 演讲详述型 (detailed-presentation) / 阅读型 (reading). Read `references/density-presets.md` for level descriptions. Ask: "Will the audience read this deck on their own, or will you present it live?"
 2. Read `references/narrative-frameworks.md`. Recommend 1–2 frameworks based on purpose + audience.
 3. Discuss framework selection and methodology reasoning with the user.
 4. Write `brief.md`.
@@ -167,6 +169,8 @@ Goal: Understand what the presentation must communicate and gather the raw mater
 ## Audience: [profile + tendencies]
 ## Context: [scenario]
 ## Scale: [estimated pages, time limit]
+## Density: [presentation | detailed-presentation | reading]
+## Density Reasoning: [one sentence]
 ## Narrative Framework: [chosen framework + reasoning]
 ## Methodology: [why this approach works for this audience]
 ```
@@ -386,7 +390,7 @@ Goal: Write the exact content for every visual zone on every page.
 
 **AI Behavior:**
 
-1. Based on confirmed outline + layout-system + layout-skeleton + style-guide, generate a detailed content spec per page.
+1. Based on confirmed outline + layout-system + layout-skeleton + style-guide, generate a detailed content spec per page. Read the density level from `brief.md`. Read the corresponding content capacity limits from `references/density-presets.md`. Use these as Max Length values for each zone instead of the defaults in `layout-types.md`.
 2. Organize content by **visual zone** (not by title + body).
 3. Each zone annotated with: content type, text volume, visual weight (primary / secondary / auxiliary).
 4. Include a pre-render element list and chart data specifications for placeholder areas.
@@ -453,7 +457,7 @@ Goal: Produce the final PPTX file with quality assurance. Phase 4 makes **zero c
 1. Select one page per layout type as test samples.
 2. For each test page, execute the full pipeline:
    a. Pre-render elements using Sharp (icons→PNG, gradients→PNG).
-   b. Create HTML file with actual content + confirmed style. Use templates from `references/layout-templates.md`.
+   b. Create HTML file with actual content + confirmed style. Use templates from `references/layout-templates.md`. Read the density level from `brief.md` and the corresponding spacing parameters from `references/density-presets.md`. Apply padding, line-height, and gap values. Choose font sizes dynamically based on actual content amount within spacing constraints, respecting the minimum readable font floor.
    c. Call `html2pptx()` from the pptx skill to convert to PPTX.
    d. Generate thumbnail: `python scripts/thumbnail.py output.pptx preview --slides N`
 3. User reviews thumbnails for:
@@ -482,7 +486,7 @@ Goal: Produce the final PPTX file with quality assurance. Phase 4 makes **zero c
 2. Generate in section chunks (5–8 pages per chunk) to avoid context overflow.
 3. Per chunk:
    a. Pre-render elements.
-   b. Generate HTML files.
+   b. Generate HTML files. Apply density-level spacing from `references/density-presets.md`. Choose font sizes dynamically per slide based on actual content volume.
    c. `html2pptx()` conversion.
    d. Generate chunk thumbnails for intermediate check.
 4. Merge all chunks into `output.pptx`.

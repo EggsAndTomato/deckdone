@@ -9,62 +9,62 @@ Reference for Step 4 (Page Type Assignment). For complete HTML templates, see `r
 ### 1. Cover
 Full-bleed hero slide. Title + subtitle + optional date/author.
 **Use:** First slide. **Layout:** Single centered flex column. **Zones:** Title (primary), subtitle, metadata.
-**Content density:** Title 32–40pt max 60 chars. Subtitle 16–20pt max 100 chars. Metadata 10–12pt.
+**Content density:** See `references/density-presets.md`. Title max 60 chars, subtitle max 100 chars, metadata 10–12pt.
 
 ### 2. Agenda
 Numbered section list. Single-column or two-column grid.
 **Use:** Table of contents. **Layout:** Title top ~15%, content ~85%. Two-column at 50/50 when items > 5.
-**Content density:** Max 10–12 items. Items 14–16pt max 50 chars each. Title 22–26pt.
+**Content density:** See `references/density-presets.md` for per-level item counts and character limits. Title 22–26pt.
 
 ### 3. Section Divider
 Bold visual break between sections. Large title + optional description.
 **Use:** Chapter separator. **Layout:** Vertically centered, generous left padding (80pt).
-**Content density:** Title 36–44pt max 40 chars. Description 14–18pt max 120 chars.
+**Content density:** See `references/density-presets.md`. Title max 40 chars, description max 120 chars.
 
 ### 4. Content-Text
 Standard single-column content. Title + bullets or paragraphs.
 **Use:** General information. **Layout:** Title top ~12%, body ~88%. Single column.
-**Content density:** Max 6 bullets or 3 paragraphs. Title 20–24pt. Body 13–15pt max 90 chars/bullet.
+**Content density:** See `references/density-presets.md` for per-level bullet counts, character limits, and sub-bullet rules. Title 20–24pt.
 
 ### 5. Content-TwoCol
 Two-column with shared title. 50/50 or 40/60 split.
 **Use:** Side-by-side text, text+image, pros/cons. **Layout:** Title top ~12%, columns ~88%. Gap 24–36pt.
-**Content density:** Max 4 bullets or 2 paragraphs per column. Title 20–24pt. Body 12–14pt max 300 chars/column.
+**Content density:** See `references/density-presets.md` for per-level column capacity limits. Title 20–24pt.
 
 ### 6. Data-Chart
 Chart-dominant slide with interpretation.
 **Use:** Data presentation. **Layout:** Title top ~10%, chart ~65%, interpretation ~12%. Chart as pre-rendered PNG.
-**Content density:** 1 chart + 1 interpretation line. Title 20–24pt. Interpretation 10–12pt max 150 chars.
+**Content density:** See `references/density-presets.md`. 1 chart + 1 interpretation line. Title 20–24pt.
 
 ### 7. Quote
 Large quotation with attribution. Centered or left-offset.
 **Use:** Testimonial, mission statement. **Layout:** Vertically centered single column. Serif font (Georgia).
-**Content density:** 1 quote + 1 attribution. Quote 22–28pt max 180 chars. Attribution 11–13pt.
+**Content density:** See `references/density-presets.md`. Quote max 180 chars.
 
 ### 8. Timeline
 Sequential events or milestones. Horizontal or vertical.
 **Use:** Roadmap, history. **Layout:** Title top ~12%, timeline ~88%. Equal-width event columns.
-**Content density:** Max 6 events (horizontal) or 8 (vertical). Date 12–14pt. Description 10–12pt max 40 chars.
+**Content density:** See `references/density-presets.md` for per-level event counts and description limits. Title 22pt.
 
 ### 9. Comparison
 Side-by-side A vs B with shared criteria rows.
 **Use:** Product compare, strategy options. **Layout:** Title top ~10%, header row, criteria rows 50/50. Gap 24pt.
-**Content density:** Max 6 criteria rows. Cell text 11–13pt max 60 chars.
+**Content density:** See `references/density-presets.md` for per-level criteria row counts and cell character limits. Title 22pt.
 
 ### 10. Closing
 Summary takeaway + CTA + contact info.
 **Use:** Final slide. **Layout:** Vertically and horizontally centered. Three-tier: takeaway → CTA → contact.
-**Content density:** Takeaway 24–30pt max 60 chars. CTA 13–16pt max 120 chars. Contact 10–12pt.
+**Content density:** See `references/density-presets.md`. Takeaway max 60 chars, CTA max 120 chars.
 
 ### 11. Composite-Diagram
 Complex nested layout. Up to 3 nesting levels.
 **Use:** Architecture, org charts, agent topology. **Layout:** Title top ~8%, diagram ~92%. Layers as horizontal flex rows.
-**Content density:** Max 12–15 node boxes. Node labels 10–12pt max 30 chars.
+**Content density:** See `references/density-presets.md` for per-level node counts, label limits, and description rules. Title 20pt.
 
 ### 12. Pipeline-Flow
 Sequential process with labeled stages.
 **Use:** CI/CD, workflow, journey. **Layout:** Title top ~12%, pipeline ~88%. Equal-width stages with arrow connectors.
-**Content density:** Max 6 stages/row, max 2 rows. Stage name 11–13pt max 20 chars. Description 9–11pt max 30 chars.
+**Content density:** See `references/density-presets.md` for per-level stage counts and description limits. Title 22pt.
 
 ---
 

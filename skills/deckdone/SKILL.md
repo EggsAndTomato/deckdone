@@ -49,6 +49,7 @@ DeckDone provides a structured, phased workflow that orchestrates content discov
 | docx skill | Skill | Ask user to paste text |
 | xlsx skill | Skill | Ask user to provide CSV/text |
 | theme-factory skill | Skill | Use built-in `references/style-presets.md` |
+| deckdone-style skill | Skill | Use built-in `references/style-presets.md`, no icons or illustrations |
 | react-icons | npm global | Use text-based icons or pre-rendered images |
 
 ### Python (Optional)
@@ -66,8 +67,8 @@ If these packages are unavailable, image-type PDFs fall back to asking the user 
 Check for optional dependencies at the point of use, not at startup:
 
 - **Step 2 (Material Collection):** Before extracting from a file, check whether the relevant skill (pdf / docx / xlsx) is available. If unavailable, ask the user to paste the content as text.
-- **Step 6 (Visual Style):** Check for the theme-factory skill to surface additional presets. If unavailable, rely solely on `references/style-presets.md`.
-- **Step 9 (Test Generation):** Check for sharp (npm global) before attempting SVG→PNG rasterization. If unavailable, use text-based icons or pre-rendered placeholder images.
+- **Step 6 (Visual Style):** Check for the theme-factory skill to surface additional presets. If unavailable, rely solely on `references/style-presets.md`. Check for deckdone-style skill for enhanced presets and decoration rules.
+- **Step 9 (Test Generation):** Check for sharp (npm global) before attempting SVG→PNG rasterization. If unavailable, use text-based icons or pre-rendered placeholder images. If deckdone-style is available, run `fetch-icon.py` and `fetch-illustration.py` for icons and illustrations.
 
 See the repository root `SETUP.md` for installation instructions for all dependencies.
 
@@ -357,7 +358,7 @@ Goal: Define the visual system and layout for each page.
 
 **AI Behavior:**
 
-1. Read `references/style-presets.md` (15–20 style presets).
+1. Read `references/style-presets.md` (15–20 style presets). If deckdone-style skill is available, read its `references/enhanced-presets.md` instead. Also read `references/decoration-guide.md`.
 2. Check for theme-factory skill availability. If available, surface additional presets.
 3. Recommend 2–3 styles based on presentation purpose + audience profile.
 4. Show style previews: color palette + typography + decoration characteristics.
@@ -390,8 +391,8 @@ Goal: Write the exact content for every visual zone on every page.
 
 **AI Behavior:**
 
-1. Based on confirmed outline + layout-system + layout-skeleton + style-guide, generate a detailed content spec per page. Read the density level from `brief.md`. Read the corresponding content capacity limits from `references/density-presets.md`. Use these as Max Length values for each zone instead of the defaults in `layout-types.md`.
-2. Organize content by **visual zone** (not by title + body).
+1. Based on confirmed outline + layout-system + layout-skeleton + style-guide, generate a detailed content spec per page. Read the density level from `brief.md`. Read the corresponding content capacity limits from `references/density-presets.md`. Use these as Max Length values for each zone instead of the defaults in `layout-types.md`. If deckdone-style is available, read `references/icon-catalog.md` and assign icon names to zones per decoration-guide rules.
+2. Organize content by **visual zone** (not by title + body). When deckdone-style is available, add `- Icon: [name from icon-catalog.md or "None"]` to each zone. For Cover and Section Divider slides, add `- Illustration: [unDraw slug or "None"]`.
 3. Each zone annotated with: content type, text volume, visual weight (primary / secondary / auxiliary).
 4. Include a pre-render element list and chart data specifications for placeholder areas.
 5. For visual storytelling presentations, annotate each page's **visual narrative path** (viewer eye flow).
@@ -456,8 +457,8 @@ Goal: Produce the final PPTX file with quality assurance. Phase 4 makes **zero c
 
 1. Select one page per layout type as test samples.
 2. For each test page, execute the full pipeline:
-   a. Pre-render elements using Sharp (icons→PNG, gradients→PNG).
-   b. Create HTML file with actual content + confirmed style. Use templates from `references/layout-templates.md`. Read the density level from `brief.md` and the corresponding spacing parameters from `references/density-presets.md`. Apply padding, line-height, and gap values. Choose font sizes dynamically based on actual content amount within spacing constraints, respecting the minimum readable font floor.
+   a. Pre-render elements using Sharp (icons→PNG, gradients→PNG). If deckdone-style is available, run `fetch-icon.py` for each assigned icon and `fetch-illustration.py` for cover/divider illustrations.
+   b. Create HTML file with actual content + confirmed style. Use templates from `references/layout-templates.md` (or `references/layout-templates-decorated.md` from deckdone-style if available). Read the density level from `brief.md` and the corresponding spacing parameters from `references/density-presets.md`. Apply padding, line-height, and gap values. Choose font sizes dynamically based on actual content amount within spacing constraints, respecting the minimum readable font floor.
    c. Call `html2pptx()` from the pptx skill to convert to PPTX.
    d. Generate thumbnail: `python scripts/thumbnail.py output.pptx preview --slides N`
 3. User reviews thumbnails for:
@@ -485,8 +486,8 @@ Goal: Produce the final PPTX file with quality assurance. Phase 4 makes **zero c
 1. Read locked template parameters from `template-params.md`.
 2. Generate in section chunks (5–8 pages per chunk) to avoid context overflow.
 3. Per chunk:
-   a. Pre-render elements.
-   b. Generate HTML files. Apply density-level spacing from `references/density-presets.md`. Choose font sizes dynamically per slide based on actual content volume.
+   a. Pre-render elements. If deckdone-style is available, run `fetch-icon.py` and `fetch-illustration.py` for icons and illustrations.
+   b. Generate HTML files. Apply density-level spacing from `references/density-presets.md`. Choose font sizes dynamically per slide based on actual content volume. If deckdone-style is available, use `references/layout-templates-decorated.md`.
    c. `html2pptx()` conversion.
    d. Generate chunk thumbnails for intermediate check.
 4. Merge all chunks into `output.pptx`.

@@ -69,7 +69,7 @@ def is_empty_content(value):
     return bool(PLACEHOLDER_RE.match(stripped))
 
 
-def validate_slide(title, section):
+def validate_slide(title, section, catalog_icons=None):
     errors = []
     zone_errors = {}
 
@@ -111,6 +111,11 @@ def validate_slide(title, section):
         elif vw not in VALID_VISUAL_WEIGHTS:
             z_errs.append(f"invalid Visual Weight: {vw}")
 
+        icon_val = extract_field(zs, "Icon")
+        if icon_val is not None and icon_val.strip().lower() != "none":
+            if catalog_icons is not None and icon_val.strip() not in catalog_icons:
+                z_errs.append(f"icon '{icon_val.strip()}' not found in catalog")
+
         if z_errs:
             zone_errors[label] = z_errs
 
@@ -120,17 +125,57 @@ def validate_slide(title, section):
     return errors, zone_errors, len(zones)
 
 
+def load_catalog_icons(catalog_path):
+    icons = set()
+    try:
+        with open(catalog_path, encoding="utf-8") as f:
+            text = f.read()
+    except (FileNotFoundError, OSError):
+        return None
+    skip = {"icon name", "---", "-----------", "default icon", "zone position"}
+    for m in re.finditer(r"^\|[^|]+\|\s*([a-z][a-z0-9-]+)\s*\|", text, re.MULTILINE):
+        val = m.group(1).strip()
+        if val.lower() not in skip:
+            icons.add(val)
+    for m in re.finditer(r"^\s*-\s+`([^`]+)`", text, re.MULTILINE):
+        icons.add(m.group(1).strip())
+    return icons if icons else None
+
+
 def main():
-    if len(sys.argv) != 2:
-        print("Usage: python validate-content-plan.py <content-plan.md>")
+    catalog_path = None
+    args = sys.argv[1:]
+    content_path = None
+    i = 0
+    while i < len(args):
+        if args[i] == "--catalog" and i + 1 < len(args):
+            catalog_path = args[i + 1]
+            i += 2
+        elif content_path is None:
+            content_path = args[i]
+            i += 1
+        else:
+            i += 1
+
+    if content_path is None:
+        print(
+            "Usage: python validate-content-plan.py <content-plan.md> [--catalog <icon-catalog.md>]"
+        )
         sys.exit(2)
 
-    filepath = sys.argv[1]
+    catalog_icons = None
+    if catalog_path:
+        catalog_icons = load_catalog_icons(catalog_path)
+        if catalog_icons is None:
+            print(f"Warning: Could not load icon catalog from {catalog_path}")
+        else:
+            print(f"Loaded {len(catalog_icons)} icons from catalog")
+
     try:
-        with open(filepath, encoding="utf-8") as f:
+        with open(content_path, encoding="utf-8") as f:
             text = f.read()
     except FileNotFoundError:
-        print(f"Error: File not found: {filepath}")
+        print(f"Error: File not found: {content_path}")
         sys.exit(2)
     except OSError as e:
         print(f"Error reading file: {e}")
@@ -147,7 +192,9 @@ def main():
     total_zones = 0
 
     for title, section in slides:
-        errors, zone_errors, zone_count = validate_slide(title, section)
+        errors, zone_errors, zone_count = validate_slide(
+            title, section, catalog_icons=catalog_icons
+        )
         total_zones += zone_count
         if not errors and not zone_errors:
             print(f"Slide {failed + passed + 1}: {title} - PASS ({zone_count} zones)")

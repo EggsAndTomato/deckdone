@@ -80,6 +80,8 @@
 - [ ] **Acceptance criteria checkboxes exist for each slide** — at least two binary criteria per slide that define "done"
 - [ ] **Visual narrative path is described for each slide** — a one-line note on how the slide advances the overall story
 - [ ] **Zone max lengths comply with density preset** — no zone exceeds the capacity limit for the chosen density level from `references/density-presets.md`
+- [ ] **All pages that require icons (per decoration-guide.md) have icon names assigned** — no REQUIRED icon slot is blank
+- [ ] **Cover and Section Divider pages have illustration slugs or explicit "None"** — no cover/divider is missing the Illustration field
 
 ## Step 9: test-slides/ Validation
 
@@ -89,6 +91,9 @@
 - [ ] **Adequate contrast between text and background** — minimum WCAG AA contrast ratio (4.5:1 for body text)
 - [ ] **Style is consistent across different page types** — same palette, same fonts, same spacing rules visible in all slides
 - [ ] **Space competition check passed for dense pages** — pages with 4+ zones have no zone smaller than its minimum from `layout-types.md`
+- [ ] **All assigned icons are present as files in the test-slides directory** — no broken `<img>` references
+- [ ] **Cover and divider illustrations render correctly** — not a broken image placeholder
+- [ ] **Icon colors match the style guide palette** — icons use primary/secondary/accent colors, not default black
 
 ## Step 10: output.pptx Validation
 

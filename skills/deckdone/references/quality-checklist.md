@@ -47,7 +47,7 @@
 
 ## Step 4: layout-system.md Validation
 
-- [ ] **Every page is assigned a valid page type** from the 12 defined types in `layout-patterns.md`
+- [ ] **Every page is assigned a valid page type** from the 12 defined types in `layout-types.md`
 - [ ] **Pre-render elements are listed per page** — or explicitly marked "None" where no pre-rendering is needed
 - [ ] **No undefined or unrecognized page types** — every type string exactly matches one of the 12 canonical names
 - [ ] **Page type distribution is reasonable** — not all pages use the same type; variety reflects content diversity
@@ -72,7 +72,7 @@
 ## Step 7: content-plan.md Validation
 
 - [ ] **Every zone on every page has content** — no zone contains "TBD", "TODO", or is left blank
-- [ ] **No zone exceeds the max character limit** defined in `layout-patterns.md` for its zone type
+- [ ] **No zone exceeds the max character limit** defined in `layout-types.md` for its zone type
 - [ ] **Chart data specs are complete** — every chart zone has values array, labels array, and chart type; non-chart zones are N/A
 - [ ] **Pre-render elements are listed per slide** — each slide's pre-render manifest matches `layout-system.md`
 - [ ] **Acceptance criteria checkboxes exist for each slide** — at least two binary criteria per slide that define "done"
@@ -85,7 +85,7 @@
 - [ ] **All images and icons render correctly** — no broken image placeholders, no missing SVG paths
 - [ ] **Adequate contrast between text and background** — minimum WCAG AA contrast ratio (4.5:1 for body text)
 - [ ] **Style is consistent across different page types** — same palette, same fonts, same spacing rules visible in all slides
-- [ ] **Space competition check passed for dense pages** — pages with 4+ zones have no zone smaller than its minimum from `layout-patterns.md`
+- [ ] **Space competition check passed for dense pages** — pages with 4+ zones have no zone smaller than its minimum from `layout-types.md`
 
 ## Step 10: output.pptx Validation
 
@@ -120,7 +120,7 @@ When a check above fails, follow this protocol to strengthen the system:
    - **Execution error**: the spec was clear but the step was implemented incorrectly
 
 3. **If harness gap**: update the relevant reference file or validation script to close the gap. Examples:
-   - Add a missing constraint to `layout-patterns.md`
+   - Add a missing constraint to `layout-types.md`
    - Add a new validation rule to this checklist
    - Clarify ambiguous language in `brief.md` instructions
 

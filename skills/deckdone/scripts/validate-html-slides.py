@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Validates HTML slide files for html2pptx compatibility."""
 
+import argparse
 import os
 import re
 import sys
@@ -175,12 +176,89 @@ def validate_file(filepath):
     return parser.errors, parser._body_ok
 
 
-def main():
-    if len(sys.argv) != 2:
-        print("Usage: python validate-html-slides.py <wireframes-directory>")
-        sys.exit(2)
+def parse_outline_pages(outline_path):
+    try:
+        with open(outline_path, encoding="utf-8") as f:
+            text = f.read()
+    except OSError as e:
+        print(f"Warning: Cannot read outline: {e}")
+        return None
 
-    dirpath = sys.argv[1]
+    total_match = re.search(r"##\s*Total\s+Pages?\s*:\s*(\d+)", text, re.IGNORECASE)
+    if total_match:
+        return int(total_match.group(1))
+
+    page_matches = re.findall(r"-\s*Page\s+\d+", text, re.IGNORECASE)
+    if page_matches:
+        return len(page_matches)
+
+    return None
+
+
+def count_text_elements(filepath):
+    try:
+        with open(filepath, encoding="utf-8") as f:
+            content = f.read()
+    except OSError:
+        return 0
+
+    count = 0
+    for tag in ("p", "h1", "h2", "h3", "h4", "h5", "h6", "li"):
+        count += len(re.findall(rf"<{tag}[\s>]", content, re.IGNORECASE))
+    return count
+
+
+def check_completeness(dirpath, html_files, outline_path):
+    errors = []
+
+    expected = parse_outline_pages(outline_path)
+    if expected is not None:
+        actual = len(html_files)
+        if actual != expected:
+            errors.append(
+                f"File count mismatch: expected {expected} pages (from outline), found {actual} HTML files"
+            )
+
+    for filename in html_files:
+        filepath = os.path.join(dirpath, filename)
+        try:
+            size = os.path.getsize(filepath)
+            if size < 100:
+                errors.append(f"{filename}: file is nearly empty ({size} bytes)")
+        except OSError:
+            errors.append(f"{filename}: cannot read file")
+
+    return errors
+
+
+def check_emptiness(dirpath, html_files):
+    warnings = []
+    for filename in html_files:
+        filepath = os.path.join(dirpath, filename)
+        count = count_text_elements(filepath)
+        if count < 2:
+            warnings.append(
+                f"{filename}: potentially empty (only {count} text element(s))"
+            )
+    return warnings
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Validate HTML slide files for html2pptx compatibility"
+    )
+    parser.add_argument(
+        "directory",
+        help="Directory containing HTML slide files",
+    )
+    parser.add_argument(
+        "--outline",
+        help="Path to outline.md for completeness checking",
+        default=None,
+    )
+    args = parser.parse_args()
+
+    dirpath = args.directory
     if not os.path.isdir(dirpath):
         print(f"Error: Not a directory: {dirpath}")
         sys.exit(2)
@@ -206,6 +284,24 @@ def main():
             for err in errors:
                 print(f"  - {err}")
             failed += 1
+
+    if args.outline:
+        print("\n=== Completeness Check ===")
+        comp_errors = check_completeness(dirpath, html_files, args.outline)
+        if comp_errors:
+            for err in comp_errors:
+                print(f"  - {err}")
+            failed += len(comp_errors)
+        else:
+            print("  All files present and non-empty.")
+
+    print("\n=== Emptiness Check ===")
+    empty_warnings = check_emptiness(dirpath, html_files)
+    if empty_warnings:
+        for w in empty_warnings:
+            print(f"  WARN: {w}")
+    else:
+        print("  No empty slides detected.")
 
     print("\n=== Summary ===")
     print(f"Total files: {passed + failed}")

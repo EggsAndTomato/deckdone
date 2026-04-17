@@ -51,6 +51,16 @@ DeckDone provides a structured, phased workflow that orchestrates content discov
 | theme-factory skill | Skill | Use built-in `references/style-presets.md` |
 | react-icons | npm global | Use text-based icons or pre-rendered images |
 
+### Python (Optional)
+
+| Dependency | Type | Degradation if missing |
+|-----------|------|----------------------|
+| pypdf | pip | Image-type PDFs cannot be processed by extract-pdf.py |
+| pypdfium2 | pip | Image-type PDFs cannot be rendered to PNG |
+| pdfplumber | pip | Complex PDF layouts may extract text with lower fidelity |
+
+If these packages are unavailable, image-type PDFs fall back to asking the user to paste text content.
+
 ### Dependency Detection
 
 Check for optional dependencies at the point of use, not at startup:
@@ -114,6 +124,19 @@ After each gate or phase transition:
 
 ---
 
+## Pre-Flight: Environment Check
+
+Before starting Phase 1, run:
+
+    python scripts/check-env.py
+
+If any items fail, resolve them before proceeding. For guided installation:
+
+    python scripts/check-env.py --install          # interactive y/n per item
+    python scripts/check-env.py --install --yes    # auto-confirm all (for AI agent use)
+
+---
+
 ## Phase 1: Discovery [Deep Interaction]
 
 Goal: Understand what the presentation must communicate and gather the raw materials.
@@ -163,7 +186,10 @@ Goal: Understand what the presentation must communicate and gather the raw mater
 1. Ask the user for reference materials. Suggest possible types:
    - Company documents / Personal work records / Industry reports / Policy documents / Data spreadsheets / Other
 2. For each file provided, detect format and extract:
-   - `.pdf` → use pdf skill; if unavailable, ask user to paste text content
+   - `.pdf` → Run `python scripts/extract-pdf.py <file> --output materials/`
+     - If text-layer detected: text extracted automatically
+     - If image-type: pages rendered as PNG, follow manifest instructions for visual extraction
+   - If `extract-pdf.py` is unavailable, fall back to pdf skill or ask user to paste text content
    - `.docx` → use docx skill; if unavailable, ask user to paste text content
    - `.xlsx` / `.csv` → use xlsx skill; if unavailable, ask user to provide data as text
    - Plain text / URL → read directly
@@ -229,7 +255,7 @@ Goal: Define the visual system and layout for each page.
 
 **AI Behavior:**
 
-1. Read `references/layout-patterns.md` for detailed HTML skeletons and layout rules. Predefined page types:
+1. Read `references/layout-types.md` for page type definitions, layout rules, and content density limits. Predefined page types:
    - **Cover** — Title + subtitle + date/author
    - **Agenda** — Section list with numbering
    - **Section Divider** — Section title + brief description
@@ -308,7 +334,7 @@ Goal: Define the visual system and layout for each page.
 
 **AI Behavior:**
 
-1. Read `references/html-wireframe-guide.md` for wireframe generation standards.
+1. Read `references/html-wireframe-guide.md` for wireframe generation standards. Read `references/layout-templates.md` for complete HTML slide templates per page type.
 2. Generate an HTML wireframe for each page:
    - Use a grayscale color scheme. Annotate content block areas.
    - Label each area with content type (title / body / chart / image / label / data).
@@ -411,7 +437,7 @@ Goal: Produce the final PPTX file with quality assurance. Phase 4 makes **zero c
 1. Select one page per layout type as test samples.
 2. For each test page, execute the full pipeline:
    a. Pre-render elements using Sharp (icons→PNG, gradients→PNG).
-   b. Create HTML file with actual content + confirmed style.
+   b. Create HTML file with actual content + confirmed style. Use templates from `references/layout-templates.md`.
    c. Call `html2pptx()` from the pptx skill to convert to PPTX.
    d. Generate thumbnail: `python scripts/thumbnail.py output.pptx preview --slides N`
 3. User reviews thumbnails for:
@@ -453,7 +479,9 @@ Goal: Produce the final PPTX file with quality assurance. Phase 4 makes **zero c
 
 **State Update:** Update `deckdone-state.md` — Phase 4, Step 10 complete.
 
-**Validation:** Run `python scripts/validate-html-slides.py wireframes/`.
+**Validation:**
+- Run `python scripts/validate-html-slides.py wireframes/ --outline outline.md`
+- Run `python scripts/validate-colors.py style-guide.md wireframes/`
 
 ---
 
@@ -472,6 +500,10 @@ Goal: Produce the final PPTX file with quality assurance. Phase 4 makes **zero c
 5. Generate final version.
 
 **Deliverable:** `final.pptx`
+
+**Validation:**
+- Run `python scripts/validate-html-slides.py wireframes/ --outline outline.md`
+- Run `python scripts/validate-colors.py style-guide.md wireframes/`
 
 **State Update:** Update `deckdone-state.md` — all phases complete.
 
@@ -501,75 +533,4 @@ Every failure is a diagnostic signal. Log improvements in `harness-improvements.
 
 ## State File Templates
 
-### deckdone-state.md
-
-```markdown
-# DeckDone Progress State
-
-## Status
-- Phase: [current phase name]
-- Current Step: [step number and name]
-- Last Activity: [datetime]
-- Progress: [e.g., "Batch 2/4 wireframes confirmed"]
-
-## Completed Steps
-- [x] Phase 1, Step 1: Brief confirmed ([date])
-- [x] Phase 1, Step 2: Materials collected ([date])
-...
-
-## Key Decisions
-- Framework: [chosen framework + why]
-- Style: [chosen style + palette]
-- [any other critical decisions]
-
-## Deliverable Status
-- brief.md [confirmed | in progress | not started]
-- materials/ [status]
-- outline.md [status]
-- layout-system.md [status]
-- style-guide.md [status]
-- wireframes/ [status with count]
-- content-plan.md [status]
-- test-slides/ [status]
-- output.pptx [status]
-- final.pptx [status]
-
-## Context Summary
-[Under 500 words. Must include: presentation purpose, key message,
- audience profile, scale, chosen framework, style direction.
- Enough for a fresh AI instance to understand the project.]
-
-## Pending Items
-- [unresolved questions]
-- [deferred decisions]
-```
-
-### deckdone-trace.md
-
-```markdown
-# DeckDone Execution Trace
-
-## Session 1: [date] [start time]–[end time]
-### Step [N] → [name]
-- Iterations: [count] (describe rounds of changes)
-- User decisions: [list key decisions made by user]
-- Adjustments: [what was changed from initial output]
-- Issues encountered: [list problems and resolutions]
-- Output: [file paths] status
-
-### Step [N+1] → [name]
-...
-```
-
-### harness-improvements.md
-
-```markdown
-# Harness Improvement Log
-
-## Improvement #[N]
-- Date: [date]
-- Trigger: [what went wrong, on which slide/step]
-- Root Cause: [why it happened — harness gap analysis]
-- Fix: [what was changed in the harness]
-- Updated Files: [which reference files or templates were modified]
-```
+See `references/state-templates.md` for complete templates for `deckdone-state.md`, `deckdone-trace.md`, and `harness-improvements.md`.

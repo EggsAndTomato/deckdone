@@ -13,7 +13,7 @@ Templates for DeckDone workflow state tracking files.
 - Phase: [current phase name]
 - Current Step: [step number and name]
 - Last Activity: [datetime]
-- Progress: [e.g., "Batch 2/4 wireframes confirmed"]
+- Progress: [e.g., "Section 2/4 layout skeletons confirmed"]
 
 ## Completed Steps
 - [x] Phase 1, Step 1: Brief confirmed ([date])
@@ -31,7 +31,7 @@ Templates for DeckDone workflow state tracking files.
 - outline.md [status]
 - layout-system.md [status]
 - style-guide.md [status]
-- wireframes/ [status with count]
+- layout-skeleton.md [status]
 - content-plan.md [status]
 - test-slides/ [status]
 - output.pptx [status]

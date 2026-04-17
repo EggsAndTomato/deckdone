@@ -13,8 +13,8 @@
 | 2 | `materials/` | [Step 2: Materials Validation](#step-2-materials-validation) |
 | 3 | `outline.md` | [Step 3: Outline Validation](#step-3-outlinemd-validation) |
 | 4 | `layout-system.md` | [Step 4: Layout System Validation](#step-4-layout-systemmd-validation) |
-| 5 | `style-guide.md` | [Step 5: Style Guide Validation](#step-5-style-guidemd-validation) |
-| 6 | `wireframes/` | [Step 6: Wireframes Validation](#step-6-wireframes-validation) |
+| 5 | `layout-skeleton.md` | [Step 5: Layout Skeleton Validation](#step-5-layout-skeleton-validation) |
+| 6 | `style-guide.md` | [Step 6: Style Guide Validation](#step-6-style-guidemd-validation) |
 | 7 | `content-plan.md` | [Step 7: Content Plan Validation](#step-7-content-planmd-validation) |
 | 9 | `test-slides/` | [Step 9: Test Slides Validation](#step-9-test-slides-validation) |
 | 10 | `output.pptx` | [Step 10: Output Validation](#step-10-outputpptx-validation) |
@@ -53,21 +53,22 @@
 - [ ] **Page type distribution is reasonable** — not all pages use the same type; variety reflects content diversity
 - [ ] **Composite-Diagram pages have sub-zone descriptions** — each composite page lists its constituent zones and their roles
 
-## Step 5: style-guide.md Validation
+## Step 5: layout-skeleton.md Validation
+
+- [ ] **Overview table has one row per planned page** — row count matches page count from `outline.md`
+- [ ] **Every page uses a valid page type** matching `layout-system.md` assignments
+- [ ] **Every zone is labeled with content type** — recognized type from the type catalog in `layout-skeleton-format.md`
+- [ ] **Every zone has a non-empty content summary** — no zone is blank or "TBD"
+- [ ] **Visual weight is annotated per zone** — primary / secondary / auxiliary
+- [ ] **Per-type zone count is reasonable** — no page has a zone count that exceeds the maximum defined in `layout-types.md`
+- [ ] **Composite-Diagram and Pipeline-Flow pages show sub-zone structure** — nested zones visible with appropriate border notation
+
+## Step 6: style-guide.md Validation
 
 - [ ] **Complete palette defined** with at least: primary, secondary, accent, background, and text colors — all in valid hex format
 - [ ] **Typography specified** — heading font family, body font family, and at least three size tiers (heading, subheading, body) with exact pt values
 - [ ] **Decoration patterns documented** — divider styles, corner ornaments, background textures, or an explicit "None" statement
 - [ ] **Pre-render rules documented** — which visual effects require Sharp processing (gradients, blurred overlays, complex shapes) are listed
-
-## Step 6: wireframes/ Validation
-
-- [ ] **One HTML file exists per planned page** — file count matches the page count from `outline.md`
-- [ ] **All HTML files have correct dimensions** — viewport is exactly 720pt × 405pt (no px, no %, no exceptions)
-- [ ] **Every zone is labeled with content type** — each zone div contains a text label indicating its content role (title, body, chart, icon, etc.)
-- [ ] **Visual weight is annotated** — each zone is marked primary, secondary, or auxiliary in a comment or data attribute
-- [ ] **All pre-render element positions are marked** — icons, generated images, and gradient blocks are shown as labeled placeholder boxes
-- [ ] **No CSS gradients used in wireframes** — wireframes use flat colors and borders only; gradients are deferred to pre-render
 
 ## Step 7: content-plan.md Validation
 
@@ -135,7 +136,7 @@ When a check above fails, follow this protocol to strengthen the system:
 When resuming work from `deckdone-state.md`, complete ALL of the following before continuing:
 
 1. [ ] **`deckdone-state.md` exists and is parseable** — file is present, valid YAML/Markdown, and not corrupted
-2. [ ] **Current phase and step are clearly stated** — the state file names exactly which step to resume from (e.g. "Step 6: wireframes")
+2. [ ] **Current phase and step are clearly stated** — the state file names exactly which step to resume from (e.g. "Step 5: layout-skeleton")
 3. [ ] **All completed deliverable files actually exist on disk** — cross-reference the state file's "completed" list with actual files; re-run any missing steps
 4. [ ] **Context Summary is under 500 words and includes the Key Message** — the summary is compact enough to fit in a single context window and retains the presentation's core thesis
 5. [ ] **No pending items conflict with current state** — if `deckdone-state.md` says "awaiting client input" but the user is ready to proceed, update the state before continuing

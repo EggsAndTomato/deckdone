@@ -16,7 +16,7 @@ DeckDone provides a structured, phased workflow that orchestrates content discov
 | Phase | Name | Interaction | Steps | Goal |
 |-------|------|-------------|-------|------|
 | 1 | Discovery | Deep | 1–3 | Understand what to communicate; gather materials |
-| 2 | Design | Page-by-page | 4–6 | Define layout system and visual style |
+| 2 | Design | Page-by-page | 4–6 | Define layout skeleton, page types, and visual style |
 | 3 | Content | Lightweight | 7–8 | Write exact content for every visual zone |
 | 4 | Implementation | Batch execution | 9–11 | Generate PPTX with quality assurance |
 
@@ -66,7 +66,7 @@ If these packages are unavailable, image-type PDFs fall back to asking the user 
 Check for optional dependencies at the point of use, not at startup:
 
 - **Step 2 (Material Collection):** Before extracting from a file, check whether the relevant skill (pdf / docx / xlsx) is available. If unavailable, ask the user to paste the content as text.
-- **Step 5 (Visual Style):** Check for the theme-factory skill to surface additional presets. If unavailable, rely solely on `references/style-presets.md`.
+- **Step 6 (Visual Style):** Check for the theme-factory skill to surface additional presets. If unavailable, rely solely on `references/style-presets.md`.
 - **Step 9 (Test Generation):** Check for sharp (npm global) before attempting SVG→PNG rasterization. If unavailable, use text-based icons or pre-rendered placeholder images.
 
 See the repository root `SETUP.md` for installation instructions for all dependencies.
@@ -81,8 +81,8 @@ See the repository root `SETUP.md` for installation instructions for all depende
 | `materials/` | 1 | 2 | Collected and classified source materials |
 | `outline.md` | 1 | 3 | Content outline with page estimates |
 | `layout-system.md` | 2 | 4 | Page type assignments per slide |
-| `style-guide.md` | 2 | 5 | Visual style definition |
-| `wireframes/` | 2 | 6 | HTML wireframes per slide |
+| `layout-skeleton.md` | 2 | 5 | Text wireframes with zone layout and content summaries |
+| `style-guide.md` | 2 | 6 | Visual style definition |
 | `content-plan.md` | 3 | 7 | Detailed content per visual zone |
 | `test-slides/` | 4 | 9 | Test slide samples |
 | `template-params.md` | 4 | 9 | Locked template parameters |
@@ -301,7 +301,55 @@ Goal: Define the visual system and layout for each page.
 
 ---
 
-### Step 5: Visual Style Direction
+### Step 5: Layout Skeleton Review
+
+**AI Behavior:**
+
+1. Read confirmed `layout-system.md` (page type assignments from Step 4).
+2. Read `references/layout-skeleton-format.md` for ASCII wireframe conventions and per-type zone templates.
+3. Read `references/layout-types.md` for zone ratio references to inform zone sizes in text diagrams.
+4. Read `outline.md` for section structure and page purposes.
+5. Generate **overview table** — one row per page with: page number, page type, title, key content summary (one phrase), zone count.
+6. Present overview table to user. **Gate 1:** User confirms overall rhythm, page order, and content scope. If rejection requires page type or count changes, return to Step 4 to revise `layout-system.md` before regenerating.
+7. After overview approval, generate **per-page text wireframes** batched by section (5–8 pages per batch).
+8. For each page:
+   - Draw ASCII box diagram reflecting the page type's standard zone layout (from `references/layout-skeleton-format.md`).
+   - Label each zone with type, one-line content summary, and visual weight.
+   - For Composite-Diagram and Pipeline-Flow types: show sub-zone nesting with double-line outer borders.
+9. **Gate 2:** User confirms each batch. If rejection requires structural changes to a page's type, return to Step 4 to revise. Adjustments applied before next batch.
+10. After all batches confirmed, write `layout-skeleton.md`.
+
+**Deliverable:** `layout-skeleton.md`
+
+```markdown
+# Layout Skeleton
+
+## Overview
+
+| # | Type | Title | Key Content | Zones |
+|---|------|-------|-------------|-------|
+| 1 | Cover | ... | ... | N |
+...
+
+---
+
+## Slide 1: [Title] [PageType]
+┌──────────────────────────────────────────────────────────┐
+│ [zone-type] Content summary                   (weight)   │
+├──────────────────────────────────────────────────────────┤
+│ [zone-type] Content summary                   (weight)   │
+└──────────────────────────────────────────────────────────┘
+```
+
+**Gate:** Overview confirmed + all per-page batches confirmed.
+
+**State Update:** Update `deckdone-state.md` — Phase 2, Step 5 complete.
+
+**Validation:** Run `references/quality-checklist.md` Section 2.2.
+
+---
+
+### Step 6: Visual Style Direction
 
 **AI Behavior:**
 
@@ -322,39 +370,7 @@ Goal: Define the visual system and layout for each page.
 ## Pre-render Rules: [which visual effects need Sharp rasterization]
 ```
 
-**Gate:** User confirms style direction.
-
-**State Update:** Update `deckdone-state.md` — Phase 2, Step 5 complete.
-
-**Validation:** Run `references/quality-checklist.md` Section 2.2.
-
----
-
-### Step 6: Page-by-page Wireframes (HTML)
-
-**AI Behavior:**
-
-1. Read `references/html-wireframe-guide.md` for wireframe generation standards. Read `references/layout-templates.md` for complete HTML slide templates per page type.
-2. Generate an HTML wireframe for each page:
-   - Use a grayscale color scheme. Annotate content block areas.
-   - Label each area with content type (title / body / chart / image / label / data).
-   - Annotate emphasis areas and visual weight (primary / secondary / auxiliary).
-   - For Composite-Diagram pages: show sub-zone structure with nesting levels.
-3. Display wireframes in batches by section (5–8 pages per batch).
-4. User confirms batch by batch. Layouts can be adjusted between batches.
-5. Optionally use the webapp-testing skill for browser-based preview.
-
-**Deliverable:** `wireframes/` directory with files named `slide-XX-name.html`.
-
-```
-wireframes/
-├── slide-01-cover.html
-├── slide-02-agenda.html
-├── slide-03-section1-divider.html
-└── ...
-```
-
-**Gate:** All page wireframes confirmed. Phase 2 complete.
+**Gate:** User confirms style direction. Phase 2 complete.
 
 **State Update:** Update `deckdone-state.md` — Phase 2, Step 6 complete.
 
@@ -370,7 +386,7 @@ Goal: Write the exact content for every visual zone on every page.
 
 **AI Behavior:**
 
-1. Based on confirmed outline + layout-system + style-guide + wireframes, generate a detailed content spec per page.
+1. Based on confirmed outline + layout-system + layout-skeleton + style-guide, generate a detailed content spec per page.
 2. Organize content by **visual zone** (not by title + body).
 3. Each zone annotated with: content type, text volume, visual weight (primary / secondary / auxiliary).
 4. Include a pre-render element list and chart data specifications for placeholder areas.
@@ -441,7 +457,7 @@ Goal: Produce the final PPTX file with quality assurance. Phase 4 makes **zero c
    c. Call `html2pptx()` from the pptx skill to convert to PPTX.
    d. Generate thumbnail: `python scripts/thumbnail.py output.pptx preview --slides N`
 3. User reviews thumbnails for:
-   - Layout accuracy against wireframes
+   - Layout accuracy against layout-skeleton.md
    - Text cutoff or overflow
    - Color block and spacing reasonableness
    - Information density readability
@@ -480,8 +496,9 @@ Goal: Produce the final PPTX file with quality assurance. Phase 4 makes **zero c
 **State Update:** Update `deckdone-state.md` — Phase 4, Step 10 complete.
 
 **Validation:**
-- Run `python scripts/validate-html-slides.py wireframes/ --outline outline.md`
-- Run `python scripts/validate-colors.py style-guide.md wireframes/`
+- Run `python scripts/validate-html-slides.py test-slides/ --outline outline.md`
+- Run `python scripts/validate-colors.py style-guide.md test-slides/`
+```
 
 ---
 
@@ -502,8 +519,8 @@ Goal: Produce the final PPTX file with quality assurance. Phase 4 makes **zero c
 **Deliverable:** `final.pptx`
 
 **Validation:**
-- Run `python scripts/validate-html-slides.py wireframes/ --outline outline.md`
-- Run `python scripts/validate-colors.py style-guide.md wireframes/`
+- Run `python scripts/validate-html-slides.py test-slides/ --outline outline.md`
+- Run `python scripts/validate-colors.py style-guide.md test-slides/`
 
 **State Update:** Update `deckdone-state.md` — all phases complete.
 

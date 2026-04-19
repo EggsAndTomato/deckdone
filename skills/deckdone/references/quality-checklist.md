@@ -19,6 +19,7 @@
 | 9 | `test-slides/` | [Step 9: Test Slides Validation](#step-9-test-slides-validation) |
 | 10 | `output.pptx` | [Step 10: Output Validation](#step-10-outputpptx-validation) |
 | 11 | `final.pptx` | [Step 11: Final Validation](#step-11-finalpptx-validation) |
+| 12 | `presentation-guide.md` | [Step 12: Presentation Guide Validation](#step-12-presentation-guidemd-validation) |
 
 ---
 
@@ -111,6 +112,14 @@
 - [ ] **All page numbers and titles are present** where planned — no slide is missing its page number or section title
 - [ ] **No blank or partially rendered slides** — every slide has visible content in at least two zones
 - [ ] **Narrative flow is coherent from start to finish** — a sequential read-through supports the Key Message from `brief.md`
+
+## Step 12: presentation-guide.md Validation
+
+- [ ] **presentation-guide.md exists and is non-empty** — file is present in the project directory and contains content
+- [ ] **Module 1 (Overview) includes required fields** — Core Message, Audience, Total Slides, Suggested Duration, and Narrative Framework are all present
+- [ ] **Module 3 (Slide Key Points) has one row per slide** — row count matches the page count from `outline.md`
+- [ ] **Module 4 (Speaking Notes) includes at least 2 potential Q&A items** — audience questions with answer key points
+- [ ] **Total time allocation is reasonable** — sum of per-slide times falls within ±10% of the Suggested Duration
 
 ---
 

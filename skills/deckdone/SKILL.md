@@ -18,7 +18,7 @@ DeckDone provides a structured, phased workflow that orchestrates content discov
 | 1 | Discovery | Deep | 1–3 | Understand what to communicate; gather materials |
 | 2 | Design | Page-by-page | 4–6 | Define layout skeleton, page types, and visual style |
 | 3 | Content | Lightweight | 7–8 | Write exact content for every visual zone |
-| 4 | Implementation | Batch execution | 9–11 | Generate PPTX with quality assurance |
+| 4 | Implementation | Batch execution | 9–12 | Generate PPTX with quality assurance and presentation guide |
 
 ### Design Principles
 
@@ -89,6 +89,7 @@ See the repository root `SETUP.md` for installation instructions for all depende
 | `template-params.md` | 4 | 9 | Locked template parameters |
 | `output.pptx` | 4 | 10 | Generated presentation |
 | `final.pptx` | 4 | 11 | Final reviewed presentation |
+| `presentation-guide.md` | 4 | 12 | Speaker's quick-reference guide |
 | `deckdone-state.md` | all | all | Progress state file |
 | `deckdone-trace.md` | all | all | Execution trace log |
 | `harness-improvements.md` | all | all | Harness improvement log |
@@ -526,6 +527,35 @@ Goal: Produce the final PPTX file with quality assurance. Phase 4 makes **zero c
 **Validation:**
 - Run `python scripts/validate-html-slides.py test-slides/ --outline outline.md`
 - Run `python scripts/validate-colors.py style-guide.md test-slides/`
+
+**State Update:** Update `deckdone-state.md` — Phase 4, Step 11 complete.
+
+---
+
+### Step 12: Presentation Guide
+
+Goal: Generate a concise quick-reference guide for the presenter. This is especially valuable when the deck creator and presenter are different people.
+
+**AI Behavior:**
+
+1. Read the following confirmed deliverables:
+   - `brief.md` (purpose, audience, framework, density, scale)
+   - `outline.md` (section structure, page count)
+   - `content-plan.md` (per-page content, visual narrative paths)
+   - `style-guide.md` (visual style)
+   - `layout-skeleton.md` (page layout overview)
+2. Generate `presentation-guide.md` following the 4-module structure in `references/presentation-guide-template.md`.
+3. Determine emphasis levels (★ Key / Normal / ⏭ Skippable) based on each page's contribution to the Key Message from `brief.md`.
+4. Calculate time allocation from `brief.md` Scale field (total minutes ÷ total pages, weighted by emphasis). If Scale has no time estimate, default to 1.5 minutes per page.
+5. Predict 2–3 likely audience questions based on content gaps or contentious points in the material.
+6. Write in the user's preferred language (same language used throughout the session).
+7. Present to user for confirmation. Allow edits.
+
+**Deliverable:** `presentation-guide.md`
+
+See `references/presentation-guide-template.md` for the 4-module template (Overview, Design Rationale, Slide Key Points, Speaking Notes).
+
+**Gate:** User confirms presentation guide content.
 
 **State Update:** Update `deckdone-state.md` — all phases complete.
 

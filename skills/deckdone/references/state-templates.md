@@ -36,6 +36,7 @@ Templates for DeckDone workflow state tracking files.
 - test-slides/ [status]
 - output.pptx [status]
 - final.pptx [status]
+- presentation-guide.md [status]
 
 ## Context Summary
 [Under 500 words. Must include: presentation purpose, key message,

@@ -1,3 +1,15 @@
 .ruff_cache/
 __pycache__/
 *.pyc
+
+# Python venv
+Lib/
+Scripts/
+pyvenv.cfg
+
+# POC artifacts
+_poc_*
+
+# Icon assets (download separately, see THIRD_PARTY_LICENSES)
+skills/deckdone-build/templates/icons/tabler-filled/
+skills/deckdone-build/templates/icons/tabler-outline/

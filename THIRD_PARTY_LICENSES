@@ -1,0 +1,85 @@
+# Third-Party Licenses
+
+This project includes code and assets from the following third-party projects.
+
+---
+
+## PPT Master — svg_to_pptx converter
+
+**Source:** https://github.com/hugohe3/ppt-master  
+**License:** MIT License  
+**Copyright:** Copyright (c) 2025-2026 Hugo He
+
+Files derived from PPT Master:
+- `skills/deckdone-build/scripts/svg_to_pptx/` (all 13 Python files)
+- `skills/deckdone-build/scripts/svg_to_pptx.py`
+- `skills/deckdone-build/scripts/embed_icons.py`
+- `skills/deckdone-build/scripts/embed_images.py`
+- `skills/deckdone-build/templates/charts/` (52 SVG files)
+- `skills/deckdone-build/templates/layouts/exhibit/`
+- `skills/deckdone-build/templates/layouts/smart_red/`
+- `skills/deckdone-build/templates/layouts/科技蓝商务/`
+
+Original license text:
+
+```
+MIT License
+
+Copyright (c) 2025-2026 Hugo He
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+---
+
+## Tabler Icons
+
+**Source:** https://github.com/tabler/tabler-icons  
+**License:** MIT License  
+**Copyright:** Copyright (c) 2020 Paweł Kuna
+
+Files:
+- `skills/deckdone-build/templates/icons/tabler-filled/` (1,053 SVG files)
+- `skills/deckdone-build/templates/icons/tabler-outline/` (5,039 SVG files)
+
+Original license text:
+
+```
+MIT License
+
+Copyright (c) 2020 Paweł Kuna
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```

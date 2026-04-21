@@ -1,0 +1,62 @@
+<svg width="1280" height="720" viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Warm cream diagonal gradient background -->
+    <linearGradient id="warmBg" x1="0" y1="0" x2="1280" y2="720" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFAF2" stop-opacity="1" />
+      <stop offset="100%" stop-color="#FFF5E8" stop-opacity="1" />
+    </linearGradient>
+    <!-- Sage green organic gradient for main leaf shape -->
+    <linearGradient id="sageFade" x1="700" y1="720" x2="1280" y2="350" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#7D8A6E" stop-opacity="0.18" />
+      <stop offset="100%" stop-color="#7D8A6E" stop-opacity="0.06" />
+    </linearGradient>
+    <!-- Terracotta gradient for secondary organic shape -->
+    <linearGradient id="terraFade" x1="920" y1="720" x2="1280" y2="500" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#C4734E" stop-opacity="0.14" />
+      <stop offset="100%" stop-color="#C4734E" stop-opacity="0.04" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect x="0" y="0" width="1280" height="720" fill="url(#warmBg)" />
+
+  <!-- Subtle background texture curves -->
+  <path d="M 0,520 C 200,490 400,540 640,500 C 880,460 1080,510 1280,480" fill="none" stroke="#7D8A6E" stroke-width="1" stroke-opacity="0.06" />
+  <path d="M 0,570 C 300,540 500,580 720,550 C 940,520 1100,560 1280,540" fill="none" stroke="#D4A76A" stroke-width="1" stroke-opacity="0.05" />
+
+  <!-- Large organic leaf shape (sage green) flowing from bottom-right -->
+  <path d="M 680,720 C 720,650 800,570 900,500 C 1000,430 1100,390 1280,350 L 1280,720 Z" fill="url(#sageFade)" />
+
+  <!-- Secondary organic shape (terracotta), overlapping subtly -->
+  <path d="M 920,720 C 970,670 1060,610 1150,565 C 1210,535 1250,520 1280,510 L 1280,720 Z" fill="url(#terraFade)" />
+
+  <!-- Leaf vein detail lines -->
+  <path d="M 750,720 C 810,650 890,570 980,500 C 1040,455 1100,420 1180,390" fill="none" stroke="#7D8A6E" stroke-width="1.5" stroke-opacity="0.1" />
+  <path d="M 870,720 C 920,670 1000,610 1080,565 C 1130,540 1180,520 1240,500" fill="none" stroke="#C4734E" stroke-width="1" stroke-opacity="0.08" />
+
+  <!-- Small branching leaf veins -->
+  <path d="M 960,520 C 990,500 1030,495 1070,490" fill="none" stroke="#7D8A6E" stroke-width="0.8" stroke-opacity="0.08" />
+  <path d="M 900,560 C 930,540 970,530 1020,525" fill="none" stroke="#7D8A6E" stroke-width="0.8" stroke-opacity="0.06" />
+
+  <!-- Title area (left-aligned) -->
+  <text x="80" y="280" font-family="Georgia" font-size="56" font-weight="bold" fill="#3D2C22">{{TITLE}}</text>
+  <text x="80" y="340" font-family="Georgia" font-size="28" fill="#5C4A3E">{{SUBTITLE}}</text>
+
+  <!-- Green horizontal accent line below title -->
+  <rect x="80" y="370" width="180" height="3" fill="#2D6A4F" />
+
+  <!-- Author and date at bottom-left -->
+  <text x="80" y="630" font-family="Arial" font-size="18" fill="#5C4A3E">{{AUTHOR}}</text>
+  <text x="80" y="660" font-family="Arial" font-size="16" fill="#7D8A6E">{{DATE}}</text>
+
+  <!-- Gold accent dots scattered near organic shapes -->
+  <circle cx="1100" cy="440" r="4" fill="#D4A76A" fill-opacity="0.6" />
+  <circle cx="1150" cy="420" r="3" fill="#D4A76A" fill-opacity="0.5" />
+  <circle cx="1050" cy="470" r="5" fill="#D4A76A" fill-opacity="0.4" />
+  <circle cx="1200" cy="410" r="3" fill="#D4A76A" fill-opacity="0.35" />
+  <circle cx="1080" cy="455" r="2.5" fill="#D4A76A" fill-opacity="0.5" />
+  <circle cx="1000" cy="500" r="3.5" fill="#D4A76A" fill-opacity="0.3" />
+  <circle cx="1130" cy="465" r="2" fill="#D4A76A" fill-opacity="0.45" />
+  <circle cx="960" cy="530" r="3" fill="#D4A76A" fill-opacity="0.25" />
+
+</svg>

@@ -1,0 +1,44 @@
+<svg width="1280" height="720" viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Warm cream gradient background -->
+    <linearGradient id="warmBg" x1="0" y1="0" x2="1280" y2="720" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFAF2" stop-opacity="1" />
+      <stop offset="100%" stop-color="#FFF5E8" stop-opacity="1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect x="0" y="0" width="1280" height="720" fill="url(#warmBg)" />
+
+  <!-- Large semi-transparent chapter number (watermark) -->
+  <text x="640" y="440" font-family="Georgia" font-size="300" font-weight="bold" fill="#7D8A6E" fill-opacity="0.06" text-anchor="middle">{{CHAPTER_NUM}}</text>
+
+  <!-- "CHAPTER XX" label in sage green -->
+  <text x="640" y="290" font-family="Arial" font-size="18" fill="#7D8A6E" text-anchor="middle" letter-spacing="6">CHAPTER {{CHAPTER_NUM}}</text>
+
+  <!-- Terracotta horizontal accent line -->
+  <rect x="490" y="310" width="300" height="3" fill="#C4734E" fill-opacity="0.7" />
+
+  <!-- Chapter title in Georgia bold, dark brown -->
+  <text x="640" y="390" font-family="Georgia" font-size="52" font-weight="bold" fill="#3D2C22" text-anchor="middle">{{CHAPTER_TITLE}}</text>
+
+  <!-- Chapter description -->
+  <text x="640" y="440" font-family="Arial" font-size="20" fill="#5C4A3E" text-anchor="middle">{{CHAPTER_DESC}}</text>
+
+  <!-- Multi-layer organic curves along bottom edge -->
+  <!-- Layer 1: sage green -->
+  <path d="M 0,640 C 160,610 320,660 480,630 C 640,600 800,650 960,625 C 1040,612 1120,630 1280,610 L 1280,720 L 0,720 Z" fill="#7D8A6E" fill-opacity="0.08" />
+  <!-- Layer 2: terracotta -->
+  <path d="M 0,670 C 200,650 400,680 600,660 C 800,640 1000,670 1280,650 L 1280,720 L 0,720 Z" fill="#C4734E" fill-opacity="0.05" />
+  <!-- Layer 3: gold -->
+  <path d="M 0,695 C 300,680 500,700 720,688 C 940,676 1100,695 1280,685 L 1280,720 L 0,720 Z" fill="#D4A76A" fill-opacity="0.04" />
+
+  <!-- Gold accent dots below title -->
+  <circle cx="540" cy="500" r="3.5" fill="#D4A76A" fill-opacity="0.5" />
+  <circle cx="570" cy="505" r="2.5" fill="#D4A76A" fill-opacity="0.35" />
+  <circle cx="600" cy="502" r="3" fill="#D4A76A" fill-opacity="0.4" />
+  <circle cx="680" cy="502" r="3" fill="#D4A76A" fill-opacity="0.4" />
+  <circle cx="710" cy="505" r="2.5" fill="#D4A76A" fill-opacity="0.35" />
+  <circle cx="740" cy="500" r="3.5" fill="#D4A76A" fill-opacity="0.5" />
+
+</svg>

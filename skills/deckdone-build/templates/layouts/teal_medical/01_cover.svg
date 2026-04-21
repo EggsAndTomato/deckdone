@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720">
+  <defs>
+    <!-- Sidebar gradient: teal to light teal -->
+    <linearGradient id="sidebarGrad" x1="0" y1="0" x2="0" y2="720" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0D7377" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#5EA8A7" stop-opacity="1"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background: light gray-blue -->
+  <rect x="0" y="0" width="1280" height="720" fill="#F5F9FA"/>
+
+  <!-- Left sidebar: teal gradient -->
+  <rect x="0" y="0" width="80" height="720" fill="url(#sidebarGrad)"/>
+
+  <!-- Hexagonal background pattern (right two-thirds, very low opacity) -->
+  <polygon points="820,305 859,327 859,373 820,395 781,373 781,327" fill="none" stroke="#0D7377" stroke-width="1" stroke-opacity="0.05"/>
+  <polygon points="900,150 943,175 943,225 900,250 857,225 857,175" fill="none" stroke="#5EA8A7" stroke-width="1" stroke-opacity="0.05"/>
+  <polygon points="1050,280 1085,300 1085,340 1050,360 1015,340 1015,300" fill="none" stroke="#0D7377" stroke-width="1" stroke-opacity="0.04"/>
+  <polygon points="1150,155 1180,172 1180,208 1150,225 1120,208 1120,172" fill="none" stroke="#5EA8A7" stroke-width="1" stroke-opacity="0.04"/>
+  <polygon points="960,405 1008,432 1008,488 960,515 912,488 912,432" fill="none" stroke="#0D7377" stroke-width="1" stroke-opacity="0.05"/>
+  <polygon points="1100,400 1126,415 1126,445 1100,460 1074,445 1074,415" fill="none" stroke="#5EA8A7" stroke-width="1" stroke-opacity="0.04"/>
+  <polygon points="750,480 789,502 789,548 750,570 711,548 711,502" fill="none" stroke="#0D7377" stroke-width="1" stroke-opacity="0.04"/>
+
+  <!-- Title Area -->
+  <text x="140" y="280" font-family="Arial" font-size="52" font-weight="bold" fill="#1A2B3C">{{TITLE}}</text>
+
+  <!-- Coral accent line below title -->
+  <rect x="140" y="300" width="180" height="3" fill="#FF6B35"/>
+
+  <!-- Subtitle -->
+  <text x="140" y="350" font-family="Arial" font-size="24" fill="#4A5568">{{SUBTITLE}}</text>
+
+  <!-- Thin teal rule for visual balance -->
+  <rect x="140" y="380" width="100" height="1" fill="#5EA8A7" fill-opacity="0.4"/>
+
+  <!-- Author and Date (bottom right) -->
+  <text x="1200" y="640" font-family="Arial" font-size="16" fill="#4A5568" text-anchor="end">{{AUTHOR}}</text>
+  <text x="1200" y="665" font-family="Arial" font-size="14" fill="#5EA8A7" text-anchor="end">{{DATE}}</text>
+
+  <!-- Molecular structure decoration (lower-right) -->
+  <line x1="1070" y1="650" x2="1110" y2="620" stroke="#0D7377" stroke-width="2" stroke-opacity="0.15"/>
+  <line x1="1110" y1="620" x2="1155" y2="645" stroke="#0D7377" stroke-width="2" stroke-opacity="0.15"/>
+  <line x1="1110" y1="620" x2="1130" y2="575" stroke="#5EA8A7" stroke-width="2" stroke-opacity="0.12"/>
+  <line x1="1155" y1="645" x2="1195" y2="615" stroke="#5EA8A7" stroke-width="2" stroke-opacity="0.12"/>
+  <circle cx="1070" cy="650" r="8" fill="#0D7377" fill-opacity="0.15"/>
+  <circle cx="1110" cy="620" r="6" fill="#5EA8A7" fill-opacity="0.12"/>
+  <circle cx="1155" cy="645" r="7" fill="#0D7377" fill-opacity="0.12"/>
+  <circle cx="1130" cy="575" r="5" fill="#5EA8A7" fill-opacity="0.10"/>
+  <circle cx="1195" cy="615" r="6" fill="#0D7377" fill-opacity="0.10"/>
+
+</svg>

@@ -1,0 +1,30 @@
+<svg width="1280" height="720" viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background: warm cream -->
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFAF2" />
+
+  <!-- Top: thin green accent bar spanning full width -->
+  <rect x="0" y="0" width="1280" height="4" fill="#2D6A4F" />
+
+  <!-- Left: narrow vertical green sidebar (title prefix) -->
+  <rect x="40" y="40" width="5" height="50" fill="#2D6A4F" />
+
+  <!-- Title area -->
+  <text x="65" y="72" font-family="Georgia" font-size="32" font-weight="bold" fill="#3D2C22">{{PAGE_TITLE}}</text>
+
+  <!-- Subtle title underline -->
+  <line x1="40" y1="95" x2="1240" y2="95" stroke="#5C4A3E" stroke-opacity="0.1" stroke-width="1" />
+
+  <!-- Large content area: rounded dashed border using path with arc commands (no rect rx) -->
+  <!-- Rounded rect: x=80, y=130, w=1120, h=520, r=8 -->
+  <path d="M 88,130 L 1192,130 A 8,8 0 0,1 1200,138 L 1200,642 A 8,8 0 0,1 1192,650 L 88,650 A 8,8 0 0,1 80,642 L 80,138 A 8,8 0 0,1 88,130 Z" fill="none" stroke="#5C4A3E" stroke-width="1.5" stroke-dasharray="8,6" stroke-opacity="0.18" />
+
+  <!-- Content placeholder text -->
+  <text x="640" y="390" font-family="Arial" font-size="22" fill="#5C4A3E" fill-opacity="0.25" text-anchor="middle">{{CONTENT_AREA}}</text>
+
+  <!-- Footer: page number -->
+  <text x="1200" y="690" font-family="Arial" font-size="13" fill="#7D8A6E" fill-opacity="0.7" text-anchor="end">{{PAGE_NUM}}</text>
+
+  <!-- Bottom-right: small organic curve decoration -->
+  <path d="M 1050,720 C 1090,690 1140,680 1200,685 C 1240,688 1260,695 1280,705 L 1280,720 Z" fill="#7D8A6E" fill-opacity="0.06" />
+
+</svg>

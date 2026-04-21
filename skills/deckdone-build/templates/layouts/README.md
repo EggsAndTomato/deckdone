@@ -1,4 +1,4 @@
-# Page Layout Templates (3 Templates)
+# Page Layout Templates (6 Templates)
 
 Pre-built PPT page layout templates for DeckDone.
 
@@ -11,6 +11,9 @@ Pre-built PPT page layout templates for DeckDone.
 | `exhibit` | General | Strategic reports, executive presentations, board briefings | Gradient top bar + Gold accents | Conclusion-first, data-driven |
 | `tech_blue` | General | Corporate reports, product launches, proposals | Tech Blue `#0078D7` | Professional, tech, clean |
 | `smart_red` | General | Tech company profiles, education solutions | Smart Red-Orange `#DE3545` | Modern, vibrant, geometric |
+| `dark_neon` | General | Developer conferences, AI/ML showcases, cybersecurity | Cyan `#00D2FF` + Purple `#7A2FCD` | Cyberpunk, futuristic, immersive |
+| `teal_medical` | General | Medical presentations, biotech reports, clinical research | Teal `#0D7377` | Calm-clinical, modern-professional |
+| `organic_warm` | General | Sustainability/ESG, healthcare, wellness, education, nonprofit | Forest Green `#2D6A4F` + Sage `#7D8A6E` | Warm, organic, calming, grounded |
 
 ---
 

@@ -1,0 +1,49 @@
+<svg width="1280" height="720" viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Warm cream gradient background -->
+    <linearGradient id="warmBg" x1="0" y1="0" x2="1280" y2="720" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFAF2" stop-opacity="1" />
+      <stop offset="100%" stop-color="#FFF5E8" stop-opacity="1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect x="0" y="0" width="1280" height="720" fill="url(#warmBg)" />
+
+  <!-- Green accent line at top -->
+  <rect x="0" y="0" width="1280" height="4" fill="#2D6A4F" />
+
+  <!-- Subtle background organic curve -->
+  <path d="M 0,450 C 200,410 400,480 640,440 C 880,400 1080,460 1280,430" fill="none" stroke="#7D8A6E" stroke-width="1" stroke-opacity="0.06" />
+
+  <!-- "Thank You" in large Georgia bold, centered -->
+  <text x="640" y="260" font-family="Georgia" font-size="64" font-weight="bold" fill="#3D2C22" text-anchor="middle">{{THANK_YOU}}</text>
+
+  <!-- Subtitle in sage green -->
+  <text x="640" y="310" font-family="Arial" font-size="20" fill="#7D8A6E" text-anchor="middle" letter-spacing="3">{{ENDING_SUBTITLE}}</text>
+
+  <!-- Flowing organic wave decoration across the middle (sage green band) -->
+  <path d="M 0,380 C 200,350 400,410 640,375 C 880,340 1080,390 1280,365 L 1280,420 C 1080,450 880,390 640,425 C 400,460 200,400 0,435 Z" fill="#7D8A6E" fill-opacity="0.07" />
+
+  <!-- Secondary wave layer (terracotta) -->
+  <path d="M 0,400 C 160,375 320,420 480,395 C 640,370 800,415 960,390 C 1040,378 1120,400 1280,385 L 1280,415 C 1120,430 1040,408 960,420 C 800,445 640,400 480,425 C 320,450 160,405 0,430 Z" fill="#C4734E" fill-opacity="0.04" />
+
+  <!-- Closing message -->
+  <text x="640" y="490" font-family="Georgia" font-size="20" fill="#5C4A3E" text-anchor="middle">{{CLOSING_MESSAGE}}</text>
+
+  <!-- Contact information -->
+  <text x="640" y="530" font-family="Arial" font-size="16" fill="#7D8A6E" text-anchor="middle">{{CONTACT_INFO}}</text>
+
+  <!-- Gold accent dots (symmetrical arrangement around wave) -->
+  <circle cx="480" cy="365" r="3.5" fill="#D4A76A" fill-opacity="0.5" />
+  <circle cx="530" cy="358" r="2.5" fill="#D4A76A" fill-opacity="0.4" />
+  <circle cx="580" cy="362" r="3" fill="#D4A76A" fill-opacity="0.35" />
+  <circle cx="700" cy="360" r="3" fill="#D4A76A" fill-opacity="0.35" />
+  <circle cx="750" cy="356" r="2.5" fill="#D4A76A" fill-opacity="0.4" />
+  <circle cx="800" cy="362" r="3.5" fill="#D4A76A" fill-opacity="0.5" />
+
+  <!-- Bottom organic curves -->
+  <path d="M 0,660 C 200,640 400,670 640,650 C 880,630 1080,660 1280,645 L 1280,720 L 0,720 Z" fill="#7D8A6E" fill-opacity="0.06" />
+  <path d="M 0,690 C 300,675 500,695 720,683 C 940,671 1100,690 1280,680 L 1280,720 L 0,720 Z" fill="#D4A76A" fill-opacity="0.04" />
+
+</svg>

@@ -1,6 +1,6 @@
 {
   "meta": {
-    "total": 3,
+    "total": 6,
     "defaultViewBox": "0 0 1280 720",
     "formats": ["ppt169"],
     "standardFiles": ["design_spec.md", "01_cover.svg", "02_toc.svg", "02_chapter.svg", "03_content.svg", "04_ending.svg"],
@@ -10,7 +10,7 @@
   "categories": {
     "general": {
       "label": "General Style Templates",
-      "layouts": ["exhibit", "tech_blue", "smart_red"]
+      "layouts": ["exhibit", "tech_blue", "smart_red", "dark_neon", "teal_medical", "organic_warm"]
     }
   },
   "layouts": {
@@ -34,6 +34,27 @@
       "description": "Tech company profiles, education solutions",
       "primaryColor": "Smart Red-Orange #DE3545",
       "tone": "Modern, vibrant, geometric"
+    },
+    "dark_neon": {
+      "name": "Dark Neon",
+      "category": "general",
+      "description": "Developer conferences, AI/ML showcases, cybersecurity presentations, tech demos",
+      "primaryColor": "Cyan #00D2FF + Purple #7A2FCD",
+      "tone": "Cyberpunk, futuristic, immersive, high-contrast"
+    },
+    "teal_medical": {
+      "name": "Teal Medical",
+      "category": "general",
+      "description": "Medical presentations, biotech reports, clinical research, healthcare SaaS demos",
+      "primaryColor": "Teal #0D7377",
+      "tone": "Calm-clinical, modern-professional, approachable precision, trust"
+    },
+    "organic_warm": {
+      "name": "Organic Warm",
+      "category": "general",
+      "description": "Sustainability/ESG reports, healthcare, wellness, education, nonprofit, community",
+      "primaryColor": "Forest Green #2D6A4F + Sage #7D8A6E",
+      "tone": "Warm, organic, calming, grounded, approachable"
     }
   }
 }

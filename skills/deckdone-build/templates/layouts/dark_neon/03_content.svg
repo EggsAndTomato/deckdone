@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720">
+  <defs>
+    <!-- Top accent bar gradient -->
+    <linearGradient id="contentTopBar" x1="0" y1="0" x2="1280" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#00D2FF" stop-opacity="1"/>
+      <stop offset="50%" stop-color="#7A2FCD" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#FF0080" stop-opacity="0.4"/>
+    </linearGradient>
+    <!-- Left accent glow -->
+    <radialGradient id="leftGlow" cx="80" cy="360" r="200" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#00D2FF" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#0A0A14" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Content border gradient -->
+    <linearGradient id="contentBorder" x1="100" y1="130" x2="1180" y2="640" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#00D2FF" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#7A2FCD" stop-opacity="0.08"/>
+    </linearGradient>
+  </defs>
+
+  <!-- ===== BACKGROUND ===== -->
+  <rect x="0" y="0" width="1280" height="720" fill="#0A0A14"/>
+  <rect x="0" y="0" width="1280" height="720" fill="url(#leftGlow)"/>
+
+  <!-- ===== TOP ACCENT BAR ===== -->
+  <rect x="0" y="0" width="1280" height="3" fill="url(#contentTopBar)"/>
+
+  <!-- ===== LEFT VERTICAL CYAN ACCENT LINE ===== -->
+  <line x1="80" y1="20" x2="80" y2="700" stroke="#00D2FF" stroke-width="2" stroke-opacity="0.25"/>
+  <circle cx="80" cy="20" r="2.5" fill="#00D2FF" fill-opacity="0.4"/>
+  <circle cx="80" cy="700" r="2.5" fill="#00D2FF" fill-opacity="0.4"/>
+
+  <!-- ===== SUBTLE GRID ===== -->
+  <line x1="0" y1="120" x2="1280" y2="120" stroke="#00D2FF" stroke-width="0.5" stroke-opacity="0.04"/>
+  <line x1="0" y1="360" x2="1280" y2="360" stroke="#00D2FF" stroke-width="0.5" stroke-opacity="0.03"/>
+  <line x1="0" y1="600" x2="1280" y2="600" stroke="#00D2FF" stroke-width="0.5" stroke-opacity="0.04"/>
+  <line x1="320" y1="0" x2="320" y2="720" stroke="#00D2FF" stroke-width="0.5" stroke-opacity="0.03"/>
+  <line x1="640" y1="0" x2="640" y2="720" stroke="#00D2FF" stroke-width="0.5" stroke-opacity="0.03"/>
+  <line x1="960" y1="0" x2="960" y2="720" stroke="#00D2FF" stroke-width="0.5" stroke-opacity="0.03"/>
+
+  <!-- ===== TITLE AREA ===== -->
+  <text x="110" y="75" font-family="Arial" font-size="32" font-weight="bold" fill="#FFFFFF">{{PAGE_TITLE}}</text>
+
+  <!-- ===== TITLE UNDERLINE ACCENT ===== -->
+  <line x1="110" y1="92" x2="400" y2="92" stroke="#00D2FF" stroke-width="2" stroke-opacity="0.5"/>
+  <rect x="400" y="91" width="30" height="2" fill="#7A2FCD" fill-opacity="0.3"/>
+
+  <!-- ===== CONTENT AREA (dashed border container) ===== -->
+  <path d="M 108,130 L 1172,130 A 4,4 0 0,1 1176,134 L 1176,636 A 4,4 0 0,1 1172,640 L 108,640 A 4,4 0 0,1 104,636 L 104,134 A 4,4 0 0,1 108,130 Z" fill="none" stroke="url(#contentBorder)" stroke-width="1" stroke-dasharray="6,6"/>
+
+  <!-- ===== CONTENT PLACEHOLDER ===== -->
+  <text x="640" y="390" font-family="Arial" font-size="22" fill="#606080" text-anchor="middle">{{CONTENT_AREA}}</text>
+
+  <!-- ===== CORNER DECORATIVE DOTS: top-left inside content ===== -->
+  <circle cx="118" cy="142" r="2" fill="#00D2FF" fill-opacity="0.3"/>
+  <circle cx="128" cy="142" r="1.5" fill="#00D2FF" fill-opacity="0.2"/>
+  <circle cx="138" cy="142" r="1" fill="#7A2FCD" fill-opacity="0.15"/>
+
+  <!-- ===== CORNER DECORATIVE DOTS: bottom-right inside content ===== -->
+  <circle cx="1162" cy="628" r="2" fill="#00D2FF" fill-opacity="0.3"/>
+  <circle cx="1152" cy="628" r="1.5" fill="#00D2FF" fill-opacity="0.2"/>
+  <circle cx="1142" cy="628" r="1" fill="#7A2FCD" fill-opacity="0.15"/>
+
+  <!-- ===== DECORATIVE ELEMENTS: top-right corner ===== -->
+  <line x1="1240" y1="30" x2="1240" y2="70" stroke="#7A2FCD" stroke-width="1" stroke-opacity="0.25"/>
+  <line x1="1200" y1="30" x2="1240" y2="30" stroke="#7A2FCD" stroke-width="1" stroke-opacity="0.25"/>
+  <path d="M 1200,50 L 1215,65 L 1200,80 L 1185,65 Z" fill="none" stroke="#7A2FCD" stroke-width="0.7" stroke-opacity="0.15"/>
+
+  <!-- ===== DECORATIVE ELEMENTS: bottom-left corner ===== -->
+  <line x1="40" y1="650" x2="40" y2="690" stroke="#00D2FF" stroke-width="1" stroke-opacity="0.25"/>
+  <line x1="40" y1="690" x2="80" y2="690" stroke="#00D2FF" stroke-width="1" stroke-opacity="0.25"/>
+
+  <!-- ===== PARTICLE DOTS ===== -->
+  <circle cx="250" cy="50" r="1.5" fill="#00D2FF" fill-opacity="0.2"/>
+  <circle cx="500" cy="30" r="1" fill="#7A2FCD" fill-opacity="0.2"/>
+  <circle cx="900" cy="55" r="1.5" fill="#FF0080" fill-opacity="0.12"/>
+  <circle cx="1100" cy="680" r="1.5" fill="#00D2FF" fill-opacity="0.15"/>
+  <circle cx="300" cy="670" r="1" fill="#7A2FCD" fill-opacity="0.15"/>
+
+  <!-- ===== CIRCUIT LINES: right margin decoration ===== -->
+  <line x1="1210" y1="160" x2="1210" y2="220" stroke="#00D2FF" stroke-width="0.6" stroke-opacity="0.1"/>
+  <circle cx="1210" cy="220" r="2" fill="#00D2FF" fill-opacity="0.15"/>
+  <line x1="1210" y1="220" x2="1240" y2="220" stroke="#00D2FF" stroke-width="0.6" stroke-opacity="0.08"/>
+
+  <line x1="1210" y1="500" x2="1210" y2="560" stroke="#7A2FCD" stroke-width="0.6" stroke-opacity="0.1"/>
+  <circle cx="1210" cy="500" r="2" fill="#7A2FCD" fill-opacity="0.15"/>
+  <line x1="1210" y1="500" x2="1240" y2="500" stroke="#7A2FCD" stroke-width="0.6" stroke-opacity="0.08"/>
+
+  <!-- ===== FOOTER: Source label ===== -->
+  <text x="110" y="700" font-family="Arial" font-size="12" fill="#606080">{{SOURCE}}</text>
+
+  <!-- ===== FOOTER: Page number ===== -->
+  <text x="1200" y="700" font-family="Arial" font-size="12" fill="#606080" text-anchor="end">{{PAGE_NUM}}</text>
+
+  <!-- ===== BOTTOM ACCENT LINE ===== -->
+  <rect x="0" y="717" width="1280" height="3" fill="url(#contentTopBar)" fill-opacity="0.15"/>
+</svg>

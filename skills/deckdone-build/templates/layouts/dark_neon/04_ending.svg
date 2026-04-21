@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720">
+  <defs>
+    <!-- Large center glow: pink-cyan blend -->
+    <radialGradient id="endingGlow" cx="640" cy="320" r="450" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FF0080" stop-opacity="0.12"/>
+      <stop offset="30%" stop-color="#7A2FCD" stop-opacity="0.08"/>
+      <stop offset="60%" stop-color="#00D2FF" stop-opacity="0.04"/>
+      <stop offset="100%" stop-color="#0A0A14" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Bottom accent bar gradient -->
+    <linearGradient id="endingBottomBar" x1="0" y1="0" x2="1280" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FF0080" stop-opacity="0.6"/>
+      <stop offset="50%" stop-color="#7A2FCD" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#00D2FF" stop-opacity="1"/>
+    </linearGradient>
+    <!-- Top accent bar gradient (reversed) -->
+    <linearGradient id="endingTopBar" x1="0" y1="0" x2="1280" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#00D2FF" stop-opacity="1"/>
+      <stop offset="50%" stop-color="#7A2FCD" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#FF0080" stop-opacity="0.6"/>
+    </linearGradient>
+    <!-- Accent line gradient -->
+    <linearGradient id="endingAccent" x1="440" y1="0" x2="840" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#00D2FF" stop-opacity="0.1"/>
+      <stop offset="50%" stop-color="#00D2FF" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#00D2FF" stop-opacity="0.1"/>
+    </linearGradient>
+  </defs>
+
+  <!-- ===== BACKGROUND ===== -->
+  <rect x="0" y="0" width="1280" height="720" fill="#0A0A14"/>
+  <rect x="0" y="0" width="1280" height="720" fill="url(#endingGlow)"/>
+
+  <!-- ===== TOP ACCENT BAR ===== -->
+  <rect x="0" y="0" width="1280" height="3" fill="url(#endingTopBar)"/>
+
+  <!-- ===== SUBTLE GRID ===== -->
+  <line x1="0" y1="180" x2="1280" y2="180" stroke="#00D2FF" stroke-width="0.5" stroke-opacity="0.04"/>
+  <line x1="0" y1="360" x2="1280" y2="360" stroke="#00D2FF" stroke-width="0.5" stroke-opacity="0.04"/>
+  <line x1="0" y1="540" x2="1280" y2="540" stroke="#00D2FF" stroke-width="0.5" stroke-opacity="0.04"/>
+  <line x1="320" y1="0" x2="320" y2="720" stroke="#00D2FF" stroke-width="0.5" stroke-opacity="0.03"/>
+  <line x1="640" y1="0" x2="640" y2="720" stroke="#00D2FF" stroke-width="0.5" stroke-opacity="0.03"/>
+  <line x1="960" y1="0" x2="960" y2="720" stroke="#00D2FF" stroke-width="0.5" stroke-opacity="0.03"/>
+
+  <!-- ===== GEOMETRIC DECORATIONS ===== -->
+  <!-- Hexagon top-left -->
+  <polygon points="140,160 170,143 200,160 200,194 170,211 140,194" fill="none" stroke="#00D2FF" stroke-width="0.8" stroke-opacity="0.12"/>
+  <!-- Hexagon bottom-right -->
+  <polygon points="1060,520 1090,503 1120,520 1120,554 1090,571 1060,554" fill="none" stroke="#7A2FCD" stroke-width="0.8" stroke-opacity="0.12"/>
+  <!-- Diamond top-right -->
+  <path d="M 1100,130 L 1125,155 L 1100,180 L 1075,155 Z" fill="none" stroke="#FF0080" stroke-width="0.8" stroke-opacity="0.12"/>
+  <!-- Diamond bottom-left -->
+  <path d="M 180,550 L 200,570 L 180,590 L 160,570 Z" fill="none" stroke="#00D2FF" stroke-width="0.8" stroke-opacity="0.1"/>
+
+  <!-- ===== CIRCUIT LINES (left side) ===== -->
+  <line x1="60" y1="200" x2="60" y2="280" stroke="#00D2FF" stroke-width="0.8" stroke-opacity="0.12"/>
+  <circle cx="60" cy="280" r="2.5" fill="#00D2FF" fill-opacity="0.2"/>
+  <line x1="60" y1="280" x2="120" y2="280" stroke="#00D2FF" stroke-width="0.8" stroke-opacity="0.08"/>
+  <line x1="60" y1="440" x2="60" y2="520" stroke="#7A2FCD" stroke-width="0.8" stroke-opacity="0.1"/>
+  <circle cx="60" cy="440" r="2.5" fill="#7A2FCD" fill-opacity="0.2"/>
+  <line x1="60" y1="440" x2="120" y2="440" stroke="#7A2FCD" stroke-width="0.8" stroke-opacity="0.08"/>
+
+  <!-- ===== CIRCUIT LINES (right side) ===== -->
+  <line x1="1220" y1="200" x2="1220" y2="280" stroke="#7A2FCD" stroke-width="0.8" stroke-opacity="0.12"/>
+  <circle cx="1220" cy="280" r="2.5" fill="#7A2FCD" fill-opacity="0.2"/>
+  <line x1="1160" y1="280" x2="1220" y2="280" stroke="#7A2FCD" stroke-width="0.8" stroke-opacity="0.08"/>
+  <line x1="1220" y1="440" x2="1220" y2="520" stroke="#00D2FF" stroke-width="0.8" stroke-opacity="0.1"/>
+  <circle cx="1220" cy="440" r="2.5" fill="#00D2FF" fill-opacity="0.2"/>
+  <line x1="1160" y1="440" x2="1220" y2="440" stroke="#00D2FF" stroke-width="0.8" stroke-opacity="0.08"/>
+
+  <!-- ===== PARTICLE DOTS ===== -->
+  <circle cx="300" cy="130" r="1.5" fill="#00D2FF" fill-opacity="0.25"/>
+  <circle cx="500" cy="100" r="2" fill="#7A2FCD" fill-opacity="0.2"/>
+  <circle cx="780" cy="120" r="1.5" fill="#FF0080" fill-opacity="0.18"/>
+  <circle cx="950" cy="140" r="1" fill="#00D2FF" fill-opacity="0.2"/>
+  <circle cx="250" cy="580" r="1.5" fill="#7A2FCD" fill-opacity="0.15"/>
+  <circle cx="450" cy="600" r="1" fill="#00D2FF" fill-opacity="0.2"/>
+  <circle cx="850" cy="590" r="2" fill="#FF0080" fill-opacity="0.12"/>
+  <circle cx="1050" cy="570" r="1.5" fill="#00D2FF" fill-opacity="0.15"/>
+
+  <!-- ===== CORNER L-SHAPES ===== -->
+  <line x1="40" y1="40" x2="40" y2="100" stroke="#00D2FF" stroke-width="2" stroke-opacity="0.4"/>
+  <line x1="40" y1="40" x2="100" y2="40" stroke="#00D2FF" stroke-width="2" stroke-opacity="0.4"/>
+  <circle cx="40" cy="40" r="3" fill="#00D2FF" fill-opacity="0.5"/>
+  <line x1="1240" y1="40" x2="1240" y2="80" stroke="#7A2FCD" stroke-width="1.5" stroke-opacity="0.35"/>
+  <line x1="1200" y1="40" x2="1240" y2="40" stroke="#7A2FCD" stroke-width="1.5" stroke-opacity="0.35"/>
+  <line x1="40" y1="640" x2="40" y2="680" stroke="#7A2FCD" stroke-width="1.5" stroke-opacity="0.3"/>
+  <line x1="40" y1="680" x2="80" y2="680" stroke="#7A2FCD" stroke-width="1.5" stroke-opacity="0.3"/>
+  <line x1="1240" y1="630" x2="1240" y2="680" stroke="#00D2FF" stroke-width="2" stroke-opacity="0.4"/>
+  <line x1="1200" y1="680" x2="1240" y2="680" stroke="#00D2FF" stroke-width="2" stroke-opacity="0.4"/>
+  <circle cx="1240" cy="680" r="3" fill="#00D2FF" fill-opacity="0.5"/>
+
+  <!-- ===== DECORATIVE RINGS (behind text) ===== -->
+  <circle cx="640" cy="320" r="180" fill="none" stroke="#00D2FF" stroke-width="0.5" stroke-opacity="0.06"/>
+  <circle cx="640" cy="320" r="220" fill="none" stroke="#7A2FCD" stroke-width="0.5" stroke-opacity="0.04"/>
+  <circle cx="640" cy="320" r="260" fill="none" stroke="#FF0080" stroke-width="0.5" stroke-opacity="0.03"/>
+
+  <!-- ===== MAIN THANK YOU TEXT ===== -->
+  <text x="640" y="310" font-family="Arial" font-size="68" font-weight="bold" fill="#FFFFFF" text-anchor="middle" letter-spacing="8">{{THANK_YOU}}</text>
+
+  <!-- ===== ACCENT LINE BELOW TEXT ===== -->
+  <rect x="440" y="335" width="400" height="3" fill="url(#endingAccent)"/>
+
+  <!-- ===== ENDING SUBTITLE ===== -->
+  <text x="640" y="385" font-family="Arial" font-size="22" fill="#00D2FF" text-anchor="middle">{{ENDING_SUBTITLE}}</text>
+
+  <!-- ===== CLOSING MESSAGE ===== -->
+  <text x="640" y="440" font-family="Arial" font-size="16" fill="#B0B0C0" text-anchor="middle">{{CLOSING_MESSAGE}}</text>
+
+  <!-- ===== CONTACT INFO ===== -->
+  <text x="640" y="500" font-family="Arial" font-size="14" fill="#606080" text-anchor="middle">{{CONTACT_INFO}}</text>
+
+  <!-- ===== DECORATIVE DOT ROW (below contact) ===== -->
+  <circle cx="580" cy="540" r="1.5" fill="#00D2FF" fill-opacity="0.2"/>
+  <circle cx="600" cy="540" r="1.5" fill="#00D2FF" fill-opacity="0.3"/>
+  <circle cx="620" cy="540" r="1.5" fill="#7A2FCD" fill-opacity="0.35"/>
+  <circle cx="640" cy="540" r="2" fill="#FF0080" fill-opacity="0.4"/>
+  <circle cx="660" cy="540" r="1.5" fill="#7A2FCD" fill-opacity="0.35"/>
+  <circle cx="680" cy="540" r="1.5" fill="#00D2FF" fill-opacity="0.3"/>
+  <circle cx="700" cy="540" r="1.5" fill="#00D2FF" fill-opacity="0.2"/>
+
+  <!-- ===== BOTTOM ACCENT LINE ===== -->
+  <rect x="0" y="660" width="1280" height="1" fill="#606080" fill-opacity="0.15"/>
+
+  <!-- ===== BOTTOM ACCENT BAR ===== -->
+  <rect x="0" y="717" width="1280" height="3" fill="url(#endingBottomBar)"/>
+</svg>

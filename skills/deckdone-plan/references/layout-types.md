@@ -70,10 +70,12 @@ Sequential process with labeled stages.
 
 ## Composite Sub-Patterns
 
-- **13a. Nested-Box Architecture** — 3-level deep: outer (2pt border) → subsystem (1pt) → component (1pt lighter). Max 3 subsystems, 4 components each.
-- **13b. Agent/Service Matrix** — Rectangular grid. Fixed label column (100pt) + equal flex columns. Max 5 agents × 5 services.
-- **13c. Layered Stack** — Stacked horizontal bands. Fixed tag (80pt) + flexible description per layer. Max 6 layers.
-- **13d. Pipeline/Flow with Connectors** — Main row + sub-row for detail steps. Arrow connectors 24pt wide. Max 5 primary stages, 6 sub-steps.
+Sub-patterns for Composite-Diagram and Pipeline-Flow page types. Use these when defining zones in layout-skeleton.md.
+
+- **Nested-Box Architecture** — 3-level deep: outer (2pt border) → subsystem (1pt) → component (1pt lighter). Max 3 subsystems, 4 components each.
+- **Agent/Service Matrix** — Rectangular grid. Fixed label column (100pt) + equal flex columns. Max 5 agents × 5 services.
+- **Layered Stack** — Stacked horizontal bands. Fixed tag (80pt) + flexible description per layer. Max 6 layers.
+- **Flow with Sub-Steps** — Main row + sub-row for detail steps. Arrow connectors 24pt wide. Max 5 primary stages, 6 sub-steps. Applies to Pipeline-Flow pages.
 
 ---
 

@@ -1,4 +1,4 @@
-# Quality Validation Checklist (Steps 9–12)
+# Quality Validation Checklist (Steps 6-8)
 
 > Per-step binary pass/fail checks for DeckDone build deliverables.
 > Every checkbox must be answered **YES** or **NO** before advancing.
@@ -7,14 +7,22 @@
 
 | Step | Deliverable | Section |
 |------|-------------|---------|
-| 9 | test SVGs | [Step 9](#step-9-test-svg-validation) |
-| 10 | batch SVGs | [Step 10](#step-10-batch-svg-validation) |
-| 11 | final PPTX | [Step 11](#step-11-final-pptx-validation) |
-| 12 | presentation guide | [Step 12](#step-12-presentation-guide-validation) |
+| 6 | `style-guide.md` + test SVGs | [Step 6](#step-6-style--test-svg-validation) |
+| 7 | batch SVGs + output.pptx | [Step 7](#step-7-batch-svg--quality-validation) |
+| 8 | `final.pptx` + presentation guide | [Step 8](#step-8-final-export--presentation-guide-validation) |
 
 ---
 
-## Step 9: Test SVG Validation
+## Step 6: Style + Test SVG Validation
+
+### Style Guide
+
+- [ ] **Complete palette defined** with at least: primary, secondary, accent, background, and text colors
+- [ ] **Typography specified** — heading font family, body font family, and at least three size tiers
+- [ ] **Decoration patterns documented** — or explicit "None" statement
+- [ ] **Layout rules specified** — margins, spacing, content area ratios
+
+### Test SVGs
 
 - [ ] **No text overflow in any test SVG** — all text within its zone
 - [ ] **No element overlap detected** — no two content zones overlap
@@ -24,7 +32,7 @@
 - [ ] **SVG compliance check passed** — validate-svg-slides.py exits 0
 - [ ] **All viewBox dimensions are correct** — `0 0 1280 720`
 
-## Step 10: Batch SVG Validation
+## Step 7: Batch SVG + Quality Validation
 
 - [ ] **All planned pages present** — SVG count matches outline.md
 - [ ] **No missing content from content-plan.md** — every zone's text appears
@@ -32,17 +40,20 @@
 - [ ] **Cross-page visual identity is uniform** — all pages look like they belong together
 - [ ] **Design context was locked before generation** — global tokens documented
 - [ ] **Section transitions feel natural**
-
-## Step 11: Final PPTX Validation
-
 - [ ] **PPTX opens without errors** — no corruption warnings
 - [ ] **All shapes are editable** — native DrawingML shapes, not images
 - [ ] **Text sizes are readable** — no body text below 10pt, no heading below 14pt
 - [ ] **Color palette is uniform** — every page uses colors from style-guide.md
 - [ ] **No blank or partially rendered slides**
-- [ ] **Narrative flow is coherent** — sequential read supports Key Message
 
-## Step 12: Presentation Guide Validation
+## Step 8: Final Export + Presentation Guide Validation
+
+### PPTX
+
+- [ ] **final.pptx opens without errors**
+- [ ] **All slides render correctly** — no visual glitches
+
+### Presentation Guide
 
 - [ ] **presentation-guide.md exists and is non-empty**
 - [ ] **Module 1 (Overview) includes required fields** — Core Message, Audience, Total Slides, Duration

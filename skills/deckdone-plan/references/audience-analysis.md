@@ -126,14 +126,14 @@ Combining role level and decision-making tendency produces concrete guidance for
 |---|---|---|---|---|
 | Executive + Data-driven | Pyramid Principle | Low (1 key point per slide) | Minimal, professional, muted palette | Conclusions-first, supporting data in backup |
 | Executive + Action-oriented | SCQA (Situation, Complication, Question, Answer) | Medium | Bold headlines, clean layout, strong contrast | Problem → Solution, immediate next steps |
-| Executive + Story-driven | Narrative Arc | Low to Medium | Cinematic imagery, minimal text | Emotional hook → resolution → ask |
+| Executive + Story-driven | Problem-Solution-Benefit | Low to Medium | Cinematic imagery, minimal text | Emotional hook → resolution → ask |
 | Technical + Detail-oriented | Data-Insight-Action | High (dense data, multi-layer) | Functional, clean, grid-based | Evidence-first, methodical progression |
-| Technical + Data-driven | Assertion-Evidence | High | Chart-dominant, annotated | Claim → chart → implication |
-| Middle Mgmt + Action-oriented | What-So What-Now What | Medium | Structured, checklist-friendly | Situation → impact → action plan |
-| Mixed + Story-driven | Timeline / Journey | Medium | Engaging, visual, human-centered | Narrative arc with multiple depth layers |
+| Technical + Data-driven | Data-Insight-Action | High | Chart-dominant, annotated | Claim → chart → implication |
+| Middle Mgmt + Action-oriented | SCQA | Medium | Structured, checklist-friendly | Situation → impact → action plan |
+| Mixed + Story-driven | Timeline | Medium | Engaging, visual, human-centered | Narrative arc with multiple depth layers |
 | External + Action-oriented | Problem-Solution-Benefit | Medium | Polished, branded, professional | Value-first, proof-second, CTA-third |
-| External + Data-driven | Assertion-Evidence | Low to Medium | Client-branded, chart-focused | Evidence of ROI → competitive proof |
-| Mixed + General familiarity | Progressive Disclosure | Low (surface) → High (appendix) | Clear visual hierarchy, navigable | Summary → detail layers → appendix |
+| External + Data-driven | Data-Insight-Action | Low to Medium | Client-branded, chart-focused | Evidence of ROI → competitive proof |
+| Mixed + General familiarity | Theme-Illustration-Application | Low (surface) → High (appendix) | Clear visual hierarchy, navigable | Summary → detail layers → appendix |
 
 ### How to Use This Matrix
 

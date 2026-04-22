@@ -13,16 +13,19 @@ Templates for deckdone-plan workflow state tracking.
 - Phase: [current phase name]
 - Current Step: [step number and name]
 - Last Activity: [datetime]
-- Progress: [e.g., "Section 2/4 layout skeletons confirmed"]
+- Progress: [e.g., "Wireframe discussion — Section 2/4 confirmed"]
 
 ## Completed Steps
 - [x] Phase 1, Step 1: Brief confirmed ([date])
 - [x] Phase 1, Step 2: Materials collected ([date])
+- [x] Phase 1, Step 3: Outline confirmed ([date])
+- [x] Phase 2, Step 4: Page types assigned ([date])
+- [ ] Phase 2, Step 5: Content wireframes confirmed
 ...
 
 ## Key Decisions
 - Framework: [chosen framework + why]
-- Style: [chosen style + palette]
+- Density: [level + reasoning]
 - [any other critical decisions]
 
 ## Deliverable Status
@@ -30,13 +33,13 @@ Templates for deckdone-plan workflow state tracking.
 - materials/ [status]
 - outline.md [status]
 - layout-system.md [status]
-- style-guide.md [status]
-- layout-skeleton.md [status]
+- wireframes.html [status]
 - content-plan.md [status]
+- layout-skeleton.md [status]
 
 ## Context Summary
 [Under 500 words. Must include: presentation purpose, key message,
- audience profile, scale, chosen framework, style direction.
+ audience profile, scale, chosen framework, density level.
  Enough for a fresh AI instance to understand the project.]
 
 ## Pending Items
@@ -51,7 +54,7 @@ Templates for deckdone-plan workflow state tracking.
 ```markdown
 # DeckDone-Plan Execution Trace
 
-## Session 1: [date] [start time]–[end time]
+## Session 1: [date] [start time]-[end time]
 ### Step [N] → [name]
 - Iterations: [count]
 - User decisions: [list key decisions]

@@ -12,20 +12,19 @@ Templates for deckdone-build workflow state tracking.
 ## Status
 - Step: [current step number and name]
 - Last Activity: [datetime]
-- Progress: [e.g., "Test generation round 2/3"]
+- Progress: [e.g., "Style selected, test generation round 2/3"]
 
 ## Input Files Status
 - content-plan.md [found | missing]
-- style-guide.md [found | missing]
 - layout-skeleton.md [found | missing]
 - outline.md [found | missing]
 
 ## Completed Steps
-- [x] Step 9: Test SVGs confirmed ([date])
-- [x] Step 10: Batch generation complete ([date])
+- [x] Step 6: Style + test SVGs confirmed ([date])
+- [x] Step 7: Batch generation + quality review complete ([date])
 ...
 
-## Design Context (locked at Step 10)
+## Design Context (locked at Step 7)
 - Background: [hex]
 - Accent: [hex]
 - Text Primary: [hex]
@@ -37,6 +36,8 @@ Templates for deckdone-build workflow state tracking.
 ## Output Status
 - svg_output/ [status]
 - test-slides/ [status]
+- style-guide.md [status]
+- template-params.md [status]
 - output.pptx [status]
 - final.pptx [status]
 - presentation-guide.md [status]
@@ -49,7 +50,7 @@ Templates for deckdone-build workflow state tracking.
 ```markdown
 # DeckDone-Build Execution Trace
 
-## Session 1: [date] [start time]–[end time]
+## Session 1: [date] [start time]-[end time]
 ### Step [N] → [name]
 - SVGs generated: [count]
 - Conversion result: [success/failure details]

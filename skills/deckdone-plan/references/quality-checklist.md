@@ -1,4 +1,4 @@
-# Quality Validation Checklist (Steps 1–8)
+# Quality Validation Checklist (Steps 1-5)
 
 > Per-step binary pass/fail checks for DeckDone planning deliverables.
 > Every checkbox must be answered **YES** or **NO** before advancing to the next step.
@@ -11,19 +11,17 @@
 | 2 | `materials/` | [Step 2](#step-2-materials-validation) |
 | 3 | `outline.md` | [Step 3](#step-3-outlinemd-validation) |
 | 4 | `layout-system.md` | [Step 4](#step-4-layout-systemmd-validation) |
-| 5 | `layout-skeleton.md` | [Step 5](#step-5-layout-skeleton-validation) |
-| 6 | `style-guide.md` | [Step 6](#step-6-style-guidemd-validation) |
-| 7 | `content-plan.md` | [Step 7](#step-7-content-planmd-validation) |
+| 5 | `wireframes.html` + `content-plan.md` + `layout-skeleton.md` | [Step 5](#step-5-content-wireframe-validation) |
 
 ---
 
 ## Step 1: brief.md Validation
 
-- [ ] **Purpose field is populated** and matches one of the defined types (inform, persuade, teach, propose, report, align)
+- [ ] **Purpose field is populated** and matches one of the defined types (Work report, Proposal, Knowledge sharing, Project kickoff, Summary, Other)
 - [ ] **Key Message is exactly one sentence** — no compound clauses, no ambiguity
 - [ ] **Audience profile includes all three dimensions**: role level, familiarity, AND tendency
 - [ ] **Narrative framework is selected with reasoning** — framework name stated with one-line justification
-- [ ] **Scale includes estimated page count** with a min–max range
+- [ ] **Scale includes estimated page count** with a min-max range
 - [ ] **Density level is specified** with one-sentence reasoning
 
 ## Step 2: materials/ Validation
@@ -48,29 +46,20 @@
 - [ ] **Page type distribution is reasonable** — variety reflects content diversity
 - [ ] **Composite-Diagram pages have sub-zone descriptions**
 
-## Step 5: layout-skeleton.md Validation
+## Step 5: Content Wireframe Validation
 
-- [ ] **Overview table has one row per planned page** — matches outline.md
-- [ ] **Every page uses a valid page type** matching layout-system.md
-- [ ] **Every zone is labeled with content type**
-- [ ] **Every zone has a non-empty content summary** — no "TBD"
+- [ ] **`wireframes.html` exists and is openable in a browser**
+- [ ] **Auto-refresh script is present** — browser reloads within 3 seconds of file change
+- [ ] **Thumbnail navigation bar present** — clickable links for all slides
+- [ ] **All planned pages are present** — page count matches `outline.md`
+- [ ] **Every page uses a valid page type** matching `layout-system.md`
+- [ ] **Every zone has real content** — no "TBD", "placeholder", or "Lorem ipsum"
+- [ ] **Chart zones have complete specs** — chart type, title, axes, key data points
 - [ ] **Visual weight is annotated per zone** — primary / secondary / auxiliary
-- [ ] **Per-type zone count is reasonable**
-
-## Step 6: style-guide.md Validation
-
-- [ ] **Complete palette defined** with at least: primary, secondary, accent, background, and text colors
-- [ ] **Typography specified** — heading font family, body font family, and at least three size tiers
-- [ ] **Decoration patterns documented** — or explicit "None" statement
-
-## Step 7: content-plan.md Validation
-
-- [ ] **Every zone on every page has content** — no "TBD", "TODO", or blank
-- [ ] **No zone exceeds the max character limit** from density-presets.md
-- [ ] **Chart data specs are complete** — values, labels, chart type
-- [ ] **Acceptance criteria checkboxes exist for each slide**
-- [ ] **Visual narrative path is described for each slide**
-- [ ] **Zone max lengths comply with density preset**
+- [ ] **No visual styling applied** — no colors, no decorative fonts, no gradients
+- [ ] **`content-plan.md` exported** with per-zone content following mandatory template
+- [ ] **`layout-skeleton.md` exported** with overview table and per-page zone summary
+- [ ] **`content-plan.md` passes validation**: `python scripts/validate-content-plan.py content-plan.md`
 
 ---
 

@@ -41,6 +41,8 @@ Professional and trustworthy — conveys reliability and established authority.
 
 **Decoration:** Subtle 2px bottom borders in primary color on section headers. Rounded rectangles (8px radius) for content cards. Clean white backgrounds with no texture.
 
+**Layout Rules:** Margins: 60pt top, 48pt sides, 36pt bottom. Content area ratio: title zone 12–15%, body zone 85–88%. Column gap: 24–36pt for TwoCol layouts. Minimum inter-element spacing: 12pt.
+
 **Best suited for:** Business reports, executive presentations, board meetings, financial summaries.
 
 ---
@@ -60,6 +62,8 @@ Calm and modern — balances freshness with technical credibility.
 **Typography:** Heading: Arial Bold 36pt / Body: Verdana 18pt / Labels: Verdana 11pt
 
 **Decoration:** Thin horizontal rules in secondary teal. Soft rounded cards with 6px radius and light drop shadows. Muted off-white backgrounds.
+
+**Layout Rules:** Margins: 56pt top, 48pt sides, 40pt bottom. Content area ratio: title zone 12%, body zone 88%. Column gap: 28pt. Minimum inter-element spacing: 14pt.
 
 **Best suited for:** Tech presentations, product roadmaps, SaaS demos, engineering reviews.
 
@@ -81,6 +85,8 @@ Natural and growth-oriented — evokes sustainability and steady progress.
 
 **Decoration:** Organic rounded shapes. Warm cream backgrounds. Accent borders in earthy tan. Leaf-inspired decorative lines on title slides.
 
+**Layout Rules:** Margins: 64pt top, 52pt sides, 40pt bottom. Content area ratio: title zone 12%, body zone 88%. Column gap: 32pt. Minimum inter-element spacing: 16pt.
+
 **Best suited for:** Sustainability reports, ESG presentations, growth strategy, agriculture, environmental topics.
 
 ---
@@ -100,6 +106,8 @@ Energetic and creative — radiates warmth and innovation.
 **Typography:** Heading: Arial Bold 36pt / Body: Verdana 18pt / Labels: Verdana 11pt
 
 **Decoration:** Bold geometric accent bars along slide edges. Warm gradient fades on title slides. Circular badge elements in accent color.
+
+**Layout Rules:** Margins: 52pt top, 44pt sides, 36pt bottom. Content area ratio: title zone 10%, body zone 90%. Column gap: 24pt. Minimum inter-element spacing: 10pt.
 
 **Best suited for:** Creative pitches, marketing campaigns, startup fundraising, brand launches.
 
@@ -121,6 +129,8 @@ Premium and sophisticated — signals luxury and exclusivity.
 
 **Decoration:** Elegant gold accent lines (1px). Soft lavender-tinted backgrounds. Serif headings with generous letter-spacing for premium feel.
 
+**Layout Rules:** Margins: 68pt top, 56pt sides, 44pt bottom. Content area ratio: title zone 10%, body zone 90%. Column gap: 36pt. Minimum inter-element spacing: 18pt.
+
 **Best suited for:** Luxury brand presentations, premium product launches, award ceremonies, gala events.
 
 ---
@@ -140,6 +150,8 @@ Minimal and professional — strips decoration to let content dominate.
 **Typography:** Heading: Arial Bold 34pt / Body: Arial 18pt / Labels: Arial 11pt
 
 **Decoration:** No decorative borders. Flat rectangular content blocks. Blue accent used sparingly for data highlights and call-to-action elements only.
+
+**Layout Rules:** Margins: 48pt top, 40pt sides, 32pt bottom. Content area ratio: title zone 10%, body zone 90%. Column gap: 20pt. Minimum inter-element spacing: 8pt.
 
 **Best suited for:** Technical documentation, architecture reviews, engineering specs, compliance reports.
 
@@ -161,6 +173,8 @@ Bold and urgent — commands immediate attention and action.
 
 **Decoration:** Strong red header bars spanning full slide width. Warning-style iconography areas. Dark accent blocks for key metrics.
 
+**Layout Rules:** Margins: 52pt top, 44pt sides, 36pt bottom. Content area ratio: title zone 10%, body zone 90%. Column gap: 24pt. Minimum inter-element spacing: 12pt.
+
 **Best suited for:** Urgent proposals, risk assessment reports, incident post-mortems, action-required memos.
 
 ---
@@ -180,6 +194,8 @@ Elegant and authoritative — conveys gravitas and institutional weight.
 **Typography:** Heading: Georgia Bold 36pt / Body: Arial 18pt / Labels: Arial 12pt
 
 **Decoration:** Gold accent lines (2px) under headings. Navy sidebar strip on left edge (40px wide). Classic serif headings with traditional spacing.
+
+**Layout Rules:** Margins: 60pt top, 52pt sides (content starts after 40pt navy sidebar), 40pt bottom. Content area ratio: title zone 12%, body zone 88%. Column gap: 28pt. Minimum inter-element spacing: 14pt.
 
 **Best suited for:** Board presentations, annual reports, institutional reviews, government briefings.
 
@@ -201,6 +217,8 @@ Clean and scientific — emphasizes clarity and data integrity.
 
 **Decoration:** Grid-line patterns in light blue. Orange accent for chart highlights and key data points. Tabular layouts with clean cell borders.
 
+**Layout Rules:** Margins: 48pt top, 44pt sides, 36pt bottom. Content area ratio: title zone 10%, body zone 90%. Column gap: 20pt. Minimum inter-element spacing: 10pt.
+
 **Best suited for:** Research presentations, data analysis reports, scientific papers, statistical reviews.
 
 ---
@@ -220,6 +238,8 @@ Warm and grounded — connects audience to heritage and authenticity.
 **Typography:** Heading: Georgia Bold 36pt / Body: Verdana 18pt / Labels: Verdana 12pt
 
 **Decoration:** Warm-toned border frames. Rounded shapes with earthy textures. Handcrafted aesthetic with subtle cream backgrounds.
+
+**Layout Rules:** Margins: 56pt top, 48pt sides, 40pt bottom. Content area ratio: title zone 12%, body zone 88%. Column gap: 28pt. Minimum inter-element spacing: 14pt.
 
 **Best suited for:** Heritage and culture presentations, sustainability storytelling, community outreach, artisan branding.
 
@@ -241,6 +261,8 @@ Futuristic and techy — high-contrast dark palette with vibrant accents.
 
 **Decoration:** Neon glow effects on accent text and shapes. Dark backgrounds with luminous border highlights. Gradient overlays mixing cyan and purple.
 
+**Layout Rules:** Margins: 44pt top, 40pt sides, 32pt bottom. Content area ratio: title zone 8%, body zone 92%. Column gap: 20pt. Minimum inter-element spacing: 10pt.
+
 **Best suited for:** Tech product launches, innovation showcases, developer conferences, AI/ML presentations.
 
 ---
@@ -260,6 +282,8 @@ Soft and calming — creates a welcoming, low-stress visual environment.
 **Typography:** Heading: Georgia Bold 34pt / Body: Georgia 18pt / Labels: Georgia 12pt
 
 **Decoration:** Soft muted borders in sage tones. Large rounded content blocks (12px radius). Minimal decoration — breathing space is key.
+
+**Layout Rules:** Margins: 64pt top, 56pt sides, 48pt bottom. Content area ratio: title zone 10%, body zone 90%. Column gap: 32pt. Minimum inter-element spacing: 16pt.
 
 **Best suited for:** Wellness programs, HR presentations, education materials, healthcare communications, mindfulness content.
 
@@ -281,6 +305,8 @@ Powerful and decisive — projects strength and unwavering confidence.
 
 **Decoration:** Bold gold accent lines and corner embellishments. Deep crimson header blocks. Serif headings with tight letter-spacing for impact.
 
+**Layout Rules:** Margins: 60pt top, 48pt sides, 40pt bottom. Content area ratio: title zone 10%, body zone 90%. Column gap: 28pt. Minimum inter-element spacing: 14pt.
+
 **Best suited for:** Leadership addresses, major strategic announcements, award ceremonies, milestone celebrations.
 
 ---
@@ -300,6 +326,8 @@ Medical-tech professional — balances clinical precision with approachable warm
 **Typography:** Heading: Arial Bold 34pt / Body: Verdana 18pt / Labels: Verdana 11pt
 
 **Decoration:** Clean teal borders with coral callout boxes. Rounded pill shapes for statistics. White space dominant with structured grid layouts.
+
+**Layout Rules:** Margins: 52pt top, 44pt sides, 36pt bottom. Content area ratio: title zone 10%, body zone 90%. Column gap: 24pt. Minimum inter-element spacing: 12pt.
 
 **Best suited for:** Medical presentations, healthcare industry reports, biotech investor decks, clinical trial summaries.
 
@@ -321,6 +349,8 @@ Modern dark mode — immersive dark palette for screen-forward presentations.
 
 **Decoration:** Subtle gradient transitions between dark tones. Thin bright accent lines for section breaks. Code-block styled content areas with monospace feel.
 
+**Layout Rules:** Margins: 40pt top, 36pt sides, 28pt bottom. Content area ratio: title zone 8%, body zone 92%. Column gap: 20pt. Minimum inter-element spacing: 8pt.
+
 **Best suited for:** Technical demos, developer conferences, CLI/tool presentations, cybersecurity reviews.
 
 ---
@@ -340,6 +370,8 @@ Friendly and approachable — inviting palette that lowers audience barriers.
 **Typography:** Heading: Georgia Bold 34pt / Body: Verdana 18pt / Labels: Verdana 12pt
 
 **Decoration:** Warm-toned rounded frames. Soft sand-colored backgrounds throughout. Brown accent underlines on headings. Friendly, open layouts with generous padding.
+
+**Layout Rules:** Margins: 60pt top, 52pt sides, 44pt bottom. Content area ratio: title zone 12%, body zone 88%. Column gap: 28pt. Minimum inter-element spacing: 14pt.
 
 **Best suited for:** Education materials, nonprofit presentations, community events, onboarding sessions.
 
@@ -361,6 +393,8 @@ Dignified and visionary — pairs depth of color with aspirational messaging.
 
 **Decoration:** Gold accent dividers and star-shaped highlights. Deep indigo header bands. Serif headings with wide letter-spacing for gravitas.
 
+**Layout Rules:** Margins: 60pt top, 48pt sides, 40pt bottom. Content area ratio: title zone 12%, body zone 88%. Column gap: 28pt. Minimum inter-element spacing: 14pt.
+
 **Best suited for:** Strategy presentations, vision and mission slides, long-term planning, transformation roadmaps.
 
 ---
@@ -380,6 +414,8 @@ Minimalist and content-focused — universal baseline with maximum readability.
 **Typography:** Heading: Arial Bold 34pt / Body: Arial 18pt / Labels: Arial 11pt
 
 **Decoration:** No decorative elements. Content is decoration. Blue accent used only for hyperlinks and CTA buttons. Maximum white space.
+
+**Layout Rules:** Margins: 48pt top, 44pt sides, 36pt bottom. Content area ratio: title zone 10%, body zone 90%. Column gap: 24pt. Minimum inter-element spacing: 10pt.
 
 **Best suited for:** Data-heavy presentations, universal/cross-audience use, print-friendly decks, template baselines.
 

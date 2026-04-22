@@ -1,13 +1,13 @@
 ---
 name: deckdone-plan
-description: "Structured workflow for planning presentation content (15-40 slides). Orchestrates content discovery, visual design direction, and detailed content planning through a phased, gate-controlled process. Produces editable markdown deliverables: brief, outline, layout system, wireframes, style guide, and content plan. Use when the user needs to plan a presentation — the output can be used by deckdone-build, PPT Master, or manual PPT creation."
+description: "Structured workflow for planning presentation content (15-40 slides). Orchestrates content discovery, layout planning, and detailed content writing through a phased, gate-controlled process. Produces editable markdown deliverables: brief, outline, layout system, and a content plan with layout skeleton. Visual style selection is deferred to deckdone-build. Use when the user needs to plan what a presentation should contain — the output can be used by deckdone-build or any PPT generation tool."
 ---
 
 # DeckDone Plan — Presentation Content Planning Workflow
 
 ## Overview
 
-This skill handles **content planning only** — Steps 1 through 8 of the DeckDone workflow. It produces a set of editable markdown files that fully describe what a presentation should contain, how it should be structured, and what visual style it should use. These deliverables can be consumed by **any** PPT generation tool: `deckdone-build`, PPT Master, manual PowerPoint creation, or any other builder.
+This skill handles **content planning only** — Steps 1 through 5 of the DeckDone workflow. It produces a set of editable markdown files that fully describe what a presentation should contain, how it should be structured, and what content goes where. Visual style (colors, fonts, decoration) is **not** part of this skill — it belongs to `deckdone-build`.
 
 The user may freely edit any deliverable file between planning and building. The planning phase makes no assumptions about the build tool.
 
@@ -15,16 +15,16 @@ The user may freely edit any deliverable file between planning and building. The
 
 | Phase | Name | Interaction | Steps | Goal |
 |-------|------|-------------|-------|------|
-| 1 | Discovery | Deep | 1–3 | Understand what to communicate; gather materials |
-| 2 | Design | Page-by-page | 4–6 | Define layout skeleton, page types, and visual style |
-| 3 | Content | Lightweight | 7–8 | Write exact content for every visual zone |
+| 1 | Discovery | Deep | 1-3 | Understand what to communicate; gather materials |
+| 2 | Layout + Content | Real-time visual | 4-5 | Define page types, then discuss content with live HTML wireframes |
 
 ### Design Principles
 
 1. **Gate-controlled phases** — Proceed only after user confirmation and verified deliverables.
-2. **Progressive interaction depth** — Deep discussion early; lightweight confirmation later.
+2. **Content-only planning** — No visual style decisions. Colors, fonts, decoration are deferred to `deckdone-build`.
 3. **Content-first, visuals-second** — Determine what to say before deciding how it looks.
-4. **Density-aware** — Designed for slides with 20–50+ text elements, not simple bullet slides.
+4. **Live wireframe review** — Step 5 uses low-fidelity HTML wireframes with real content for real-time browser review.
+5. **Density-aware** — Designed for slides with 20-50+ text elements, not simple bullet slides.
 
 ---
 
@@ -52,9 +52,9 @@ The user may freely edit any deliverable file between planning and building. The
 | `materials/` | 1 | 2 | Collected and classified source materials |
 | `outline.md` | 1 | 3 | Content outline with page estimates |
 | `layout-system.md` | 2 | 4 | Page type assignments per slide |
-| `layout-skeleton.md` | 2 | 5 | Text wireframes with zone layout and content summaries |
-| `style-guide.md` | 2 | 6 | Visual style definition (color + typography) |
-| `content-plan.md` | 3 | 7 | Detailed content per visual zone |
+| `wireframes.html` | 2 | 5 | Low-fidelity HTML wireframes for live review |
+| `content-plan.md` | 2 | 5 | Detailed content per visual zone |
+| `layout-skeleton.md` | 2 | 5 | Per-page zone layout summary |
 | `deckdone-state.md` | all | all | Progress state file |
 | `deckdone-trace.md` | all | all | Execution trace log |
 
@@ -109,7 +109,7 @@ Goal: Understand what the presentation must communicate and gather the raw mater
    - **Context:** Formal meeting / Informal sharing / Training / Bidding / Other
    - **Scale:** Estimated page count, time limit
    - **Density:** 演讲辅助型 (presentation) / 演讲详述型 (detailed-presentation) / 阅读型 (reading). Read `references/density-presets.md` for level descriptions. Ask: "Will the audience read this deck on their own, or will you present it live?"
-2. Read `references/narrative-frameworks.md`. Recommend 1–2 frameworks based on purpose + audience.
+2. Read `references/narrative-frameworks.md`. Recommend 1-2 frameworks based on purpose + audience.
 3. Discuss framework selection and methodology reasoning with the user.
 4. Write `brief.md`.
 
@@ -170,7 +170,7 @@ materials/
 
 1. Build narrative skeleton based on brief + materials.
 2. Read `references/narrative-frameworks.md` for framework-specific guidance on section structure.
-3. Generate topic tree (2–3 levels). Annotate core arguments for each section.
+3. Generate topic tree (2-3 levels). Annotate core arguments for each section.
 4. Estimate page count per section and total page count.
 5. Discuss and iterate with the user (may require multiple rounds).
 
@@ -195,9 +195,9 @@ materials/
 
 ---
 
-## Phase 2: Design [Page-by-page Confirmation]
+## Phase 2: Layout + Content [Real-time Visual Review]
 
-Goal: Define the visual system and layout for each page.
+Goal: Define page layouts and fill in real content with live HTML wireframe review.
 
 ### Step 4: Page Types and Layout System
 
@@ -230,7 +230,7 @@ Goal: Define the visual system and layout for each page.
 - Page 1: Cover
 - Page 2: Agenda
 - Page 3: Section Divider (Section 1)
-- Page 4–5: Composite-Diagram
+- Page 4-5: Composite-Diagram
 - Page 6: Data-Chart
 - Page 7: Timeline
 ...
@@ -242,94 +242,40 @@ Goal: Define the visual system and layout for each page.
 
 ---
 
-### Step 5: Layout Skeleton Review
+### Step 5: Content Wireframe Review
+
+⛔ **BLOCKING** — User must review and confirm content via live wireframes.
+
+**Prerequisites:** Steps 1-4 completed. `brief.md`, `outline.md`, and `layout-system.md` confirmed.
 
 **AI Behavior:**
 
-1. Read confirmed `layout-system.md` (page type assignments from Step 4).
-2. Read `references/layout-skeleton-format.md` for ASCII wireframe conventions and per-type zone templates.
-3. Read `references/layout-types.md` for zone ratio references to inform zone sizes in text diagrams.
-4. Read `outline.md` for section structure and page purposes.
-5. Generate **overview table** — one row per page with: page number, page type, title, key content summary (one phrase), zone count.
-6. Present overview table to user. **Gate 1:** User confirms overall rhythm, page order, and content scope. If rejection requires page type or count changes, return to Step 4 to revise `layout-system.md` before regenerating.
-7. After overview approval, generate **per-page text wireframes** batched by section (5–8 pages per batch).
-8. For each page:
-   - Draw ASCII box diagram reflecting the page type's standard zone layout (from `references/layout-skeleton-format.md`).
-   - Label each zone with type, one-line content summary, and visual weight.
-   - For Composite-Diagram and Pipeline-Flow types: show sub-zone nesting with double-line outer borders.
-9. **Gate 2:** User confirms each batch. If rejection requires structural changes to a page's type, return to Step 4 to revise. Adjustments applied before next batch.
-10. After all batches confirmed, write `layout-skeleton.md`.
+1. Read `references/wireframe-guide.md` for HTML wireframe generation rules.
+2. Read `references/density-presets.md` for content capacity limits based on density level from `brief.md`.
+3. Read `references/layout-types.md` for per-type zone templates and ratios.
+4. Generate `wireframes.html` — a single low-fidelity HTML file containing all slides:
+   - Each slide rendered as a 1280×720 proportional `<div>` with gray-bordered zones
+   - Zones labeled with type, visual weight, and filled with real content text
+   - Chart zones show placeholder boxes with chart type, title, axes, and data points
+   - No visual styling (no colors from style-guide, no decorative fonts, no gradients)
+   - Auto-refresh script included for live browser review
+   - Thumbnail navigation bar at the bottom for quick page switching
+5. Present the file to the user. Instruct them to open `wireframes.html` in a browser.
+6. Discuss content and layout with the user while they watch the browser auto-update:
+   - **Content completeness** — all key points covered, no gaps or redundancies
+   - **Layout reasonableness** — zone sizes and positions make sense
+   - **Information hierarchy** — primary/secondary/auxiliary weight reflected in zone sizes
+   - **Chart necessity** — every chart has a clear message, no chart for chart's sake
+7. Edit `wireframes.html` in response to user feedback. Changes appear in browser within 3 seconds.
+8. Iterate until user confirms all pages. When confirmed:
+   a. Export `content-plan.md` — per-zone content specification following the mandatory template.
+   b. Export `layout-skeleton.md` — per-page zone layout summary (overview table + zone list per page).
+9. Optionally run validation:
+   ```bash
+   python scripts/validate-content-plan.py content-plan.md
+   ```
 
-**Deliverable:** `layout-skeleton.md`
-
-```markdown
-# Layout Skeleton
-
-## Overview
-
-| # | Type | Title | Key Content | Zones |
-|---|------|-------|-------------|-------|
-| 1 | Cover | ... | ... | N |
-...
-
----
-
-## Slide 1: [Title] [PageType]
-┌──────────────────────────────────────────────────────────┐
-│ [zone-type] Content summary                   (weight)   │
-├──────────────────────────────────────────────────────────┤
-│ [zone-type] Content summary                   (weight)   │
-└──────────────────────────────────────────────────────────┘
-```
-
-**Gate:** Overview confirmed + all per-page batches confirmed.
-
-**State Update:** Update `deckdone-state.md` — Phase 2, Step 5 complete.
-
----
-
-### Step 6: Visual Style Direction
-
-**AI Behavior:**
-
-1. Read `references/style-presets.md` for color and typography presets (15–20 style presets).
-2. Recommend 2–3 styles based on presentation purpose + audience profile.
-3. Show style previews: color palette + typography + decoration characteristics.
-4. User selects a style or fine-tunes parameters.
-
-**Deliverable:** `style-guide.md`
-
-```markdown
-# Style Guide
-## Palette: [primary/secondary/accent/background/text — hex values]
-## Typography: [heading font + body font + size scale]
-## Decoration: [border style / shape patterns / background treatment]
-## Layout Rules: [margins / spacing / content area ratios]
-```
-
-**Gate:** User confirms style direction. Phase 2 complete.
-
-**State Update:** Update `deckdone-state.md` — Phase 2, Step 6 complete.
-
----
-
-## Phase 3: Content [Lightweight Confirmation]
-
-Goal: Write the exact content for every visual zone on every page.
-
-### Step 7: Detailed Content Plan
-
-**AI Behavior:**
-
-1. Based on confirmed outline + layout-system + layout-skeleton + style-guide, generate a detailed content spec per page. Read the density level from `brief.md`. Read the corresponding content capacity limits from `references/density-presets.md`. Use these as Max Length values for each zone instead of the defaults in `layout-types.md`.
-2. Organize content by **visual zone** (not by title + body). Each zone annotated with: content type, text volume, visual weight (primary / secondary / auxiliary).
-3. Include chart data specifications for placeholder areas.
-4. For visual storytelling presentations, annotate each page's **visual narrative path** (viewer eye flow).
-5. Display in batches by section.
-
-**Deliverable:** `content-plan.md`
-
-Mandatory template for each slide:
+**Content Plan Mandatory Template (per slide):**
 
 ```markdown
 ## Slide [N]: [Title]
@@ -355,20 +301,26 @@ Mandatory template for each slide:
 - [ ] No zone has placeholder or TBD content
 ```
 
-**Gate:** User confirms all page content plans.
+**Chart Zone Content Format (in wireframe and content-plan):**
 
-**State Update:** Update `deckdone-state.md` — Phase 3, Step 7 complete.
+```markdown
+### Zone C: [chart name]
+- Type: chart
+- Chart Type: [line | bar | pie | scatter | area | stacked-bar]
+- Chart Title: "[chart title]"
+- X-Axis: [dimension description]
+- Y-Axis: [measure description]
+- Data Points: [key values or ranges]
+- Key Insight: [one sentence — what this chart should communicate]
+- Max Length: N/A
+- Visual Weight: [primary | secondary]
+```
 
-**Validation:** Optionally run `python scripts/validate-content-plan.py content-plan.md`.
+**Deliverable:** `wireframes.html` + `content-plan.md` + `layout-skeleton.md`
 
----
+**Gate:** User confirms all page content via wireframe review.
 
-### Step 8: User Content Confirmation
-
-- Allow the user to modify specific copy, data, or zone assignments.
-- After confirmation, the deliverables are ready for `deckdone-build` or any PPT generation tool. The user may edit any deliverable file before proceeding.
-
-**State Update:** Update `deckdone-state.md` — Phase 3 complete. All planning phases complete.
+**State Update:** Update `deckdone-state.md` — Phase 2 complete. All planning phases complete.
 
 ---
 
@@ -396,26 +348,21 @@ Every failure is a diagnostic signal. Log improvements in `harness-improvements.
 
 ## State File Templates
 
-### deckdone-state.md
-
-Tracks: Status (phase/step/date/progress), Completed Steps (checklist with dates), Key Decisions (framework, style, etc.), Deliverable Status (each file: confirmed/in-progress/not-started), Context Summary (under 500 words; must include purpose, key message, audience, scale, framework, style), Pending Items.
-
-### deckdone-trace.md
-
-Per-session, per-step log with: Iterations, User Decisions, Adjustments, Issues Encountered, Output file paths. Append after every step, before updating state.
-
-### harness-improvements.md
-
-Per-improvement log with: Date, Trigger (what went wrong, where), Root Cause, Fix applied, Updated Files.
+See `references/state-templates.md` for the full state file, trace file, and harness improvement log templates.
 
 ---
 
 ## Quality Validation
 
-Follow binary pass/fail checks per step. For Steps 1–7, use the checklists in `references/quality-checklist.md`. Every checkbox must pass before advancing.
+Follow binary pass/fail checks per step. For Steps 1-5, use the checklists in `references/quality-checklist.md`. Every checkbox must pass before advancing.
 
-For Step 7, run mechanical validation:
+For Step 5, run mechanical validation:
 ```bash
 python scripts/validate-content-plan.py content-plan.md
 ```
-Checks: valid page types, required zone fields (`- Type:`, `- Content:`, `- Max Length:`, `- Visual Weight:`), no empty/TBD content. Exits 0 on pass, 1 on failure. No pip dependencies.
+Checks: valid page types, required zone fields (`- Type:`, `- Content:`, `- Max Length:`, `- Visual Weight:`), no empty/TBD content, Visual Narrative Path per slide, Total Zones matches actual zone count, Max Length is a positive integer, content length within Max Length, chart zones have Chart Data specification. Exits 0 on pass, 1 on failure. No pip dependencies.
+
+Optional icon validation:
+```bash
+python scripts/validate-content-plan.py content-plan.md --catalog <icon-catalog.md>
+```

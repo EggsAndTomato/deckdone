@@ -136,29 +136,34 @@ Goal: Understand what the presentation must communicate and gather the raw mater
 
 ### Step 2: Material Collection
 
+⛔ **MANDATORY INTERACTION** — AI must explicitly ask about materials. Never skip this step.
+
 **AI Behavior:**
 
-1. Ask the user for reference materials. Suggest possible types:
-   - Company documents / Personal work records / Industry reports / Policy documents / Data spreadsheets / Other
-2. For each file provided, detect format and extract:
+1. Explicitly ask the user: "你有没有现成的参考资料？比如公司文档、工作记录、行业报告、数据表格等。" Suggest possible types:
+   - Company documents / Personal work records / Industry reports / Policy documents / Data spreadsheets / URLs / Other
+2. Wait for user response. Three possible outcomes:
+   - **User provides files/URLs** → extract and organize (see below).
+   - **User says they have materials but will provide later** → note in state file, proceed to Step 3. Revisit when materials arrive.
+   - **User says no materials** → acknowledge and proceed to Step 3. Create a minimal `materials/00-index.md` noting "No external materials provided."
+3. For each file provided, detect format and extract:
    - `.pdf` → use pdf skill; if unavailable, ask user to paste text content
    - `.docx` → use docx skill; if unavailable, ask user to paste text content
    - `.xlsx` / `.csv` → use xlsx skill; if unavailable, ask user to provide data as text
    - Plain text / URL → read directly
-3. Organize extracted content by topic. Extract key data points, quotes, and cases.
-4. Tag each material with applicable slide scenarios.
+4. Organize extracted content by topic. Extract key data points, quotes, and cases.
+5. Tag each material with applicable slide scenarios.
 
 **Deliverable:** `materials/` directory
 
 ```
 materials/
 ├── 00-index.md          # Source index (origin + topic + applicable scenarios)
-├── 01-topic-a.md        # Topic-classified extracted content
-├── 02-topic-b.md
+├── 01-topic-a.md        # Topic-classified extracted content (if any)
 └── ...
 ```
 
-**Gate:** User confirms material index is complete.
+**Gate:** User confirms material status (has materials and index is complete, or explicitly states no materials).
 
 **State Update:** Update `deckdone-state.md` — Phase 1, Step 2 complete.
 

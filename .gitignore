@@ -3,8 +3,8 @@ __pycache__/
 *.pyc
 
 # Python venv
-Lib/
-Scripts/
+/Lib/
+/Scripts/
 pyvenv.cfg
 
 # POC artifacts

@@ -25,6 +25,7 @@ The user may freely edit any deliverable file between planning and building. The
 3. **Content-first, visuals-second** — Determine what to say before deciding how it looks.
 4. **Live wireframe review** — Step 5 uses low-fidelity HTML wireframes with real content for real-time browser review.
 5. **Density-aware** — Designed for slides with 20-50+ text elements, not simple bullet slides.
+6. **Match user language** — Communicate with the user in the language they use in conversation.
 
 ---
 
@@ -112,19 +113,35 @@ Goal: Understand what the presentation must communicate and gather the raw mater
 
 **AI Behavior:**
 
-1. Explicitly ask the user whether they have reference materials (in the user's preferred language). Suggest possible types:
+1. Explicitly ask the user whether they have reference materials. Suggest possible types:
    - Company documents / Personal work records / Industry reports / Policy documents / Data spreadsheets / URLs / Other
 2. Wait for user response. Three possible outcomes:
-   - **User provides files/URLs** → extract and organize (see below).
+   - **User provides files/URLs** → extract and organize (see step 4 below).
    - **User says they have materials but will provide later** → note in state file, proceed to Step 3.
-   - **User says no materials** → create minimal `materials/00-index.md` noting "No external materials provided", proceed to Step 3.
-3. For each file provided, detect format and extract:
+   - **User says no materials** → create minimal `materials/00-index.md` noting "No external materials provided".
+3. After handling the user's response above (regardless of outcome), ask the user whether they would like you to search the web for supplementary materials. Offer suggested search topics based on brief's Purpose, Audience, and Key Message (e.g., industry reports, market data, competitor information, best practices). Two possible outcomes:
+   - **User agrees** → perform targeted web search, organize results by topic with each source clearly annotated with its URL. Extract key data points, statistics, quotes, and findings relevant to the brief. Tag with applicable slide scenarios.
+   - **User declines** → proceed to Step 3.
+4. For each file provided, detect format and extract:
    - `.pdf` → use pdf skill; if unavailable, ask user to paste text content
    - `.docx` → use docx skill; if unavailable, ask user to paste text content
    - `.xlsx` / `.csv` → use xlsx skill; if unavailable, ask user to provide data as text
    - Plain text / URL → read directly
-4. Organize extracted content by topic. Extract key data points, quotes, and cases.
-5. Tag each material with applicable slide scenarios.
+5. Organize all extracted content (from files and web search) by topic. Extract key data points, quotes, and cases.
+6. Tag each material with applicable slide scenarios. Web-sourced materials must include source URL in their index entry.
+7. In `materials/00-index.md`, add a **Data Points** section that extracts every quantified data point, statistic, or third-party claim from collected materials. Format:
+
+   ```markdown
+   ## Data Points
+   | Data Point | Value | Source | Applicable Slides |
+   |------------|-------|--------|-------------------|
+   | [description] | [value] | [material name + page/section, or URL] | [slide refs] |
+   ```
+
+   **Source attribution rules:**
+   - User-provided materials → tag with material name + page/section location (e.g., `2024 Industry Report p.12`)
+   - Web search results → tag with full URL (e.g., `https://example.com/report`)
+   - No identifiable source → tag as `Unverified` and warn the user that this data cannot be verified; recommend the user confirm or remove it
 
 **Deliverable:** `materials/` directory (with `00-index.md` as source index)
 
@@ -140,9 +157,10 @@ Goal: Understand what the presentation must communicate and gather the raw mater
 
 1. Build narrative skeleton based on brief + materials.
 2. Read `references/narrative-frameworks.md` for framework-specific guidance on section structure.
-3. Generate topic tree (2-3 levels). Annotate core arguments for each section.
-4. Estimate page count per section and total page count.
-5. Discuss and iterate with the user (may require multiple rounds).
+3. Read `references/density-presets.md` for visual element density targets. Actively plan visual page types (Data-Chart, Timeline, Comparison, Pipeline-Flow) to meet the target visual page ratio for the selected density level.
+4. Generate topic tree (2-3 levels). Annotate core arguments for each section.
+5. Estimate page count per section and total page count.
+6. Discuss and iterate with the user (may require multiple rounds).
 
 **Deliverable:** `outline.md` (Framework, Total Pages, Sections with per-page purpose + key point)
 
@@ -161,8 +179,9 @@ Goal: Define page layouts and fill in real content with live HTML wireframe revi
 **AI Behavior:**
 
 1. Read `references/layout-types.md` for page type definitions. Assign a page type to each page based on the outline.
-2. For Composite-Diagram and Pipeline-Flow types: identify sub-layout zones.
-3. Confirm page type assignments with the user.
+2. Read `references/density-presets.md` for visual element density targets. Prefer visual page types over text-only types: Data-Chart for metrics, Timeline for sequences, Comparison for side-by-side, Pipeline-Flow for processes, Composite-Diagram for architectures. Only use Content-Text when no visual type fits.
+3. For Composite-Diagram and Pipeline-Flow types: identify sub-layout zones.
+4. Confirm page type assignments with the user.
 
 **Deliverable:** `layout-system.md` (page type assignments per slide)
 
@@ -190,7 +209,7 @@ Goal: Define page layouts and fill in real content with live HTML wireframe revi
    - No visual styling (no colors from style-guide, no decorative fonts, no gradients)
    - Auto-refresh script included for live browser review
    - Thumbnail navigation bar at the bottom for quick page switching
-5. After generating, tell the user (in their preferred language): the file path, to open it in a browser (auto-refreshes every 3 seconds), and to give feedback while watching — AI will update and browser will refresh.
+5. After generating, tell the user: the file path, to open it in a browser (auto-refreshes every 3 seconds), and to give feedback while watching — AI will update and browser will refresh.
 6. Enter the review loop: wait for user feedback → edit `wireframes.html` → briefly confirm changes. Common feedback: content change, layout change, add/remove chart, page split/merge.
 7. When user confirms all pages, export:
    a. `content-plan.md` — per-zone content specification.
@@ -200,7 +219,7 @@ Goal: Define page layouts and fill in real content with live HTML wireframe revi
    python scripts/validate-content-plan.py content-plan.md
    ```
 
-**Content Plan Template (per slide):** Each slide needs Page Type, Total Zones, Visual Narrative Path. Each zone needs Type, Content (exact text, non-empty), Max Length (from `references/density-presets.md`), Visual Weight (primary|secondary|auxiliary). Chart zones additionally need: Chart Type, Chart Title, X-Axis, Y-Axis, Data Points, Key Insight. Each slide ends with Acceptance Criteria checkboxes.
+**Content Plan Template (per slide):** Each slide needs Page Type, Total Zones, Visual Narrative Path. Each zone needs Type, Content (exact text, non-empty), Max Length (from `references/density-presets.md`), Visual Weight (primary|secondary|auxiliary). **Optional Source field:** when a zone contains statistics, quantified data, third-party claims, or direct quotes, add `- Source:` with the attribution from `materials/00-index.md` Data Points table. Zones without data references do not need Source. Chart zones additionally need: Chart Type, Chart Title, X-Axis, Y-Axis, Data Points, Key Insight. Each slide ends with Acceptance Criteria checkboxes.
 
 **Deliverable:** `wireframes.html` + `content-plan.md` + `layout-skeleton.md`
 

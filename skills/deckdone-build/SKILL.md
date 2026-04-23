@@ -110,6 +110,7 @@ Optional: `layout-system.md` (Step 4), `brief.md` (Step 1).
 2. Generate pages **sequentially, one at a time**:
    - Read page content from `content-plan.md`.
    - Read layout from `layout-skeleton.md`.
+   - **Determine page type** and apply the per-type visual element rules below.
    - Write SVG constrained by `references/svg-constraints.md` AND locked design context.
    - Save to `svg_output/`.
    - Proceed to next page.
@@ -119,8 +120,45 @@ Optional: `layout-system.md` (Step 4), `brief.md` (Step 1).
    ```
 4. Run SVG validation on all files:
    ```bash
-   python scripts/validate-svg-slides.py svg_output/
+   python scripts/validate-svg-slides.py svg_output/ [--outline outline.md] [--content-plan content-plan.md]
    ```
+
+#### Per-Page-Type Visual Element Rules (MANDATORY)
+
+Every SVG must contain graphical elements (not just `<text>`). The following rules map each page type to the visual elements it MUST include:
+
+**Data-Chart pages:**
+- Read the matching chart template from `templates/charts/` (use `charts_index.json` quickLookup to find the best match by keyword).
+- Extract the SVG structure: axes (`<line>`), bars/slices/points (`<rect>`/`<path>`/`<circle>`), gridlines, legend boxes.
+- Replace template data with actual values from the content-plan chart zone.
+- The chart area MUST contain non-text graphical elements (bars, lines, slices, nodes, etc.) — never render chart data as bullet text.
+
+**Timeline pages:**
+- Use `templates/charts/timeline.svg` as structural reference.
+- MUST include: a horizontal/vertical timeline line (`<line>`), milestone nodes (`<circle>`), card outlines (`<rect>` or `<path>`), and connector lines.
+- Never render timeline events as plain text without visual node+line structure.
+
+**Pipeline-Flow pages:**
+- Use `templates/charts/process_flow.svg` or `templates/charts/chevron_process.svg` as structural reference.
+- MUST include: stage containers (`<rect>` or `<path>` with rounded corners), arrow connectors between stages (`<line>` with `marker-end` or `<path>`).
+- Never render pipeline stages as plain text without shape containers and arrows.
+
+**Comparison pages:**
+- MUST include: column/row container outlines (`<rect>` or `<path>`), divider lines (`<line>`), and header background fills.
+- Use `templates/charts/comparison_table.svg` or `templates/charts/comparison_columns.svg` as structural reference when the content fits.
+
+**Composite-Diagram pages:**
+- MUST include: component boxes (`<rect>` or `<path>`), connector lines/arrows between components, and layer separator lines.
+- For Layered Stack sub-pattern: horizontal band backgrounds (`<rect>` with fill) for each layer.
+- For Nested-Box sub-pattern: nested rectangles with different border styles.
+- Use `charts_index.json` to find matching infographic templates (e.g., `hub_spoke`, `mind_map`, `concentric_circles`, `org_chart`).
+
+**Content-Text / Content-TwoCol pages:**
+- MAY include accent shapes (decorative lines, icon placeholders via `<use data-icon="...">`, section dividers).
+- These page types have the most freedom, but should not be entirely bare — add at least one visual element beyond text (e.g., a colored sidebar bar, accent line, or icon).
+
+**Cover / Section Divider / Closing pages:**
+- Layout template provides visual chrome (background, sidebar, decorations). Ensure these decorative elements are preserved from the template.
 
 ### 7b. Quality Review
 
@@ -162,16 +200,33 @@ Optional: `layout-system.md` (Step 4), `brief.md` (Step 1).
    - `content-plan.md` (per-page content, visual narrative paths)
    - `style-guide.md` (visual style)
    - `layout-skeleton.md` (page layout overview)
-2. Generate `presentation-guide.md` following the 4-module template in `references/presentation-guide-template.md`:
+   - `materials/00-index.md` (data points with source attribution, if available)
+2. Generate `presentation-guide.md` following the 5-module template in `references/presentation-guide-template.md`:
    - **Module 1: Overview** — topic, core message, audience, slide count, duration, narrative framework
    - **Module 2: Design Rationale** — narrative logic, section intentions, key design decisions
    - **Module 3: Slide Key Points** — per-slide emphasis levels (★ Key / Normal / ⏭ Skippable), time allocation
    - **Module 4: Speaking Notes** — transition cues, anticipated questions, timing guidance
+   - **Module 5: Data Sources** — per-slide data provenance quick reference for speaker Q&A readiness
 3. Determine emphasis levels based on each page's contribution to the Key Message from `brief.md`.
 4. Calculate time allocation from `brief.md` Scale field (total minutes ÷ total pages, weighted by emphasis). If no time estimate, default to 1.5 minutes per page.
 5. Predict 2-3 likely audience questions based on content gaps or contentious points.
-6. Write in the user's preferred language.
-7. Present to user for confirmation. Allow edits.
+6. **Generate Module 5: Data Sources.** Read `content-plan.md` for all zones with `- Source:` fields and `materials/00-index.md` Data Points table. Build a per-slide quick-reference table:
+
+   ```markdown
+   ## Data Sources
+   | Slide | Data Point | Source | Notes |
+   |-------|-----------|--------|-------|
+   | P08 | Market growth rate 23.5% | 2024 Industry Report p.12 | User-provided material |
+   | P10 | User satisfaction 94% | https://example.com/survey | Web search, 2024 data |
+   ```
+
+   **Rules:**
+   - Only include slides that contain sourced data. Skip slides with no data references.
+   - `Notes` column: tag as "User-provided material", "Web search", "Unverified — confirm before presenting", etc.
+   - If `materials/00-index.md` is not available or has no Data Points section, write "No data sources collected during planning" and skip the table.
+   - Flag any data points tagged `Unverified` with a warning in Notes column.
+7. Write in the user's preferred language.
+8. Present to user for confirmation. Allow edits.
 
 **Deliverables:** `final.pptx` + `presentation-guide.md`
 

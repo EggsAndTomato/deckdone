@@ -16,6 +16,27 @@ Reference for density selection and content planning.
 
 ---
 
+## Visual Element Density
+
+Each density level implies a target ratio of visually-driven pages (Data-Chart, Timeline, Pipeline-Flow, Composite-Diagram with structured diagrams) versus text-driven pages (Content-Text, Content-TwoCol, Quote). This guides page type assignment in Step 4 and SVG generation in deckdone-build Step 7.
+
+| Parameter | presentation | detailed-presentation | reading |
+|-----------|-------------|----------------------|---------|
+| Target visual page ratio | ≥50% | ≥35% | ≥25% |
+| Chart/diagram page types per 10 slides | 5-6 | 3-4 | 2-3 |
+| Icon usage intensity | liberal (1-2 icons per content page) | moderate (icons for key concepts) | minimal (icons for navigation/structure only) |
+| Data-Chart pages | prefer charts over bullet lists for data | mix of charts and text | charts when data is complex; tables acceptable |
+| Shape/decoration intensity | bold accent shapes, gradient fills | subtle accent lines, light fills | minimal decoration, clean lines |
+
+**How the AI uses this:**
+
+1. **Step 3 (Outline):** When estimating pages, aim for the target visual page ratio. If the outline is text-heavy, suggest splitting dense text into Timeline, Comparison, or Data-Chart pages.
+2. **Step 4 (Page Type Assignment):** Actively assign visual page types. For example, prefer Data-Chart over Content-Text when presenting metrics; prefer Timeline over bullet lists for sequential information; prefer Comparison over Content-TwoCol for side-by-side analysis.
+3. **Step 5 (Wireframe):** Ensure chart zones include structured data (`<dl>` format). Every visual page type MUST have `data-chart-ref` or `data-*-structured` attributes.
+4. **deckdone-build Step 7 (SVG Generation):** Apply the matching chart template. Never render chart/diagram/timeline data as plain text — always use graphical SVG elements.
+
+---
+
 ## Content Capacity per Page Type
 
 ### Content-Text

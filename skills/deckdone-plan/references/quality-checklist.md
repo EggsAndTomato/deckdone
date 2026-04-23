@@ -30,6 +30,7 @@
 - [ ] **Each source has topic tags and scenario annotations**
 - [ ] **Key data points are extracted and documented**
 - [ ] **No source file is missing from the index**
+- [ ] **Web-sourced materials have source URL annotated** in their index entry
 
 ## Step 3: outline.md Validation
 

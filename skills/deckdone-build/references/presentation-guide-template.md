@@ -1,6 +1,6 @@
 # Presentation Guide Template
 
-Template for the `presentation-guide.md` generated at Step 12.
+Template for the `presentation-guide.md` generated at Step 8.
 
 ---
 
@@ -58,4 +58,16 @@ Template for the `presentation-guide.md` generated at Step 12.
 **Time Management:**
 - Short on time: Skip slides [list by #]
 - Extra time: Expand on slides [list by #]
+
+## Data Sources
+
+Per-slide data provenance quick reference. Use this table during Q&A to answer "where did this number come from?"
+
+| Slide | Data Point | Source | Notes |
+|-------|-----------|--------|-------|
+| P[number] | [data description + value] | [material name + location, or URL] | [User-provided / Web search / ⚠ Unverified] |
+| ... | ... | ... | ... |
+
+> If no data sources were collected during planning, write: "No data sources collected during planning."
+> Data points tagged "Unverified" must be flagged with ⚠ in Notes — confirm with the data owner before presenting.
 ```

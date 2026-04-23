@@ -87,16 +87,23 @@ Each zone is a `<div>` with:
 
 ## Chart Placeholder Zones
 
-Chart zones are rendered as labeled placeholder boxes instead of real charts:
+Chart zones are rendered as labeled placeholder boxes that include **structured data** for later SVG rendering. Each chart placeholder MUST include `data-chart-ref` (the template key from `charts_index.json`) and structured data fields.
 
 ```html
 <div class="zone" data-weight="primary">
   <div class="zone-label">[chart-area] (primary)</div>
-  <div class="chart-placeholder">
-    <div class="chart-type">📊 Line Chart</div>
+  <div class="chart-placeholder" data-chart-ref="bar_chart">
+    <div class="chart-type">📊 Bar Chart</div>
     <div class="chart-title">2024 Monthly Sales Trend</div>
     <div class="chart-axes">X: Month (Jan-Dec) | Y: Sales (10k CNY)</div>
-    <div class="chart-data">Peak in Jun, overall upward trend</div>
+    <div class="chart-data">
+      <dl>
+        <dt>categories</dt><dd>["Jan", "Feb", "Mar", "Apr", "May", "Jun"]</dd>
+        <dt>series</dt><dd>[{"name":"Sales","values":[45,52,48,61,55,72],"color":"primary"}]</dd>
+        <dt>unit</dt><dd>10k CNY</dd>
+      </dl>
+    </div>
+    <div class="chart-insight">Peak in Jun, overall upward trend</div>
   </div>
 </div>
 ```
@@ -105,22 +112,94 @@ Chart zones are rendered as labeled placeholder boxes instead of real charts:
 
 | Field | Required | Description |
 |-------|----------|-------------|
-| Chart Type | Yes | Line / Bar / Pie / Scatter / Area / Stacked-Bar |
+| data-chart-ref | Yes | Template key from `charts_index.json` (e.g., `bar_chart`, `timeline`, `pie_chart`). Guides which SVG template to use in deckdone-build. |
+| Chart Type | Yes | Line / Bar / Pie / Scatter / Area / Stacked-Bar / Timeline / Process-Flow / etc. |
 | Chart Title | Yes | What the chart shows |
 | Axes | Conditional | X-axis and Y-axis descriptions (not for pie charts) |
-| Data Points | Yes | Key values, ranges, or trends the chart should convey |
+| Data Points | Yes | **Structured `<dl>` format** (see below) — key-value pairs the chart should visualize |
 | Key Insight | Recommended | One sentence — what conclusion the audience should draw |
 
 ### Chart Type Indicators
 
-| Type | Indicator |
-|------|-----------|
-| Line | 📈 |
-| Bar | 📊 |
-| Pie | 🥧 |
-| Scatter | ⊕ |
-| Area | △ |
-| Stacked-Bar | 📊 (stacked) |
+| Type | Indicator | data-chart-ref examples |
+|------|-----------|------------------------|
+| Line | 📈 | `line_chart` |
+| Bar | 📊 | `bar_chart`, `horizontal_bar_chart`, `grouped_bar_chart` |
+| Pie / Donut | 🥧 | `pie_chart`, `donut_chart` |
+| Scatter | ⊕ | `scatter_chart`, `bubble_chart` |
+| Area | △ | `area_chart`, `stacked_area_chart` |
+| Stacked-Bar | 📊 (stacked) | `stacked_bar_chart` |
+| Timeline | ⏱ | `timeline` |
+| Process / Flow | ➡ | `process_flow`, `chevron_process`, `numbered_steps` |
+| Matrix / Quadrant | ⊞ | `matrix_2x2` |
+| Comparison | ⚖ | `comparison_table`, `comparison_columns`, `butterfly_chart` |
+
+### Structured Data Format for Chart Zones
+
+Every chart zone MUST include a `<dl>` element inside `<div class="chart-data">` with machine-readable data. This structure is consumed by deckdone-build Step 7 to generate actual chart SVG shapes.
+
+**Bar / Grouped Bar / Stacked Bar charts:**
+```html
+<dl>
+  <dt>categories</dt><dd>["East", "South", "North", "West"]</dd>
+  <dt>series</dt><dd>[{"name":"Q3 Sales","values":[185,142,128,96],"color":"primary"}]</dd>
+  <dt>unit</dt><dd>M CNY</dd>
+</dl>
+```
+
+**Line / Area charts:**
+```html
+<dl>
+  <dt>categories</dt><dd>["Jan", "Feb", "Mar", "Apr", "May", "Jun"]</dd>
+  <dt>series</dt><dd>[{"name":"Revenue","values":[45,52,48,61,55,72],"color":"primary"}]</dd>
+  <dt>unit</dt><dd>10k CNY</dd>
+</dl>
+```
+
+**Pie / Donut charts:**
+```html
+<dl>
+  <dt>segments</dt><dd>[{"label":"R&D","value":45,"color":"primary"},{"label":"Validation","value":20,"color":"secondary"},{"label":"Platform","value":15,"color":"accent"},{"label":"Sales","value":12,"color":"aux1"},{"label":"Compliance","value":8,"color":"aux2"}]</dd>
+  <dt>unit</dt><dd>%</dd>
+</dl>
+```
+
+**Timeline / Roadmap:**
+```html
+<dl>
+  <dt>milestones</dt><dd>[
+    {"date":"2025 Q1","label":"Foundation","desc":"Data platform + CDSS pilot","status":"completed"},
+    {"date":"2025 Q2","label":"Core Scenarios","desc":"Imaging AI + VTE alert","status":"in-progress"},
+    {"date":"2025 Q3","label":"Scale","desc":"Full product matrix","status":"planned"},
+    {"date":"2025 Q4","label":"Ecosystem","desc":"Federated learning + SaaS","status":"planned"}
+  ]</dd>
+</dl>
+```
+
+**Process Flow / Pipeline:**
+```html
+<dl>
+  <dt>stages</dt><dd>[
+    {"title":"Stage 1","subtitle":"Automation","items":["Report generation","Quality control"],"color":"primary"},
+    {"title":"Stage 2","subtitle":"Decision Support","items":["CDSS diagnosis","Drug safety"],"color":"secondary"},
+    {"title":"Stage 3","subtitle":"Operations","items":["Smart scheduling","DRG management"],"color":"accent"}
+  ]</dd>
+</dl>
+```
+
+**Matrix 2x2:**
+```html
+<dl>
+  <dt>axis_x</dt><dd>{"label":"Feasibility","low":"Low","high":"High"}</dd>
+  <dt>axis_y</dt><dd>{"label":"Value","low":"Low","high":"High"}</dd>
+  <dt>quadrants</dt><dd>[
+    {"position":"top-right","title":"Priority Breakthrough","items":["Imaging AI","CDSS","Quality control"],"color":"primary"},
+    {"position":"top-left","title":"Strategic Investment","items":["Multi-modal reasoning","Virtual MDT"],"color":"secondary"},
+    {"position":"bottom-right","title":"Efficiency Optimization","items":["Auto-documentation","Smart triage"],"color":"accent"},
+    {"position":"bottom-left","title":"Watch & Explore","items":["Rare disease scenarios"],"color":"aux1"}
+  ]</dd>
+</dl>
+```
 
 ---
 
@@ -249,19 +328,100 @@ Use nested `<div>` containers with heavier borders for outer levels:
 </div>
 ```
 
-### Pipeline-Flow (3-13 Zones)
+### Timeline
+
+Horizontal stages with milestone nodes:
+
+```html
+<div class="zone" data-weight="primary">
+  <div class="zone-label">[title] Timeline title (primary)</div>
+  <div class="zone-content" style="font-size:20px;font-weight:bold">Timeline title</div>
+</div>
+<div class="timeline-row" data-timeline-structured="true">
+  <div class="timeline-item">
+    <div class="zone-label">[timeline-item] (secondary)</div>
+    <div class="zone-content">
+      <b>Date/Phase</b><br>Description text
+    </div>
+  </div>
+  <div class="timeline-arrow">→</div>
+  <!-- more items -->
+</div>
+```
+
+Every Timeline page MUST:
+- Use the `timeline-row` / `timeline-item` / `timeline-arrow` CSS classes (visual containers with borders and arrows)
+- Include structured data in a chart-data `<dl>` with `milestones` array (see Structured Data Format above)
+- Each milestone must have: date, label, desc, and status
+
+### Pipeline-Flow
 
 Horizontal stages with arrow indicators between zones:
 
 ```html
-<div class="pipeline-row">
-  <div class="zone stage">[body] Stage 1 (secondary)</div>
-  <div class="arrow">→</div>
-  <div class="zone stage">[body] Stage 2 (secondary)</div>
-  <div class="arrow">→</div>
-  <div class="zone stage">[body] Stage 3 (secondary)</div>
+<div class="pipeline-row" data-pipeline-structured="true">
+  <div class="pipeline-stage">
+    <div class="zone-label">[body] (secondary)</div>
+    <div class="zone-content">
+      <b>Stage Title</b><br><span style="font-size:12px">Item 1 · Item 2</span>
+    </div>
+  </div>
+  <div class="pipeline-arrow">→</div>
+  <!-- more stages -->
 </div>
 ```
+
+Every Pipeline-Flow page MUST:
+- Use `pipeline-row` / `pipeline-stage` / `pipeline-arrow` CSS classes (visual containers with borders and arrows)
+- Include structured data in a chart-data `<dl>` with `stages` array (see Structured Data Format above)
+- Each stage must have: title, subtitle, items
+
+### Comparison
+
+Side-by-side columns with visual dividers:
+
+```html
+<div class="two-col" data-comparison-structured="true">
+  <div class="col">
+    <div class="zone-label">[comparison-col] Option A (secondary)</div>
+    <div class="zone-content">
+      <b>Heading</b><br>Detail text
+    </div>
+  </div>
+  <div class="col">
+    <div class="zone-label">[comparison-col] Option B (secondary)</div>
+    <div class="zone-content">
+      <b>Heading</b><br>Detail text
+    </div>
+  </div>
+</div>
+```
+
+### Composite-Diagram
+
+Use nested `<div>` containers with heavier borders for outer levels. MUST include a chart-data `<dl>` with the diagram structure:
+
+```html
+<div class="zone diagram-outer" style="border-width: 3px;" data-diagram-structured="true">
+  <div class="zone-label">[title] Architecture (primary)</div>
+  <div class="chart-data">
+    <dl>
+      <dt>diagram_type</dt><dd>layered_stack</dd>
+      <dt>layers</dt><dd>[
+        {"name":"Application","items":["CDSS","Operations","Research"],"color":"primary"},
+        {"name":"Cognition","items":["LLM","RAG","Agent"],"color":"secondary"},
+        {"name":"Data","items":["HIS/EMR","Governance","Privacy"],"color":"accent"}
+      ]</dd>
+    </dl>
+  </div>
+  <div class="diagram-group" style="border-width: 2px;">
+    <div class="zone-label">[body] Subsystem A (secondary)</div>
+    <div class="zone-content">Component details</div>
+  </div>
+</div>
+```
+
+Valid `diagram_type` values: `layered_stack`, `nested_box`, `hub_spoke`, `matrix`, `freeform`.
 
 ---
 

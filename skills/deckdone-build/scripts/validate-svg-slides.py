@@ -192,7 +192,54 @@ def _check_nonempty(root, warnings):
         )
 
 
-def validate_file(filepath):
+GRAPHICAL_ELEMENTS = {
+    "rect", "circle", "ellipse", "line", "polyline", "polygon",
+    "path", "image",
+}
+
+VISUAL_PAGE_TYPES = {
+    "chart", "timeline", "pipeline", "flow", "comparison", "diagram",
+    "matrix", "process", "data-chart",
+}
+
+
+def _classify_page_type(filename, content_plan_pages):
+    if content_plan_pages is None:
+        return None
+    base = filename.lower().replace("_", " ")
+    for ptype in VISUAL_PAGE_TYPES:
+        if ptype in base:
+            return ptype
+    page_num_match = re.match(r"p(\d+)", filename, re.IGNORECASE)
+    if page_num_match and content_plan_pages:
+        idx = int(page_num_match.group(1)) - 1
+        if 0 <= idx < len(content_plan_pages):
+            return content_plan_pages[idx]
+    return None
+
+
+def _check_graphical_elements(root, filename, content_plan_pages, errors):
+    page_type = _classify_page_type(filename, content_plan_pages)
+    if page_type is None:
+        return
+
+    graphical_count = 0
+    for elem in root.iter():
+        name = _local_tag(elem).lower()
+        if name in GRAPHICAL_ELEMENTS:
+            graphical_count += 1
+
+    if graphical_count < 3:
+        errors.append(
+            f"Page type '{page_type}' requires graphical SVG elements "
+            f"(<rect>, <circle>, <line>, <path>, etc.) for chart/diagram/pipeline "
+            f"rendering, but only {graphical_count} found. "
+            f"Use the matching chart template from templates/charts/ and populate "
+            f"it with data instead of rendering chart data as text."
+        )
+
+
+def validate_file(filepath, content_plan_pages=None):
     errors = []
     warnings = []
     try:
@@ -211,8 +258,35 @@ def validate_file(filepath):
     _check_images(root, filepath, errors)
     _check_icons(root, errors)
     _check_nonempty(root, warnings)
+    _check_graphical_elements(root, os.path.basename(filepath), content_plan_pages, errors)
 
     return errors, warnings
+
+
+def parse_content_plan_pages(content_plan_path):
+    try:
+        with open(content_plan_path, encoding="utf-8") as f:
+            text = f.read()
+    except OSError as e:
+        print(f"[WARN] Cannot read content-plan: {e}")
+        return None
+
+    pages = []
+    for m in re.finditer(
+        r"##\s*Page\s+\d+[^#\n]*\n(.*?)(?=\n##\s*Page\s+\d+|\Z)",
+        text,
+        re.DOTALL | re.IGNORECASE,
+    ):
+        block = m.group(1).lower()
+        if any(kw in block for kw in VISUAL_PAGE_TYPES):
+            for kw in VISUAL_PAGE_TYPES:
+                if kw in block:
+                    pages.append(kw)
+                    break
+        else:
+            pages.append(None)
+
+    return pages if pages else None
 
 
 def parse_outline_pages(outline_path):
@@ -255,12 +329,21 @@ def main():
         help="Path to outline.md for completeness checking",
         default=None,
     )
+    ap.add_argument(
+        "--content-plan",
+        help="Path to content-plan.md for page-type-aware graphical element checking",
+        default=None,
+    )
     args = ap.parse_args()
 
     dirpath = args.directory
     if not os.path.isdir(dirpath):
         print(f"Error: Not a directory: {dirpath}")
         sys.exit(2)
+
+    content_plan_pages = None
+    if args.content_plan:
+        content_plan_pages = parse_content_plan_pages(args.content_plan)
 
     svg_files = sorted(
         f for f in os.listdir(dirpath) if f.lower().endswith(".svg")
@@ -274,7 +357,7 @@ def main():
 
     for filename in svg_files:
         filepath = os.path.join(dirpath, filename)
-        file_errors, file_warnings = validate_file(filepath)
+        file_errors, file_warnings = validate_file(filepath, content_plan_pages)
         for err in file_errors:
             print(f"[ERROR] {filename}: {err}")
         for warn in file_warnings:

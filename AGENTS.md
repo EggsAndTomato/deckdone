@@ -37,7 +37,7 @@ The two skills are independent: deckdone-build can consume plans from deckdone-p
 | 5 | plan | Layout + Content | HTML wireframe review → content-plan + layout-skeleton |
 | 6 | build | Visual Style | Style selection + test page generation |
 | 7 | build | Generation | Batch SVG generation + quality review |
-| 8 | build | Export | Final PPTX + presentation guide |
+| 8 | build | Export | Final PPTX + presentation guide (incl. data sources) |
 
 ## Validation Scripts
 
@@ -46,7 +46,7 @@ The two skills are independent: deckdone-build can consume plans from deckdone-p
 python skills/deckdone-plan/scripts/validate-content-plan.py <content-plan.md>
 
 # Validate SVG files for svg_to_pptx compatibility (deckdone-build, after Step 7)
-python skills/deckdone-build/scripts/validate-svg-slides.py <svg-directory/> [--outline outline.md]
+python skills/deckdone-build/scripts/validate-svg-slides.py <svg-directory/> [--outline outline.md] [--content-plan content-plan.md]
 ```
 
 Both exit 0 on pass, 1 on any failure.

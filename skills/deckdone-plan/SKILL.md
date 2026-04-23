@@ -62,32 +62,21 @@ The user may freely edit any deliverable file between planning and building. The
 
 ## Cross-Conversation Continuity
 
-Large presentation planning often spans multiple AI conversations. The workflow supports clean resumption without losing decisions or progress.
+See `references/state-templates.md` for state file, trace file, and harness improvement log templates.
 
 ### Resume Protocol
 
 When the user says "continue my presentation" or "resume deckdone":
 
-1. **Detect** — Look for `deckdone-state.md` in the project directory.
-2. **Read state** — Parse current phase, step, and deliverable status.
-3. **Read context** — Read the Context Summary section (kept under 500 words).
-4. **Read deliverables** — Read the current phase's confirmed deliverable files.
-5. **Resume** — Continue from the recorded step.
-6. **Inform user** — "Resuming from Phase [X], Step [Y]. Last activity: [date]. Here is where we left off: [brief summary]."
+1. Look for `deckdone-state.md` in the project directory.
+2. Parse current phase, step, and deliverable status.
+3. Read the Context Summary section (kept under 500 words).
+4. Read the current phase's confirmed deliverable files.
+5. Resume from the recorded step and inform the user.
 
 ### State Update Protocol
 
-After each gate or phase transition:
-
-1. Update `deckdone-state.md` with:
-   - Current phase + step number + date
-   - Key decisions made in this session
-   - Deliverable files produced or confirmed
-   - Pending items for next session
-2. Keep Context Summary under 500 words.
-3. Always include the brief.md Key Message in Context Summary.
-4. Always include the brief.md Density level in Context Summary.
-5. Write the state file **before** proceeding to the next step — not after.
+After each gate or phase transition, update `deckdone-state.md` with: current phase + step + date, key decisions, deliverable status, pending items. Keep Context Summary under 500 words. Must include Key Message and Density from `brief.md`. Write state file **before** proceeding to the next step.
 
 ---
 
@@ -102,33 +91,16 @@ Goal: Understand what the presentation must communicate and gather the raw mater
 1. Ask one question at a time. Prefer multiple-choice formats:
    - **Purpose:** Work report / Proposal / Knowledge sharing / Project kickoff / Summary / Other
    - **Key Message:** One sentence — "What should the audience remember after this presentation?"
-   - **Audience Profile:**
-     - Role level (executive / middle management / team / external client / mixed)
-     - Subject familiarity (expert / familiar / general / unfamiliar)
-     - Audience tendency (data-driven / story-driven / action-oriented / detail-oriented)
+   - **Audience Profile:** Role level (executive / middle management / team / external client / mixed), Subject familiarity (expert / familiar / general / unfamiliar), Audience tendency (data-driven / story-driven / action-oriented / detail-oriented)
    - **Context:** Formal meeting / Informal sharing / Training / Bidding / Other
    - **Scale:** Estimated page count, time limit
-   - **Density:** 演讲辅助型 (presentation) / 演讲详述型 (detailed-presentation) / 阅读型 (reading). Read `references/density-presets.md` for level descriptions. Ask: "Will the audience read this deck on their own, or will you present it live?"
-2. Read `references/narrative-frameworks.md`. Recommend 1-2 frameworks based on purpose + audience.
-3. Discuss framework selection and methodology reasoning with the user.
-4. Write `brief.md`.
+   - **Density:** Read `references/density-presets.md` for level descriptions. Ask: "Will the audience read this deck on their own, or will you present it live?"
+2. Read `references/narrative-frameworks.md`. Recommend 1-2 frameworks based on purpose + audience. Discuss with user.
+3. Write `brief.md`.
 
-**Deliverable:** `brief.md`
+**Deliverable:** `brief.md` (fields: Purpose, Key Message, Audience, Context, Scale, Density, Density Reasoning, Narrative Framework, Methodology)
 
-```markdown
-# Presentation Brief
-## Purpose: [purpose]
-## Key Message: [one sentence]
-## Audience: [profile + tendencies]
-## Context: [scenario]
-## Scale: [estimated pages, time limit]
-## Density: [presentation | detailed-presentation | reading]
-## Density Reasoning: [one sentence]
-## Narrative Framework: [chosen framework + reasoning]
-## Methodology: [why this approach works for this audience]
-```
-
-**Gate:** User confirms `brief.md` content is accurate.
+**Gate:** User confirms `brief.md`.
 
 **State Update:** Update `deckdone-state.md` — Phase 1, Step 1 complete.
 
@@ -140,12 +112,12 @@ Goal: Understand what the presentation must communicate and gather the raw mater
 
 **AI Behavior:**
 
-1. Explicitly ask the user: "你有没有现成的参考资料？比如公司文档、工作记录、行业报告、数据表格等。" Suggest possible types:
+1. Explicitly ask the user whether they have reference materials (in the user's preferred language). Suggest possible types:
    - Company documents / Personal work records / Industry reports / Policy documents / Data spreadsheets / URLs / Other
 2. Wait for user response. Three possible outcomes:
    - **User provides files/URLs** → extract and organize (see below).
-   - **User says they have materials but will provide later** → note in state file, proceed to Step 3. Revisit when materials arrive.
-   - **User says no materials** → acknowledge and proceed to Step 3. Create a minimal `materials/00-index.md` noting "No external materials provided."
+   - **User says they have materials but will provide later** → note in state file, proceed to Step 3.
+   - **User says no materials** → create minimal `materials/00-index.md` noting "No external materials provided", proceed to Step 3.
 3. For each file provided, detect format and extract:
    - `.pdf` → use pdf skill; if unavailable, ask user to paste text content
    - `.docx` → use docx skill; if unavailable, ask user to paste text content
@@ -154,16 +126,9 @@ Goal: Understand what the presentation must communicate and gather the raw mater
 4. Organize extracted content by topic. Extract key data points, quotes, and cases.
 5. Tag each material with applicable slide scenarios.
 
-**Deliverable:** `materials/` directory
+**Deliverable:** `materials/` directory (with `00-index.md` as source index)
 
-```
-materials/
-├── 00-index.md          # Source index (origin + topic + applicable scenarios)
-├── 01-topic-a.md        # Topic-classified extracted content (if any)
-└── ...
-```
-
-**Gate:** User confirms material status (has materials and index is complete, or explicitly states no materials).
+**Gate:** User confirms material status.
 
 **State Update:** Update `deckdone-state.md` — Phase 1, Step 2 complete.
 
@@ -179,20 +144,7 @@ materials/
 4. Estimate page count per section and total page count.
 5. Discuss and iterate with the user (may require multiple rounds).
 
-**Deliverable:** `outline.md`
-
-```markdown
-# Presentation Outline
-## Framework: [name]
-## Total Pages: [estimated N]
-
-### Section 1: [Title] (2 pages)
-- Page 1: [purpose] — key point: ...
-- Page 2: [purpose] — key point: ...
-
-### Section 2: [Title] (4 pages)
-...
-```
+**Deliverable:** `outline.md` (Framework, Total Pages, Sections with per-page purpose + key point)
 
 **Gate:** User confirms outline structure and page count. Phase 1 complete.
 
@@ -208,38 +160,11 @@ Goal: Define page layouts and fill in real content with live HTML wireframe revi
 
 **AI Behavior:**
 
-1. Read `references/layout-types.md` for page type definitions, layout rules, and content density limits. Predefined page types:
-   - **Cover** — Title + subtitle + date/author
-   - **Agenda** — Section list with numbering
-   - **Section Divider** — Section title + brief description
-   - **Content-Text** — Title + bullet points or paragraphs
-   - **Content-TwoCol** — Title + left/right split
-   - **Data-Chart** — Title + chart + interpretation text
-   - **Quote** — Large quote + attribution
-   - **Timeline** — Events/milestones display
-   - **Comparison** — Side-by-side A vs B
-   - **Closing** — Summary + call to action
-   - **Composite-Diagram** — Complex nested-box layout (architecture diagrams, hierarchy charts, agent maps)
-   - **Pipeline-Flow** — Process pipeline visualization
-2. Assign a page type to each page based on the outline.
-3. For Composite-Diagram and Pipeline-Flow types: identify sub-layout zones within the page.
-4. Confirm page type assignments with the user.
+1. Read `references/layout-types.md` for page type definitions. Assign a page type to each page based on the outline.
+2. For Composite-Diagram and Pipeline-Flow types: identify sub-layout zones.
+3. Confirm page type assignments with the user.
 
-**Deliverable:** `layout-system.md`
-
-```markdown
-# Layout System
-## Defined Page Types: [list of used types]
-
-## Page Assignment:
-- Page 1: Cover
-- Page 2: Agenda
-- Page 3: Section Divider (Section 1)
-- Page 4-5: Composite-Diagram
-- Page 6: Data-Chart
-- Page 7: Timeline
-...
-```
+**Deliverable:** `layout-system.md` (page type assignments per slide)
 
 **Gate:** User confirms page type assignments.
 
@@ -265,69 +190,17 @@ Goal: Define page layouts and fill in real content with live HTML wireframe revi
    - No visual styling (no colors from style-guide, no decorative fonts, no gradients)
    - Auto-refresh script included for live browser review
    - Thumbnail navigation bar at the bottom for quick page switching
-5. After generating `wireframes.html`, present the following instructions to the user (in the user's preferred language):
-   - Tell the user the file path (e.g., "Wireframes generated: `wireframes.html`")
-   - Instruct the user to open it in a browser (e.g., "Open this file in your browser — it will auto-refresh every 3 seconds")
-   - Explain the interaction model (e.g., "Watch the browser and tell me what to change — I'll update the file and it will refresh automatically")
-   - Point out the thumbnail navigation bar at the bottom for quick page switching
-6. Enter the review loop:
-   - Wait for user feedback on specific pages
-   - Edit `wireframes.html` in response — changes appear in browser within 3 seconds
-   - Common user feedback types:
-     - **Content change** → update zone text
-     - **Layout change** → adjust zone structure
-     - **Add chart** → add chart placeholder zone
-     - **Remove content** → remove zone or clear content
-     - **Page split/merge** → restructure pages
-   - After each edit, briefly confirm what changed (in the user's preferred language)
-7. When user confirms all pages are good, export the final deliverables:
-   a. Export `content-plan.md` — per-zone content specification following the mandatory template.
-   b. Export `layout-skeleton.md` — per-page zone layout summary (overview table + zone list per page).
+5. After generating, tell the user (in their preferred language): the file path, to open it in a browser (auto-refreshes every 3 seconds), and to give feedback while watching — AI will update and browser will refresh.
+6. Enter the review loop: wait for user feedback → edit `wireframes.html` → briefly confirm changes. Common feedback: content change, layout change, add/remove chart, page split/merge.
+7. When user confirms all pages, export:
+   a. `content-plan.md` — per-zone content specification.
+   b. `layout-skeleton.md` — per-page zone layout summary.
 8. Optionally run validation:
    ```bash
    python scripts/validate-content-plan.py content-plan.md
    ```
 
-**Content Plan Mandatory Template (per slide):**
-
-```markdown
-## Slide [N]: [Title]
-- Page Type: [MUST match a type from layout-system.md]
-- Total Zones: [count]
-- Visual Narrative Path: [eye flow description]
-
-### Zone A: [name]
-- Type: [title | body | label | data | icon | chart]
-- Content: "[EXACT text — required, cannot be empty]"
-- Max Length: [character count, from density-presets.md]
-- Visual Weight: [primary | secondary | auxiliary]
-
-### Zone B: [name]
-- Type: [title | body | label | data | icon | chart]
-- Content: "[EXACT text]"
-- Max Length: [character count]
-- Visual Weight: [primary | secondary | auxiliary]
-
-### Acceptance Criteria
-- [ ] All zones have content within max length
-- [ ] Chart data complete with values and labels (if applicable)
-- [ ] No zone has placeholder or TBD content
-```
-
-**Chart Zone Content Format (in wireframe and content-plan):**
-
-```markdown
-### Zone C: [chart name]
-- Type: chart
-- Chart Type: [line | bar | pie | scatter | area | stacked-bar]
-- Chart Title: "[chart title]"
-- X-Axis: [dimension description]
-- Y-Axis: [measure description]
-- Data Points: [key values or ranges]
-- Key Insight: [one sentence — what this chart should communicate]
-- Max Length: N/A
-- Visual Weight: [primary | secondary]
-```
+**Content Plan Template (per slide):** Each slide needs Page Type, Total Zones, Visual Narrative Path. Each zone needs Type, Content (exact text, non-empty), Max Length (from `references/density-presets.md`), Visual Weight (primary|secondary|auxiliary). Chart zones additionally need: Chart Type, Chart Title, X-Axis, Y-Axis, Data Points, Key Insight. Each slide ends with Acceptance Criteria checkboxes.
 
 **Deliverable:** `wireframes.html` + `content-plan.md` + `layout-skeleton.md`
 
@@ -337,45 +210,20 @@ Goal: Define page layouts and fill in real content with live HTML wireframe revi
 
 ---
 
-## Harness Engineering Principles
+## Harness Principles
 
-### Verification Loop Principle
-
-Every phase and step has explicit validation checkpoints. Verification is not deferred to the final output — it happens at each gate. When scripts are available, prefer mechanical enforcement (e.g., `scripts/validate-content-plan.py`) over AI self-assessment.
-
-### Structured Task Template Principle
-
-The content plan (`content-plan.md`) is the **contract between planning and implementation**. Whatever tool consumes these deliverables should make zero creative decisions — every detail is specified in the content plan. Structure in, structure out: the more specific the planning output, the more consistent the built result.
-
-### Execution Trace Principle
-
-Append to `deckdone-trace.md` after every step completion, **before** updating `deckdone-state.md`. The trace provides the "why" behind the state file's "what". When resuming across conversations, read both files to understand both current position and reasoning history.
-
-### Harness Improvement Principle
-
-> When a generated deliverable has quality issues, do NOT just fix the deliverable. Identify the root cause and update the harness (reference files, templates, validation rules) to prevent this class of error for all future sessions.
-
-Every failure is a diagnostic signal. Log improvements in `harness-improvements.md`. Compound improvement: every harness fix applies to all future sessions, independent of model improvements.
+- **Fix the harness, not the output.** When deliverables have quality issues, update reference files and validation rules to prevent recurrence. Log in `harness-improvements.md`.
+- **Append to `deckdone-trace.md`** after every step completion, before updating state. The trace captures "why"; the state captures "what".
+- **Use the checklists** in `references/quality-checklist.md` at every step gate.
 
 ---
 
 ## State File Templates
 
-See `references/state-templates.md` for the full state file, trace file, and harness improvement log templates.
+See `references/state-templates.md`.
 
 ---
 
 ## Quality Validation
 
-Follow binary pass/fail checks per step. For Steps 1-5, use the checklists in `references/quality-checklist.md`. Every checkbox must pass before advancing.
-
-For Step 5, run mechanical validation:
-```bash
-python scripts/validate-content-plan.py content-plan.md
-```
-Checks: valid page types, required zone fields (`- Type:`, `- Content:`, `- Max Length:`, `- Visual Weight:`), no empty/TBD content, Visual Narrative Path per slide, Total Zones matches actual zone count, Max Length is a positive integer, content length within Max Length, chart zones have Chart Data specification. Exits 0 on pass, 1 on failure. No pip dependencies.
-
-Optional icon validation:
-```bash
-python scripts/validate-content-plan.py content-plan.md --catalog <icon-catalog.md>
-```
+For Step 5, run: `python scripts/validate-content-plan.py content-plan.md` (checks: valid page types, required zone fields, no empty content, Max Length compliance, chart data completeness). Exits 0 on pass.

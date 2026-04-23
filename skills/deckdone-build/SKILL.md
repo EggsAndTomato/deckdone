@@ -234,13 +234,6 @@ Query icons on demand: `ls templates/icons/<library>/ | grep <keyword>`
 - **Required skill:** deckdone-build (this file)
 - **Optional skill:** deckdone-plan (for creating input deliverables — Steps 1-5)
 
-## Harness Improvement Principle
+## Harness Principle
 
-When a generated slide has quality issues, fix the **harness** — not just the individual slide:
-
-- Missing SVG feature → update `references/svg-constraints.md`
-- Layout pattern not working → update layout templates in `templates/layouts/`
-- Converter error → fix `scripts/svg_to_pptx/` or `scripts/svg_to_pptx.py`
-- Validation gap → update `scripts/validate-svg-slides.py`
-
-Never manually patch a single slide's output without addressing the root cause.
+When a generated slide has quality issues, fix the **harness** not the slide: update `references/svg-constraints.md`, `templates/layouts/`, or `scripts/`. Log in `harness-improvements.md`.

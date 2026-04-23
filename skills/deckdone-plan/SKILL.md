@@ -265,21 +265,21 @@ Goal: Define page layouts and fill in real content with live HTML wireframe revi
    - No visual styling (no colors from style-guide, no decorative fonts, no gradients)
    - Auto-refresh script included for live browser review
    - Thumbnail navigation bar at the bottom for quick page switching
-5. After generating `wireframes.html`, present the following instructions to the user:
-   - Tell the user the file path: "线框图已生成：`wireframes.html`"
-   - Instruct the user to open it in a browser: "请在浏览器中打开这个文件，它会每 3 秒自动刷新"
-   - Explain the interaction model: "你看着浏览器，告诉我要改什么（比如第 3 页的内容不对、第 5 页需要加个图表），我改完后浏览器会自动更新"
+5. After generating `wireframes.html`, present the following instructions to the user (in the user's preferred language):
+   - Tell the user the file path (e.g., "Wireframes generated: `wireframes.html`")
+   - Instruct the user to open it in a browser (e.g., "Open this file in your browser — it will auto-refresh every 3 seconds")
+   - Explain the interaction model (e.g., "Watch the browser and tell me what to change — I'll update the file and it will refresh automatically")
    - Point out the thumbnail navigation bar at the bottom for quick page switching
 6. Enter the review loop:
    - Wait for user feedback on specific pages
    - Edit `wireframes.html` in response — changes appear in browser within 3 seconds
    - Common user feedback types:
-     - **Content change** — "第 2 页第 3 条改成…" → update zone text
-     - **Layout change** — "这页分两栏更好" → adjust zone structure
-     - **Add chart** — "这里加个柱状图" → add chart placeholder zone
-     - **Remove content** — "这段不需要" → remove zone or clear content
-     - **Page split/merge** — "这两页合并" → restructure pages
-   - After each edit, briefly confirm what changed: "已更新第 3 页的 [具体改动]"
+     - **Content change** → update zone text
+     - **Layout change** → adjust zone structure
+     - **Add chart** → add chart placeholder zone
+     - **Remove content** → remove zone or clear content
+     - **Page split/merge** → restructure pages
+   - After each edit, briefly confirm what changed (in the user's preferred language)
 7. When user confirms all pages are good, export the final deliverables:
    a. Export `content-plan.md` — per-zone content specification following the mandatory template.
    b. Export `layout-skeleton.md` — per-page zone layout summary (overview table + zone list per page).

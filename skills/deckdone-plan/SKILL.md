@@ -265,17 +265,25 @@ Goal: Define page layouts and fill in real content with live HTML wireframe revi
    - No visual styling (no colors from style-guide, no decorative fonts, no gradients)
    - Auto-refresh script included for live browser review
    - Thumbnail navigation bar at the bottom for quick page switching
-5. Present the file to the user. Instruct them to open `wireframes.html` in a browser.
-6. Discuss content and layout with the user while they watch the browser auto-update:
-   - **Content completeness** — all key points covered, no gaps or redundancies
-   - **Layout reasonableness** — zone sizes and positions make sense
-   - **Information hierarchy** — primary/secondary/auxiliary weight reflected in zone sizes
-   - **Chart necessity** — every chart has a clear message, no chart for chart's sake
-7. Edit `wireframes.html` in response to user feedback. Changes appear in browser within 3 seconds.
-8. Iterate until user confirms all pages. When confirmed:
+5. After generating `wireframes.html`, present the following instructions to the user:
+   - Tell the user the file path: "线框图已生成：`wireframes.html`"
+   - Instruct the user to open it in a browser: "请在浏览器中打开这个文件，它会每 3 秒自动刷新"
+   - Explain the interaction model: "你看着浏览器，告诉我要改什么（比如第 3 页的内容不对、第 5 页需要加个图表），我改完后浏览器会自动更新"
+   - Point out the thumbnail navigation bar at the bottom for quick page switching
+6. Enter the review loop:
+   - Wait for user feedback on specific pages
+   - Edit `wireframes.html` in response — changes appear in browser within 3 seconds
+   - Common user feedback types:
+     - **Content change** — "第 2 页第 3 条改成…" → update zone text
+     - **Layout change** — "这页分两栏更好" → adjust zone structure
+     - **Add chart** — "这里加个柱状图" → add chart placeholder zone
+     - **Remove content** — "这段不需要" → remove zone or clear content
+     - **Page split/merge** — "这两页合并" → restructure pages
+   - After each edit, briefly confirm what changed: "已更新第 3 页的 [具体改动]"
+7. When user confirms all pages are good, export the final deliverables:
    a. Export `content-plan.md` — per-zone content specification following the mandatory template.
    b. Export `layout-skeleton.md` — per-page zone layout summary (overview table + zone list per page).
-9. Optionally run validation:
+8. Optionally run validation:
    ```bash
    python scripts/validate-content-plan.py content-plan.md
    ```

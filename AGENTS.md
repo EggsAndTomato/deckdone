@@ -60,6 +60,7 @@ Both exit 0 on pass, 1 on any failure.
 - **Valid page types**: Cover, Agenda, Section Divider, Content-Text, Content-TwoCol, Data-Chart, Quote, Timeline, Comparison, Closing, Composite-Diagram, Pipeline-Flow.
 - **Content plan fields**: Each zone needs `- Type:`, `- Content:` (non-empty), `- Max Length:`, `- Visual Weight:` (primary|secondary|auxiliary).
 - **Style presets**: 18 curated presets in `deckdone-build/references/style-presets.md` (moved from deckdone-plan).
+- **Sub-agent delegation**: Context-heavy generation steps (wireframes, SVGs, presentation guide) are delegated to sub-agents via Task tool. Main agent orchestrates and handles user interaction only. See `references/sub-agent-protocols.md` in each skill.
 
 ## Dependencies
 

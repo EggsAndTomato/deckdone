@@ -197,24 +197,26 @@ Goal: Define page layouts and fill in real content with live HTML wireframe revi
 
 **Prerequisites:** Steps 1-4 completed. `brief.md`, `outline.md`, and `layout-system.md` confirmed.
 
+**Sub-Agent Delegation:** This step delegates heavy generation to sub-agents. See `references/sub-agent-protocols.md` for full prompt templates.
+
 **AI Behavior:**
 
-1. Read `references/wireframe-guide.md` for HTML wireframe generation rules.
-2. Read `references/density-presets.md` for content capacity limits based on density level from `brief.md`.
-3. Read `references/layout-types.md` for per-type zone templates and ratios.
-4. Generate `wireframes.html` — a single low-fidelity HTML file containing all slides:
-   - Each slide rendered as a 1280×720 proportional `<div>` with gray-bordered zones
-   - Zones labeled with type, visual weight, and filled with real content text
-   - Chart zones show placeholder boxes with chart type, title, axes, and data points
-   - No visual styling (no colors from style-guide, no decorative fonts, no gradients)
-   - Auto-refresh script included for live browser review
-   - Thumbnail navigation bar at the bottom for quick page switching
-5. After generating, tell the user: the file path, to open it in a browser (auto-refreshes every 3 seconds), and to give feedback while watching — AI will update and browser will refresh.
-6. Enter the review loop: wait for user feedback → edit `wireframes.html` → briefly confirm changes. Common feedback: content change, layout change, add/remove chart, page split/merge.
-7. When user confirms all pages, export:
-   a. `content-plan.md` — per-zone content specification.
-   b. `layout-skeleton.md` — per-page zone layout summary.
-8. Optionally run validation:
+#### 5a. Wireframe Generation (delegate to sub-agent)
+
+1. Read `references/sub-agent-protocols.md` for delegation instructions.
+2. Delegate `wireframes.html` generation to a sub-agent (subagent_type: "general"). The sub-agent reads all reference files and produces the HTML.
+3. After sub-agent completes, confirm `wireframes.html` exists.
+4. Tell the user: the file path, to open it in a browser (auto-refreshes every 3 seconds), and to give feedback while watching — AI will update and browser will refresh.
+5. Enter the review loop in main agent: wait for user feedback → targeted edit `wireframes.html` → briefly confirm changes. Common feedback: content change, layout change, add/remove chart, page split/merge.
+   - Small edits (1-3 pages): use Edit tool directly in main agent.
+   - Major restructure (5+ pages): delegate full regeneration to a new sub-agent with updated instructions.
+
+#### 5b. Content Plan Export (delegate to sub-agent)
+
+6. When user confirms all pages, delegate export to a sub-agent:
+   - Input: `wireframes.html`, `brief.md`, `outline.md`, `layout-system.md`, reference files.
+   - Output: `content-plan.md` + `layout-skeleton.md`.
+7. After sub-agent completes, run validation:
    ```bash
    python scripts/validate-content-plan.py content-plan.md
    ```

@@ -34,12 +34,12 @@ Optional: `layout-system.md` (Step 4), `brief.md` (Step 1).
 > The following rules have the highest priority — violating any one constitutes execution failure:
 
 1. **SERIAL EXECUTION** — Steps 6→7→8 in order. Each step's output is the next step's input.
-2. **NO BATCH SVG GENERATION** — Generate one SVG page at a time, sequentially. NEVER write multiple SVGs in a single response.
-3. **LOCK DESIGN CONTEXT** — Before Step 7, extract and lock global tokens (colors, font scale, spacing, decoration patterns). Use this locked context for every subsequent page.
+2. **SUB-AGENT DELEGATION** — Delegate context-heavy generation (SVG code, presentation guide text) to sub-agents. The main agent orchestrates and handles user interaction only. See `references/sub-agent-protocols.md` for prompt templates and delegation patterns.
+3. **LOCK DESIGN CONTEXT** — Before Step 7, extract and lock global tokens (colors, font scale, spacing, decoration patterns). Paste the FULL locked context into every sub-agent prompt — this is critical for style consistency.
 4. **BLOCKING = HARD STOP** — Steps marked ⛔ BLOCKING require full stop. Wait for explicit user confirmation before proceeding.
 5. **NO SPECULATIVE EXECUTION** — Do not pre-write SVG code during earlier steps.
 6. **READ CONSTRAINTS FIRST** — Read `references/svg-constraints.md` before starting Step 6.
-7. **MAIN-AGENT ONLY** — SVG generation MUST stay in the current main agent. Never delegate page generation to sub-agents.
+7. **PARALLEL BATCHES** — In Step 7, split pages into batches of 3-5 and delegate to parallel sub-agents (max 6 concurrent). Each sub-agent generates its batch independently.
 
 ---
 
@@ -68,27 +68,23 @@ Optional: `layout-system.md` (Step 4), `brief.md` (Step 1).
 ## Layout Rules: [margins / spacing / content area ratios]
 ```
 
-### 6b. Test SVG Generation
+### 6b. Test SVG Generation (delegate to sub-agent)
 
-1. From `layout-system.md`, identify all distinct layout types used.
-2. Select **one page per layout type** as test samples.
-3. For each test page:
-   a. Read the SVG template from the relevant layout template in `templates/layouts/`.
-   b. Replace placeholders with actual content from `content-plan.md`.
-   c. Apply style tokens from `style-guide.md` (colors, fonts, spacing).
-   d. Write the SVG file, strictly constrained by `references/svg-constraints.md`.
-   e. Save to `svg_output/` with naming pattern: `P01_Cover.svg`, `P02_Agenda.svg`, etc.
-4. After all test SVGs are written, run conversion:
+1. Read `references/sub-agent-protocols.md` for the Step 6b prompt template.
+2. From `layout-system.md`, identify all distinct layout types used.
+3. Select **one page per layout type** as test samples.
+4. Delegate all test SVG generation to a single sub-agent (subagent_type: "general"). Paste the full locked design context from `style-guide.md` into the prompt.
+5. After sub-agent completes, run conversion:
    ```bash
-   python scripts/svg_to_pptx.py <project-dir> -s svg_output -o test-slides/output.pptx
+   python scripts/svg_to_pptx.py <project-dir> -s svg_output -o test-slides/output.pptx --only native
    ```
-5. Present to user for review. Check:
+6. Present to user for review. Check:
    - Layout accuracy against `layout-skeleton.md`
    - Text cutoff or overflow
    - Color and spacing correctness
    - SVG-to-PPTX conversion fidelity
-6. If unsatisfied, adjust and regenerate (max 3 rounds per page).
-7. Lock final template parameters → `template-params.md`.
+7. If unsatisfied, adjust and re-delegate (max 3 rounds per page).
+8. Lock final template parameters → `template-params.md`.
 
 **Deliverable:** `style-guide.md` + `test-slides/output.pptx` + `template-params.md`
 
@@ -100,25 +96,28 @@ Optional: `layout-system.md` (Step 4), `brief.md` (Step 1).
 
 ⛔ **BLOCKING** — Step 6 gate must be passed.
 
-### 7a. Batch SVG Generation
+### 7a. Batch SVG Generation (delegate to parallel sub-agents)
 
 1. **Lock design context** — extract from `style-guide.md` and `template-params.md`:
    - Global color tokens (primary, secondary, accent, backgrounds, text levels)
    - Font scale (heading sizes, body size, caption size, line-height)
    - Spacing system (margins, padding, gaps)
    - Decoration patterns (dividers, accent shapes, icon usage)
-2. Generate pages **sequentially, one at a time**:
-   - Read page content from `content-plan.md`.
-   - Read layout from `layout-skeleton.md`.
-   - **Determine page type** and apply the per-type visual element rules below.
-   - Write SVG constrained by `references/svg-constraints.md` AND locked design context.
-   - Save to `svg_output/`.
-   - Proceed to next page.
-3. After all SVGs generated, run conversion:
+2. **Read `references/sub-agent-protocols.md`** for the Step 7a prompt template and batch splitting logic.
+3. **Split pages into batches** (3-5 pages per sub-agent, max 6 concurrent):
+   - ≤ 10 pages → 1 sub-agent
+   - 11-20 pages → 2-3 sub-agents
+   - 21+ pages → 4-6 sub-agents
+4. **Launch all sub-agents in parallel** in a single message (multiple Task tool calls). Each prompt must contain:
+   - The FULL locked design context (pasted inline — do not abbreviate)
+   - The specific pages assigned to that batch (from `content-plan.md` + `layout-skeleton.md`)
+   - File paths to read: `svg-constraints.md`, layout templates, chart templates
+   - The per-page-type visual element rules (from this SKILL.md)
+5. **Wait for all sub-agents to complete**, then run conversion:
    ```bash
-   python scripts/svg_to_pptx.py <project-dir> -s svg_output -o output.pptx
+   python scripts/svg_to_pptx.py <project-dir> -s svg_output -o output.pptx --only native
    ```
-4. Run SVG validation on all files:
+   6. Run SVG validation on all files:
    ```bash
    python scripts/validate-svg-slides.py svg_output/ [--outline outline.md] [--content-plan content-plan.md]
    ```
@@ -171,8 +170,10 @@ Every SVG must contain graphical elements (not just `<text>`). The following rul
 3. Fix problem pages — regenerate individual SVGs as needed.
 4. Re-run converter if any SVGs changed:
    ```bash
-   python scripts/svg_to_pptx.py <project-dir> -s svg_output -o output.pptx
+   python scripts/svg_to_pptx.py <project-dir> -s svg_output -o output.pptx --only native
    ```
+ 
+
 
 **Deliverable:** `output.pptx` + all SVGs in `svg_output/`
 
@@ -189,44 +190,19 @@ Every SVG must contain graphical elements (not just `<text>`). The following rul
 1. Verify all SVGs pass validation.
 2. Run final conversion:
    ```bash
-   python scripts/svg_to_pptx.py <project-dir> -s svg_output -o final.pptx
+    python scripts/svg_to_pptx.py <project-dir> -s svg_output -o final.pptx --only native
    ```
 
-### 8b. Presentation Guide
+### 8b. Presentation Guide (delegate to sub-agent)
 
-1. Read confirmed deliverables:
-   - `brief.md` (purpose, audience, framework, density, scale)
-   - `outline.md` (section structure, page count)
-   - `content-plan.md` (per-page content, visual narrative paths)
-   - `style-guide.md` (visual style)
-   - `layout-skeleton.md` (page layout overview)
-   - `materials/00-index.md` (data points with source attribution, if available)
-2. Generate `presentation-guide.md` following the 5-module template in `references/presentation-guide-template.md`:
+1. Read `references/sub-agent-protocols.md` for the Step 8b prompt template.
+2. Delegate presentation guide generation to a single sub-agent. The sub-agent reads all confirmed deliverables and writes `presentation-guide.md` following the 5-module template in `references/presentation-guide-template.md`:
    - **Module 1: Overview** — topic, core message, audience, slide count, duration, narrative framework
    - **Module 2: Design Rationale** — narrative logic, section intentions, key design decisions
    - **Module 3: Slide Key Points** — per-slide emphasis levels (★ Key / Normal / ⏭ Skippable), time allocation
    - **Module 4: Speaking Notes** — transition cues, anticipated questions, timing guidance
    - **Module 5: Data Sources** — per-slide data provenance quick reference for speaker Q&A readiness
-3. Determine emphasis levels based on each page's contribution to the Key Message from `brief.md`.
-4. Calculate time allocation from `brief.md` Scale field (total minutes ÷ total pages, weighted by emphasis). If no time estimate, default to 1.5 minutes per page.
-5. Predict 2-3 likely audience questions based on content gaps or contentious points.
-6. **Generate Module 5: Data Sources.** Read `content-plan.md` for all zones with `- Source:` fields and `materials/00-index.md` Data Points table. Build a per-slide quick-reference table:
-
-   ```markdown
-   ## Data Sources
-   | Slide | Data Point | Source | Notes |
-   |-------|-----------|--------|-------|
-   | P08 | Market growth rate 23.5% | 2024 Industry Report p.12 | User-provided material |
-   | P10 | User satisfaction 94% | https://example.com/survey | Web search, 2024 data |
-   ```
-
-   **Rules:**
-   - Only include slides that contain sourced data. Skip slides with no data references.
-   - `Notes` column: tag as "User-provided material", "Web search", "Unverified — confirm before presenting", etc.
-   - If `materials/00-index.md` is not available or has no Data Points section, write "No data sources collected during planning" and skip the table.
-   - Flag any data points tagged `Unverified` with a warning in Notes column.
-7. Write in the user's preferred language.
-8. Present to user for confirmation. Allow edits.
+3. After sub-agent completes, present `presentation-guide.md` to user for confirmation. Allow edits.
 
 **Deliverables:** `final.pptx` + `presentation-guide.md`
 
@@ -256,7 +232,7 @@ After Step 8, the user may request modifications to the finished PPTX. The AI su
 4. AI makes targeted edits to SVG(s).
 5. Re-run converter:
    ```bash
-   python scripts/svg_to_pptx.py <project-dir> -s svg_output -o final-revised.pptx
+    python scripts/svg_to_pptx.py <project-dir> -s svg_output -o final-revised.pptx --only native
    ```
 6. Present revised PPTX to user.
 

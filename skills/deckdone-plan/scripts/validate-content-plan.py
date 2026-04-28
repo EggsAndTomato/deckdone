@@ -217,7 +217,6 @@ def validate_diagram_data(content_plan_path):
     
     Returns list of error strings. Empty list means all checks passed.
     """
-    import os
     from pathlib import Path
     
     content_dir = Path(content_plan_path).parent
@@ -249,9 +248,11 @@ def validate_diagram_data(content_plan_path):
             )
             continue
         
-        slug = title.lower().replace(" ", "-").replace("_", "-")
-        while "--" in slug:
-            slug = slug.replace("--", "-")
+        # Derive slug: lowercase, strip non-alphanumeric (keep hyphens), normalize
+        slug = title.lower()
+        slug = re.sub(r'[^a-z0-9-]', '-', slug)
+        slug = re.sub(r'-{2,}', '-', slug)
+        slug = slug.strip('-')
         
         diagram_file = content_dir / "diagram-data" / f"{slug}.md"
         if not diagram_file.exists():

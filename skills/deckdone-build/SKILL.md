@@ -103,11 +103,17 @@ Optional: `layout-system.md` (Step 4), `brief.md` (Step 1).
    - Font scale (heading sizes, body size, caption size, line-height)
    - Spacing system (margins, padding, gaps)
    - Decoration patterns (dividers, accent shapes, icon usage)
+1.5 **Separate standard and diagram pages:**
+   - Scan content-plan.md for pages with Page Type: Content-Diagram.
+   - These pages require the diagram sub-agent protocol (see references/sub-agent-protocols.md).
+   - Standard pages use the existing batch protocol (template replacement).
+   - Diagram pages are split into batches of 2-3 (smaller because AI dynamic SVG construction is more token-intensive).
 2. **Read `references/sub-agent-protocols.md`** for the Step 7a prompt template and batch splitting logic.
-3. **Split pages into batches** (3-5 pages per sub-agent, max 6 concurrent):
-   - ≤ 10 pages → 1 sub-agent
-   - 11-20 pages → 2-3 sub-agents
-   - 21+ pages → 4-6 sub-agents
+3. **Split pages into batches** and dispatch:
+   - Separate pages into two groups: standard (non-Content-Diagram) and diagram (Content-Diagram).
+   - Standard page batches: 3-5 pages per sub-agent.
+   - Diagram page batches: 2-3 pages per sub-agent.
+   - Total concurrent sub-agents ≤ 6 across both groups.
 4. **Launch all sub-agents in parallel** in a single message (multiple Task tool calls). Each prompt must contain:
    - The FULL locked design context (pasted inline — do not abbreviate)
    - The specific pages assigned to that batch (from `content-plan.md` + `layout-skeleton.md`)
@@ -159,6 +165,17 @@ Every SVG must contain graphical elements (not just `<text>`). The following rul
 **Cover / Section Divider / Closing pages:**
 - Layout template provides visual chrome (background, sidebar, decorations). Ensure these decorative elements are preserved from the template.
 
+#### Diagram Page Visual Element Rules (Content-Diagram pages)
+
+When a page has Page Type: Content-Diagram with Relationship Type:
+- Read `references/diagram-specs.md` section for the specific diagram type.
+- Read `diagram-data/<page-slug>.md` for structured layout data (slug: P##_Name lowercase with hyphens).
+- Read `extracted_images/<reference>.png` if annotated in diagram-specs.md as reference for that type.
+- Generate SVG dynamically (NOT from layout templates) following the Design Principle and Content Mapping from diagram-specs.md.
+- All Color-Role references → locked style-guide.md colors (see diagram-specs.md General Rules).
+- Icons auto-selected based on Label semantics; use `<use data-icon="..."/>` syntax.
+- Diagram SVGs MUST contain graphical elements (paths, circles, lines) proportional to the diagram complexity — never render diagram data as text-only.
+
 ### 7b. Quality Review
 
 1. Generate thumbnail overview of all slides.
@@ -175,7 +192,7 @@ Every SVG must contain graphical elements (not just `<text>`). The following rul
  
 
 
-**Deliverable:** `output.pptx` + all SVGs in `svg_output/`
+**Deliverable:** `output.pptx` + all SVGs in `svg_output/` (standard + diagram)
 
 ---
 

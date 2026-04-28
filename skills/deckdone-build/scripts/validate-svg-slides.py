@@ -199,7 +199,7 @@ GRAPHICAL_ELEMENTS = {
 
 VISUAL_PAGE_TYPES = {
     "chart", "timeline", "pipeline", "flow", "comparison", "diagram",
-    "matrix", "process", "data-chart",
+    "matrix", "process", "data-chart", "content-diagram",
 }
 
 
@@ -214,7 +214,8 @@ def _classify_page_type(filename, content_plan_pages):
     if page_num_match and content_plan_pages:
         idx = int(page_num_match.group(1)) - 1
         if 0 <= idx < len(content_plan_pages):
-            return content_plan_pages[idx]
+            entry = content_plan_pages[idx]
+            return entry[0] if isinstance(entry, tuple) else entry
     return None
 
 
@@ -239,6 +240,57 @@ def _check_graphical_elements(root, filename, content_plan_pages, errors):
         )
 
 
+DIAGRAM_MIN_ELEMENTS = {
+    "hub-and-spoke": {"circle": 1, "path": 1},
+    "pyramid": {"path": 3},
+    "dual-gears": {"circle": 2},
+    "tension-triangle": {"circle": 3},
+    "bubble-matrix": {"line": 2, "circle": 1},
+    "staircase": {"path": 3},
+    "split-comparison": {"line": 1},
+    "data-card-grid": {"path": 4},
+    "layered-architecture": {"path": 4},
+    "filter-funnel": {"path": 3},
+    "overlapping-spheres": {"circle": 2},
+    "iterative-cycle": {"circle": 4},
+    "bridge-and-gap": {"path": 2},
+}
+
+
+def _check_diagram_structure(root, filename, content_plan_pages, errors):
+    """Validate diagram SVGs have expected structural elements for their type."""
+    if content_plan_pages is None:
+        return
+
+    page_num_match = re.match(r"p(\d+)", filename.lower(), re.IGNORECASE)
+    if not page_num_match:
+        return
+    idx = int(page_num_match.group(1)) - 1
+    if idx < 0 or idx >= len(content_plan_pages):
+        return
+
+    entry = content_plan_pages[idx]
+    if not isinstance(entry, tuple) or len(entry) != 2:
+        return
+    page_type, relationship_type = entry
+    if not relationship_type:
+        return
+
+    element_counts = {}
+    for elem in root.iter():
+        tag = _local_tag(elem).lower()
+        element_counts[tag] = element_counts.get(tag, 0) + 1
+
+    requirements = DIAGRAM_MIN_ELEMENTS.get(relationship_type, {})
+    for tag_name, min_count in requirements.items():
+        actual = element_counts.get(tag_name, 0)
+        if actual < min_count:
+            errors.append(
+                f"Diagram type '{relationship_type}' expects >= {min_count} "
+                f"<{tag_name}> elements, found {actual}"
+            )
+
+
 def validate_file(filepath, content_plan_pages=None):
     errors = []
     warnings = []
@@ -259,11 +311,13 @@ def validate_file(filepath, content_plan_pages=None):
     _check_icons(root, errors)
     _check_nonempty(root, warnings)
     _check_graphical_elements(root, os.path.basename(filepath), content_plan_pages, errors)
+    _check_diagram_structure(root, os.path.basename(filepath), content_plan_pages, errors)
 
     return errors, warnings
 
 
 def parse_content_plan_pages(content_plan_path):
+    """Returns list of (page_type, relationship_type_or_None) tuples."""
     try:
         with open(content_plan_path, encoding="utf-8") as f:
             text = f.read()
@@ -278,13 +332,27 @@ def parse_content_plan_pages(content_plan_path):
         re.DOTALL | re.IGNORECASE,
     ):
         block = m.group(1).lower()
-        if any(kw in block for kw in VISUAL_PAGE_TYPES):
+        section_text = m.group(0)
+
+        rel_match = re.search(
+            r"Relationship\s+Type\s*[:：]\s*(\S[^\n]*)",
+            section_text,
+            re.IGNORECASE,
+        )
+        relationship_type = None
+        if rel_match:
+            raw = rel_match.group(1).strip()
+            relationship_type = raw.lower().replace(" ", "-")
+
+        if "content-diagram" in block and relationship_type:
+            pages.append(("content-diagram", relationship_type))
+        elif any(kw in block for kw in VISUAL_PAGE_TYPES):
             for kw in VISUAL_PAGE_TYPES:
-                if kw in block:
-                    pages.append(kw)
+                if kw in block and kw != "content-diagram":
+                    pages.append((kw, None))
                     break
         else:
-            pages.append(None)
+            pages.append((None, None))
 
     return pages if pages else None
 

@@ -56,6 +56,7 @@ The user may freely edit any deliverable file between planning and building. The
 | `wireframes.html` | 2 | 5 | Low-fidelity HTML wireframes for live review |
 | `content-plan.md` | 2 | 5 | Detailed content per visual zone |
 | `layout-skeleton.md` | 2 | 5 | Per-page zone layout summary |
+| `diagram-data/` | 2 | 5 | Per-page diagram structured data (for Content-Diagram pages) |
 | `deckdone-state.md` | all | all | Progress state file |
 | `deckdone-trace.md` | all | all | Execution trace log |
 
@@ -178,10 +179,15 @@ Goal: Define page layouts and fill in real content with live HTML wireframe revi
 
 **AI Behavior:**
 
-1. Read `references/layout-types.md` for page type definitions. Assign a page type to each page based on the outline.
-2. Read `references/density-presets.md` for visual element density targets. Prefer visual page types over text-only types: Data-Chart for metrics, Timeline for sequences, Comparison for side-by-side, Pipeline-Flow for processes, Composite-Diagram for architectures. Only use Content-Text when no visual type fits.
-3. For Composite-Diagram and Pipeline-Flow types: identify sub-layout zones.
-4. Confirm page type assignments with the user.
+1. Read `references/layout-types.md` for standard page type definitions.
+2. Read `references/relationship-layout-map.md` for diagram type definitions and detection heuristics.
+3. For each page in the outline, determine whether the content warrants a diagram layout:
+   - Apply the detection heuristics (priority-ordered triggers) from relationship-layout-map.md.
+   - If a relationship type match is found → assign Page Type: Content-Diagram and Relationship Type: <matched type>.
+   - If no match → assign a standard page type from layout-types.md.
+4. Read `references/density-presets.md` for visual element density targets. Prefer visual page types over text-only types: Data-Chart for metrics, Timeline for sequences, Comparison for side-by-side, Pipeline-Flow for processes, Composite-Diagram for architectures. Only use Content-Text when no visual type fits.
+5. For Composite-Diagram, Pipeline-Flow, and Content-Diagram types: identify sub-layout zones.
+6. Confirm page type assignments with the user.
 
 **Deliverable:** `layout-system.md` (page type assignments per slide)
 
@@ -211,6 +217,15 @@ Goal: Define page layouts and fill in real content with live HTML wireframe revi
    - Small edits (1-3 pages): use Edit tool directly in main agent.
    - Major restructure (5+ pages): delegate full regeneration to a new sub-agent with updated instructions.
 
+#### 5a-2. Diagram Data Generation (for Content-Diagram pages only)
+
+For each Content-Diagram page from layout-system.md:
+- Read `../deckdone-build/references/diagram-specs.md` to understand the required data structure for the diagram type.
+- Based on the wireframe content, fill in a `diagram-data/<page-slug>.md` file following the schema for the diagram type.
+- Each file must include: Type, required fields per type, and all content.
+- The slug follows the convention: P##_Name.svg → lowercase name with hyphens → e.g., p05_hub-and-spoke.
+- Ensure each diagram-data file complies with the constraints limits (max branches/nodes/layers per type).
+
 #### 5b. Content Plan Export (delegate to sub-agent)
 
 6. When user confirms all pages, delegate export to a sub-agent:
@@ -223,7 +238,7 @@ Goal: Define page layouts and fill in real content with live HTML wireframe revi
 
 **Content Plan Template (per slide):** Each slide needs Page Type, Total Zones, Visual Narrative Path. Each zone needs Type, Content (exact text, non-empty), Max Length (from `references/density-presets.md`), Visual Weight (primary|secondary|auxiliary). **Optional Source field:** when a zone contains statistics, quantified data, third-party claims, or direct quotes, add `- Source:` with the attribution from `materials/00-index.md` Data Points table. Zones without data references do not need Source. Chart zones additionally need: Chart Type, Chart Title, X-Axis, Y-Axis, Data Points, Key Insight. Each slide ends with Acceptance Criteria checkboxes.
 
-**Deliverable:** `wireframes.html` + `content-plan.md` + `layout-skeleton.md`
+**Deliverable:** `wireframes.html` + `content-plan.md` + `layout-skeleton.md` + `diagram-data/`
 
 **Gate:** User confirms all page content via wireframe review.
 

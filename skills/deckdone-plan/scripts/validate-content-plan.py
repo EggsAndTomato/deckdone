@@ -17,6 +17,7 @@ VALID_PAGE_TYPES = {
     "Closing",
     "Composite-Diagram",
     "Pipeline-Flow",
+    "Content-Diagram",
 }
 
 VALID_VISUAL_WEIGHTS = {"primary", "secondary", "auxiliary"}
@@ -87,6 +88,11 @@ def validate_slide(title, section, catalog_icons=None):
         errors.append("Missing: Page Type field")
     elif page_type not in VALID_PAGE_TYPES:
         errors.append(f"Invalid Page Type: {page_type}")
+
+    if page_type == "Content-Diagram":
+        rel_type = extract_field(section, "Relationship Type")
+        if rel_type is None:
+            errors.append("Missing: Relationship Type field (required for Content-Diagram)")
 
     vnp = extract_field(section, "Visual Narrative Path")
     if vnp is None:
@@ -182,6 +188,101 @@ def load_catalog_icons(catalog_path):
     return icons if icons else None
 
 
+VALID_RELATIONSHIP_TYPES = {
+    "Hub-and-Spoke", "Pyramid", "Dual-Gears", "Tension-Triangle",
+    "Bubble-Matrix", "Staircase", "Split-Comparison", "Data-Card-Grid",
+    "Layered-Architecture", "Filter-Funnel", "Overlapping-Spheres",
+    "Iterative-Cycle", "Bridge-and-Gap",
+}
+
+DIAGRAM_MAX = {
+    "Hub-and-Spoke": {"Branches": 6},
+    "Pyramid": {"Layers": 5},
+    "Dual-Gears": {"Items_per_gear": 5},
+    "Tension-Triangle": {"Nodes": 3},
+    "Bubble-Matrix": {"Bubbles": 10},
+    "Staircase": {"Steps": 5},
+    "Split-Comparison": {"Items_per_side": 6},
+    "Data-Card-Grid": {"Cards": 6},
+    "Layered-Architecture": {"Layers": 4, "Subcomponents_per_layer": 5},
+    "Filter-Funnel": {"Layers": 6},
+    "Overlapping-Spheres": {"Circles": 3},
+    "Iterative-Cycle": {"Steps": 6},
+    "Bridge-and-Gap": {"Items_per_state": 4},
+}
+
+
+def validate_diagram_data(content_plan_path):
+    """Validate that Content-Diagram pages have corresponding diagram-data files.
+    
+    Returns list of error strings. Empty list means all checks passed.
+    """
+    import os
+    from pathlib import Path
+    
+    content_dir = Path(content_plan_path).parent
+    
+    try:
+        with open(content_plan_path, encoding="utf-8") as f:
+            text = f.read()
+    except OSError as e:
+        return [f"Cannot read content-plan: {e}"]
+    
+    errors = []
+    slides = parse_slides(text)
+    
+    for page_idx, (title, section) in enumerate(slides):
+        page_type = extract_field(section, "Page Type")
+        if page_type != "Content-Diagram":
+            continue
+        
+        rel_type = extract_field(section, "Relationship Type")
+        if rel_type is None:
+            errors.append(
+                f"Slide {page_idx + 1} ({title}): Content-Diagram missing Relationship Type"
+            )
+            continue
+        
+        if rel_type not in VALID_RELATIONSHIP_TYPES:
+            errors.append(
+                f"Slide {page_idx + 1} ({title}): Unknown Relationship Type '{rel_type}'"
+            )
+            continue
+        
+        slug = title.lower().replace(" ", "-").replace("_", "-")
+        while "--" in slug:
+            slug = slug.replace("--", "-")
+        
+        diagram_file = content_dir / "diagram-data" / f"{slug}.md"
+        if not diagram_file.exists():
+            errors.append(
+                f"Slide {page_idx + 1} ({title}): "
+                f"Missing diagram-data file: diagram-data/{slug}.md"
+            )
+            continue
+        
+        try:
+            with open(diagram_file, encoding="utf-8") as f:
+                dtext = f.read()
+        except OSError as e:
+            errors.append(f"Slide {page_idx + 1} ({title}): Cannot read {diagram_file}")
+            continue
+        
+        dtype = re.search(r"Type\s*[:：]\s*(\S[^\n]*)", dtext)
+        if dtype is None:
+            errors.append(
+                f"Slide {page_idx + 1} ({title}): diagram-data missing Type field"
+            )
+        elif dtype.group(1).strip() != rel_type:
+            errors.append(
+                f"Slide {page_idx + 1} ({title}): "
+                f"diagram-data Type '{dtype.group(1).strip()}' does not match "
+                f"content-plan Relationship Type '{rel_type}'"
+            )
+    
+    return errors
+
+
 def main():
     catalog_path = None
     args = sys.argv[1:]
@@ -253,6 +354,12 @@ def main():
     print(f"Passed: {passed}")
     print(f"Failed: {failed}")
     print(f"Total zones: {total_zones}")
+
+    diagram_errors = validate_diagram_data(content_path)
+    for err in diagram_errors:
+        print(f"[DIAGRAM] {err}")
+    if diagram_errors:
+        failed += 1
 
     sys.exit(1 if failed > 0 else 0)
 

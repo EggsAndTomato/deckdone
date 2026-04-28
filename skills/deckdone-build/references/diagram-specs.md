@@ -46,7 +46,7 @@ Branches:
 - Connector lines: accent stroke, 2px width
 - Branch cards: secondary stroke (1px), bg fill, primary text for titles
 
-**Constraints:** Min 3 branches, max 6. Each branch ≤ 4 items. Labels ≤ 15 chars.
+**Constraints:** Min 3 branches, max 6. Each branch ≤ 4 items. Labels ≤ 15 chars. Overflow: reject and request split into two pages.
 
 ---
 

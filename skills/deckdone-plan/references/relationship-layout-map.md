@@ -8,7 +8,7 @@ Reference for Step 4 (Page Type Assignment). Maps content relationships to Conte
 
 In Step 4, the AI analyzes each page in the content outline. For every page:
 
-1. **Run the detection heuristics** (Section 3) — first match wins, priority-ordered.
+1. **Run the detection heuristics** (Section 3) — first match wins, priority-ordered. See "Heuristic Application Notes" below for confidence threshold exceptions to the first-match-wins rule.
 2. **If matched:** Assign `Content-Diagram` page type with the corresponding `Relationship Type`.
 3. **If no match:** Assign a standard page type per `references/layout-types.md`.
 
@@ -18,7 +18,9 @@ Pages assigned Content-Diagram write a companion `diagram-data/<page-slug>.md` f
 
 ## 2. Mapping Table
 
-| Relationship | Content Signal | Page Type | Visual Description |
+> All entries below use the `Content-Diagram` page type. The "Diagram Type" column specifies the relationship subtype (layout variant) for that page type.
+
+| Relationship | Content Signal | Diagram Type | Visual Description |
 |---|---|---|---|
 | 层级 (Hierarchy) | Clear top-down/bottom-up: strategy→tactics→execution | Pyramid | Segmented triangle, top-narrow bottom-wide |
 | 中心辐射 (Hub-and-Spoke) | One core concept + N parallel sub-domains radiating outward | Hub-and-Spoke | Center circle + radial connector lines + branch cards |
@@ -43,7 +45,7 @@ Pages assigned Content-Diagram write a companion `diagram-data/<page-slug>.md` f
 
 Apply in priority order. First match wins. No match → fall back to standard page type per `layout-types.md`.
 
-| Priority | Trigger (check content for...) | → Type |
+| Priority | Trigger (check content for...) | → Diagram Type |
 |---|---|---|
 | 1 | Two dimensions being evaluated simultaneously, items positioned on both axes | Bubble-Matrix |
 | 2 | Two entities described as requiring each other, mutual dependency language ("双轮驱动", "协同", "互为") | Dual-Gears |
@@ -74,7 +76,7 @@ Content-Diagram pages generate a companion `diagram-data/<page-slug>.md` file th
 
 ### Slug Convention
 
-`P##_diagram-name.svg` → lowercase name with hyphens. Drop the page number prefix for the slug.
+`P##_diagram-name.svg` → lowercase name with hyphens. Drop the page number prefix for the slug. (The slug is derived from the SVG filename pattern; diagram-data files use `.md` extension but the slug is the same.)
 
 Examples:
 

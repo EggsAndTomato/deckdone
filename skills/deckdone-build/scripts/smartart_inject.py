@@ -447,27 +447,19 @@ def inject(pptx_path: str, output_path: str, slide_index: int,
         data_xml = re.sub(r'csTypeId="[^"]*"', f'csTypeId="{color_scheme_uri}"', data_xml)
         entries[data_dst] = data_xml.encode('utf-8')
 
-    # Replace schemeClr references in drawing.xml with style-preset colors
-    color_map = get_style_color_map(style_name) if style_name else {}
-    if color_map:
-        drawing_dst = f'ppt/diagrams/{_TYPE_CLASSES["drawing"][0]}{diag_idx}.xml'
-        drawing_xml = entries[drawing_dst].decode('utf-8')
-        for scheme_name, hex_color in color_map.items():
-            # Opening tags with content: <a:schemeClr val="X"> → <a:srgbClr val="Y">
-            drawing_xml = re.sub(
-                f'<a:schemeClr val="{scheme_name}">',
-                f'<a:srgbClr val="{hex_color}">',
-                drawing_xml
-            )
-            # Self-closing tags: <a:schemeClr val="X"/> → <a:srgbClr val="Y"/>
-            drawing_xml = re.sub(
-                f'<a:schemeClr val="{scheme_name}"\\s*/>',
-                f'<a:srgbClr val="{hex_color}"/>',
-                drawing_xml
-            )
-        # Fix closing tags — schemeClr → srgbClr
-        drawing_xml = drawing_xml.replace('</a:schemeClr>', '</a:srgbClr>')
-        entries[drawing_dst] = drawing_xml.encode('utf-8')
+    # Override PPTX theme colors if style_name provided
+    if style_name:
+        color_map = get_style_color_map(style_name)
+        if color_map and 'ppt/theme/theme1.xml' in entries:
+            theme_xml = entries['ppt/theme/theme1.xml'].decode('utf-8')
+            for slot, hex_color in color_map.items():
+                # Replace accent colors in theme: <a:accent1><a:srgbClr val="XXX"/></a:accent1>
+                theme_xml = re.sub(
+                    f'(<a:{slot}>)\\s*<a:srgbClr val="[^"]*"\\s*/>\\s*(</a:{slot}>)',
+                    f'\\1<a:srgbClr val="{hex_color}"/></a:{slot}>',
+                    theme_xml
+                )
+            entries['ppt/theme/theme1.xml'] = theme_xml.encode('utf-8')
 
     # Ensure we have a diagrams directory placeholder
     if 'ppt/diagrams/' not in entries:

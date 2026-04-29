@@ -165,20 +165,36 @@ Every SVG must contain graphical elements (not just `<text>`). The following rul
 
 #### Diagram Page Rules (Content-Diagram — SmartArt Template Injection)
 
-Content-Diagram pages use SmartArt template injection. The AI selects a template from `references/smartart-catalog.md` matching the relationship type.
+Content-Diagram pages use SmartArt template injection with text content:
 
 ```python
-from smartart_inject import inject, get_color_scheme_uri
+from smartart_inject import inject
+import yaml
 
-# AI picks template from smartart-catalog.md and color from style-guide.md
-color_uri = get_color_scheme_uri('Corporate Blue')
-inject(pptx_path, output_path, slide_index, 'pyramid/pyramid1', color_scheme_uri=color_uri)
+# 1. Read diagram-data and parse content
+with open('diagram-data/p05_hub-and-spoke.md') as f:
+    data = yaml.safe_load(f)
+
+# 2. Map relationship type to template (see diagram-specs.md)
+template_map = {
+    'Pyramid': 'pyramid/pyramid1',
+    'Hub-and-Spoke': 'cycle/radial1', 
+    'Dual-Gears': 'relationship/gear1',
+    # ... see diagram-specs.md for full mapping
+}
+template_key = template_map.get(data.get('Type', ''))
+
+# 3. Extract texts from diagram-data
+texts = [
+    {'text': item['label'], 'children': item.get('items', [])}
+    for item in data.get('branches', [])
+]
+
+# 4. Inject
+inject(pptx_path, output_path, slide_index, template_key, texts=texts)
 ```
 
-Color scheme automatically matches the selected style preset. See `SMARTART_COLOR_SCHEMES` in smartart_inject.py for available options.
-
-150+ SmartArt templates are available under `templates/smartart/`, organized by 8 categories.
-The `smartart-catalog.md` reference helps AI select the correct template for each content need.
+Standard pages continue to use SVG→PPTX pipeline. Both outputs merge into the same PPTX.
 
 ### 7b. Quality Review
 

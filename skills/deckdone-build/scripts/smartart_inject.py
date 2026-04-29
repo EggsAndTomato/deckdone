@@ -442,6 +442,14 @@ def inject(pptx_path: str, output_path: str, slide_index: int,
     if texts:
         data_dst = f'ppt/diagrams/{_TYPE_CLASSES["data"][0]}{diag_idx}.xml'
         data_xml = entries[data_dst].decode('utf-8')
+        slot_count = len(re.findall(r'<dgm:t>.*?</dgm:t>', data_xml, re.DOTALL))
+        flat = _flatten_texts(texts)
+        if len(flat) > slot_count:
+            import warnings
+            warnings.warn(
+                f'Template "{template_name}" has {slot_count} text slots but '
+                f'{len(flat)} texts provided. Extra texts will be dropped.'
+            )
         data_xml = _inject_text_into_data(data_xml, texts)
         entries[data_dst] = data_xml.encode('utf-8')
 
@@ -503,37 +511,48 @@ def _inject_text_into_data(data_xml: str, texts: list) -> str:
     """Inject text content into data.xml <dgm:t> elements.
     
     Matches node-type <dgm:t> elements positionally with flattened texts list.
+    Replaces existing <a:t> text or inserts new <a:r> for empty nodes.
     """
     flat = _flatten_texts(texts)
     if not flat:
         return data_xml
     
-    # Find <dgm:t> elements belonging to node-type pts (not doc/trans)
-    # Pattern: within <dgm:pt type="node"> or just <dgm:pt> after </dgm:ptLst>
     parts = []
     last_end = 0
     text_idx = 0
     
-    # Find <dgm:t> elements that need text injection
     for m in re.finditer(r'<dgm:t>(.*?)</dgm:t>', data_xml, re.DOTALL):
         inner = m.group(1)
-        # Check if this <dgm:t> already has <a:t> text (skip if so)
-        if '<a:t>' in inner and re.search(r'<a:t>[^<]+</a:t>', inner):
-            parts.append(data_xml[last_end:m.end()])
-            last_end = m.end()
-            continue
+        if text_idx >= len(flat):
+            break
         
-        if text_idx < len(flat):
-            text = flat[text_idx]
-            text_idx += 1
+        text = flat[text_idx]
+        text_idx += 1
+        
+        # Check if there's existing <a:t> with content — replace it
+        existing_t = re.search(r'<a:t>([^<]*)</a:t>', inner)
+        if existing_t:
+            new_inner = inner[:existing_t.start()] + f'<a:t>{_xml_escape(text)}</a:t>' + inner[existing_t.end():]
+        else:
+            # No existing text — insert new <a:r> before </a:p> or after <a:p>
             new_inner = re.sub(
-                r'(<a:p>)',
+                r'(<a:endParaRPr[^/]*/>)',
                 f'\\1<a:r><a:rPr lang="zh-CN" dirty="0"/><a:t>{_xml_escape(text)}</a:t></a:r>',
-                inner
+                inner,
+                count=1
             )
-            parts.append(data_xml[last_end:m.start()])
-            parts.append(f'<dgm:t>{new_inner}</dgm:t>')
-            last_end = m.end()
+            # Fallback: if no endParaRPr, insert at first <a:p>
+            if new_inner == inner:
+                new_inner = re.sub(
+                    r'(<a:p>)',
+                    f'\\1<a:r><a:rPr lang="zh-CN" dirty="0"/><a:t>{_xml_escape(text)}</a:t></a:r>',
+                    inner,
+                    count=1
+                )
+        
+        parts.append(data_xml[last_end:m.start()])
+        parts.append(f'<dgm:t>{new_inner}</dgm:t>')
+        last_end = m.end()
     
     parts.append(data_xml[last_end:])
     return ''.join(parts)

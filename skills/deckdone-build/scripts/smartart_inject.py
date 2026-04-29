@@ -16,7 +16,7 @@ Uses the complete drawing.xml from the template library — no minimal layout XM
 no URI-based layout references. This ensures WPS can render the diagram.
 """
 
-import zipfile, re, os, shutil
+import zipfile, re, os
 from pathlib import Path
 from collections import defaultdict
 from io import BytesIO
@@ -204,8 +204,8 @@ def _add_graphic_frame(slide_xml: str, shape_id: int, rid_map: dict) -> str:
         '<p:nvPr/>'
         '</p:nvGraphicFramePr>'
         '<p:xfrm>'
-        '<a:off x="457200" y="457200"/>'
-        '<a:ext cx="11887200" cy="6299200"/>'
+        '<a:off x="2011680" y="1280160"/>'
+        '<a:ext cx="8128000" cy="4857750"/>'
         '</p:xfrm>'
         '<a:graphic>'
         '<a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/diagram">'
@@ -306,13 +306,12 @@ def inject(pptx_path: str, output_path: str, slide_index: int,
     if 'ppt/diagrams/' not in entries:
         entries['ppt/diagrams/'] = b''
 
-    # Write updated entries
+    # Update entries with modified XML
     entries[slide_entry] = new_slide_xml.encode('utf-8')
     entries[slide_rels_entry] = new_rels_xml.encode('utf-8')
     entries[content_types_entry] = new_ct_xml.encode('utf-8')
 
-    shutil.copy2(pptx_path, output_path)
-
+    # Write output — read source into memory, modify, write
     with zipfile.ZipFile(output_path, 'w', zipfile.ZIP_DEFLATED) as z:
         for name in sorted(entries.keys()):
             z.writestr(name, entries[name])

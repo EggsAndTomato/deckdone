@@ -141,6 +141,46 @@ def get_style_color_map(style_name: str = None) -> dict:
     return {}
 
 
+def inject_theme(pptx_path: str, output_path: str = None,
+                 colors: dict = None, style_name: str = None):
+    """Override PPTX theme accent colors. Affects ALL SmartArt in the deck.
+
+    Args:
+        pptx_path: Path to PPTX file (modified in-place if output_path is None).
+        output_path: Optional output path.
+        colors: Dict of {accent_slot: hex_color}, e.g. {'accent1': 'E76F51', ...}.
+        style_name: DeckDone style preset name (fills colors from STYLE_TO_SMARTART_COLOR).
+    """
+    if output_path is None:
+        output_path = pptx_path
+    
+    if colors is None and style_name:
+        colors = get_style_color_map(style_name)
+    
+    if not colors:
+        return  # nothing to change
+
+    with zipfile.ZipFile(pptx_path, 'r') as z:
+        entries = {name: z.read(name) for name in z.namelist()}
+
+    theme_path = 'ppt/theme/theme1.xml'
+    if theme_path not in entries:
+        return  # no theme to modify
+
+    theme_xml = entries[theme_path].decode('utf-8')
+    for slot, hex_color in colors.items():
+        theme_xml = re.sub(
+            f'(<a:{slot}>)\\s*<a:srgbClr val="[^"]*"\\s*/>\\s*(</a:{slot}>)',
+            f'\\1<a:srgbClr val="{hex_color}"/></a:{slot}>',
+            theme_xml
+        )
+    entries[theme_path] = theme_xml.encode('utf-8')
+
+    with zipfile.ZipFile(output_path, 'w', zipfile.ZIP_DEFLATED) as z:
+        for name in sorted(entries.keys()):
+            z.writestr(name, entries[name])
+
+
 def _build_colors_xml(scheme_uri: str) -> str:
     """Build a minimal colors.xml for a given color scheme."""
     scheme_name = scheme_uri.split('/')[-1]
@@ -352,7 +392,7 @@ def _add_graphic_frame(slide_xml: str, shape_id: int, rid_map: dict) -> str:
 
 def inject(pptx_path: str, output_path: str, slide_index: int,
            template_name: str, color_scheme_uri: str = None,
-           style_name: str = None, texts: list = None) -> Optional[str]:
+           texts: list = None) -> Optional[str]:
     """Inject a SmartArt template into a PPTX slide.
 
     Args:
@@ -461,20 +501,6 @@ def inject(pptx_path: str, output_path: str, slide_index: int,
         data_xml = entries[data_dst].decode('utf-8')
         data_xml = re.sub(r'csTypeId="[^"]*"', f'csTypeId="{color_scheme_uri}"', data_xml)
         entries[data_dst] = data_xml.encode('utf-8')
-
-    # Override PPTX theme colors if style_name provided
-    if style_name:
-        color_map = get_style_color_map(style_name)
-        if color_map and 'ppt/theme/theme1.xml' in entries:
-            theme_xml = entries['ppt/theme/theme1.xml'].decode('utf-8')
-            for slot, hex_color in color_map.items():
-                # Replace accent colors in theme: <a:accent1><a:srgbClr val="XXX"/></a:accent1>
-                theme_xml = re.sub(
-                    f'(<a:{slot}>)\\s*<a:srgbClr val="[^"]*"\\s*/>\\s*(</a:{slot}>)',
-                    f'\\1<a:srgbClr val="{hex_color}"/></a:{slot}>',
-                    theme_xml
-                )
-            entries['ppt/theme/theme1.xml'] = theme_xml.encode('utf-8')
 
     # Ensure we have a diagrams directory placeholder
     if 'ppt/diagrams/' not in entries:

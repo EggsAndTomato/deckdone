@@ -11,7 +11,7 @@ Guide for delegating context-heavy generation steps to sub-agents via the Task t
 3. **Output via files** — Sub-agents write results directly to the project directory. The main agent never sees the intermediate output content, only confirms files exist and runs validation.
 4. **Sub-agent type** — Use `subagent_type: "general"` for all generation tasks.
 5. **File reads are cheap** — Sub-agents can read reference files independently. List every file they need in the prompt.
-6. **Batch sizing for Step 7** — Standard pages: 3-5 pages per sub-agent. Diagram pages (Content-Diagram): 2-3 pages per sub-agent. For decks with both types: separate into standard and diagram groups, split each group into batches, launch all sub-agents in parallel.
+6. **Batch sizing for Step 7** — 3-5 pages per sub-agent. For decks ≤ 10 pages, a single sub-agent suffices. For 11-20 pages, split into 2-3 agents. For 21+, split into 4-6 agents.
 7. **Quality gate stays in main agent** — Running validators, presenting results to user, and handling review feedback remain in the main agent.
 
 ---
@@ -192,92 +192,6 @@ Task(subagent_type="general", prompt=<prompt with batch 2>)
 // Agent 3: pages P11-P15
 Task(subagent_type="general", prompt=<prompt with batch 3>)
 ```
-
----
-
-## Step 7a (Diagram): Diagram SVG Generation
-
-### Delegation Pattern
-
-Diagram pages are dispatched to **separate** sub-agents from standard pages. They cannot share batches because the reference files and generation approach differ (AI dynamic construction vs template replacement).
-
-Batch size: 2-3 diagram pages per sub-agent. Diagram sub-agents launch in parallel with standard sub-agents — all in the same message, all writing to the same `svg_output/` directory.
-
-### Main Agent Responsibilities
-
-1. After locking design context (Step 7a step 1), scan `content-plan.md` for Content-Diagram pages.
-2. Split diagram pages into batches of 2-3.
-3. Launch diagram sub-agents alongside standard sub-agents (same single-message dispatch).
-4. All SVGs write to `svg_output/` regardless of source (standard or diagram).
-
-### Prompt Template
-
-```
-You are generating diagram SVG slides for a presentation. You are responsible for [N] diagram pages.
-
-## Files to Read (READ ALL BEFORE GENERATING)
-
-1. references/svg-constraints.md — SVG generation rules (MANDATORY — every rule must be followed)
-2. references/diagram-specs.md — read ONLY the sections for the diagram types in your batch: [list types]
-3. style-guide.md — color palette, typography, decoration patterns
-4. For each page: diagram-data/<page-slug>.md — structured diagram data
-5. extracted_images/page_XX.png — reference image (if annotated in diagram-specs for the diagram types in your batch)
-
-## Design Context (LOCKED — use these exact values for every page)
-
-Primary: #XXXXXX
-Secondary: #XXXXXX
-Accent: #XXXXXX
-Accent-Light: accent hex with fill-opacity="0.25" on individual elements
-Background: #XXXXXX
-Text Primary: #XXXXXX
-Text Secondary: #XXXXXX
-Text Tertiary: #XXXXXX
-Heading Font: [font family] Bold, sizes: 42/36/30/24
-Body Font: [font family], sizes: 18/16/14
-
-## Your Pages
-
-- P##_<Name>: Diagram Type = Hub-and-Spoke
-- P##_<Name>: Diagram Type = Filter-Funnel
-- ...
-
-## Generation Rules
-
-1. One SVG per page: viewBox="0 0 1280 720" width="1280" height="720"
-2. ALL svg-constraints.md rules — no exceptions
-3. Apply LOCKED design context to all Color-Role references per diagram-specs.md
-4. Use <use data-icon="tabler-{outline|filled}/{name}"/> for icon placeholders
-5. Include a title zone at the top (consistent with standard pages for visual uniformity)
-6. Render the diagram body following the Design Principle and Content Mapping from diagram-specs.md
-7. File naming: svg_output/P##_<Name>.svg
-8. Start each SVG with <defs> block for gradients/filters
-9. Each diagram MUST include graphical elements (paths, circles, lines) — never text-only
-
-## Output
-
-Write SVG files to svg_output/. Return the list of file paths created, in order.
-```
-
-### Context Budget (Diagram, per batch of 2-3 pages)
-
-| Item | Lines |
-|------|-------|
-| svg-constraints.md | ~90 |
-| diagram-specs section (1-2 types) | ~40 |
-| diagram-data files (2-3 × 30 lines) | ~80 |
-| Style-guide tokens | ~10 |
-| Per-page SVG output (2-3 × 180 lines) | ~400 |
-| **Total per batch** | **~600** |
-
-### Diagram Sub-Agent Failure Recovery
-
-If a diagram sub-agent fails (timeout, no output, invalid SVG):
-1. **Main agent** identifies failing pages by checking which expected SVG files are missing or contain parse errors.
-2. **Re-delegate** failing pages to a fresh sub-agent with 1-2 pages (tighter scope).
-3. **Max 2 retries** per page.
-4. **On persistent failure** (all retries exhausted): inform user with the last error output and ask: "Regenerate these pages with different parameters?" Do not silently skip.
-5. Diagram sub-agent failures do NOT block standard sub-agents — standard SVGs are written independently.
 
 ---
 

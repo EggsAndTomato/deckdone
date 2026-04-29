@@ -633,7 +633,9 @@ def draw_bubble_matrix(slide, data, style):
     for bubble in bubbles:
         bx = float(bubble.get('x', 0.5))
         by = float(bubble.get('y', 0.5))
-        bz = float(bubble.get('size', 30))
+        raw = bubble.get('size', 'medium')
+        sz_map = {'small': 22, 'medium': 35, 'large': 55}
+        bz = float(sz_map.get(str(raw).lower(), 30))
         b_label = bubble.get('label', '')
 
         cx = grid_x + int(grid_w / Inches(1) * bx)

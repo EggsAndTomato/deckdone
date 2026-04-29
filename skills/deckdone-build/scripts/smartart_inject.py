@@ -23,6 +23,74 @@ from io import BytesIO
 from typing import Optional
 
 TEMPLATE_DIR = Path(__file__).resolve().parent.parent / 'templates' / 'smartart'
+
+# ── SmartArt Color Schemes ──
+# Maps DeckDone style-preset "vibe" to SmartArt color scheme URIs.
+# AI selects the best match based on the user's chosen style preset.
+
+SMARTART_COLOR_SCHEMES = {
+    # Vibrant multi-color
+    'colorful':    'urn:microsoft.com/office/officeart/2005/8/colors/colorful1',
+    'colorful1':   'urn:microsoft.com/office/officeart/2005/8/colors/colorful1',
+    'colorful2':   'urn:microsoft.com/office/officeart/2005/8/colors/colorful2',
+    'colorful3':   'urn:microsoft.com/office/officeart/2005/8/colors/colorful3',
+    # Accent-based (single color family)
+    'accent1':     'urn:microsoft.com/office/officeart/2005/8/colors/accent1',
+    'accent1_2':   'urn:microsoft.com/office/officeart/2005/8/colors/accent1_2',
+    'accent1_3':   'urn:microsoft.com/office/officeart/2005/8/colors/accent1_3',
+    # Dark themes
+    'dark1':       'urn:microsoft.com/office/officeart/2005/8/colors/dark1',
+    'dark2':       'urn:microsoft.com/office/officeart/2005/8/colors/dark2',
+}
+
+# Style-preset → recommended SmartArt color scheme
+# Based on the 18 DeckDone style presets
+STYLE_TO_SMARTART_COLOR = {
+    # Corporate/professional → accent-based
+    'Corporate Blue':    'accent1_2',
+    'Steel Gray':        'accent1',
+    'Navy Gold':         'accent1_2',
+    'Arctic Blue':       'accent1_2',
+    'Dark Carbon':       'dark1',
+    'Clean White':       'accent1',
+    'Royal Indigo':      'accent1_2',
+    # Warm/creative → colorful
+    'Sunset Warmth':     'colorful1',
+    'Ocean Teal':        'colorful2',
+    'Forest Green':      'colorful2',
+    'Terracotta Earth':  'colorful2',
+    'Warm Sand':         'colorful2',
+    # Bold/impact → colorful
+    'Midnight Purple':   'colorful3',
+    'Cherry Red':        'colorful1',
+    'Crimson Elite':     'colorful3',
+    'Electric Neon':     'dark2',
+    # Soft/approachable → colorful
+    'Teal Coral':        'colorful2',
+    'Sage Serenity':     'accent1_3',
+}
+
+
+def get_color_scheme_uri(style_name: str = None) -> str:
+    """Get the SmartArt color scheme URI for a given style preset name."""
+    if style_name and style_name in STYLE_TO_SMARTART_COLOR:
+        scheme_key = STYLE_TO_SMARTART_COLOR[style_name]
+    else:
+        scheme_key = 'accent1_2'  # default
+    return SMARTART_COLOR_SCHEMES.get(scheme_key, SMARTART_COLOR_SCHEMES['accent1_2'])
+
+
+def _build_colors_xml(scheme_uri: str) -> str:
+    """Build a minimal colors.xml for a given color scheme."""
+    scheme_name = scheme_uri.split('/')[-1]
+    return (
+        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n'
+        '<dgm:colorsDef xmlns:dgm="http://schemas.openxmlformats.org/drawingml/2006/diagram"\n'
+        f'               uniqueId="{scheme_uri}">\n'
+        f'  <dgm:title lang="" val="{scheme_name}"/>\n'
+        '  <dgm:desc lang="" val=""/>\n'
+        '</dgm:colorsDef>'
+    )
 DIAGRAM_NS = 'http://schemas.openxmlformats.org/drawingml/2006/diagram'
 REL_NS = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships'
 
@@ -222,7 +290,7 @@ def _add_graphic_frame(slide_xml: str, shape_id: int, rid_map: dict) -> str:
 
 
 def inject(pptx_path: str, output_path: str, slide_index: int,
-           template_name: str) -> Optional[str]:
+           template_name: str, color_scheme_uri: str = None) -> Optional[str]:
     """Inject a SmartArt template into a PPTX slide.
 
     Args:
@@ -231,6 +299,9 @@ def inject(pptx_path: str, output_path: str, slide_index: int,
         slide_index: 0-based index of the target slide.
         template_name: Either a short name (e.g. 'pyramid1', 'cycle2', 'gear1')
                        or a category-prefixed name (e.g. 'pyramid/pyramid1').
+        color_scheme_uri: Optional SmartArt color scheme URI. If not provided,
+                          uses the template's default colors.
+                          Get from get_color_scheme_uri(style_name).
 
     Returns:
         The diagram index string (e.g. 'dgmData5') or None on failure.
@@ -301,6 +372,11 @@ def inject(pptx_path: str, output_path: str, slide_index: int,
         prefix = _TYPE_CLASSES[file_type][0]
         dst_name = f'ppt/diagrams/{prefix}{diag_idx}.xml'
         entries[dst_name] = (template_folder / fname).read_bytes()
+
+    # Override colors.xml if a color scheme URI was specified
+    if color_scheme_uri:
+        colors_dst = f'ppt/diagrams/{_TYPE_CLASSES["colors"][0]}{diag_idx}.xml'
+        entries[colors_dst] = _build_colors_xml(color_scheme_uri).encode('utf-8')
 
     # Ensure we have a diagrams directory placeholder
     if 'ppt/diagrams/' not in entries:

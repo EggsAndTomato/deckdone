@@ -168,11 +168,14 @@ Every SVG must contain graphical elements (not just `<text>`). The following rul
 Content-Diagram pages use SmartArt template injection. The AI selects a template from `references/smartart-catalog.md` matching the relationship type.
 
 ```python
-from smartart_inject import inject
+from smartart_inject import inject, get_color_scheme_uri
 
-# AI picks 'pyramid1' from smartart-catalog.md based on content relationship type
-inject(pptx_path, output_path, slide_index, 'pyramid1')
+# AI picks template from smartart-catalog.md and color from style-guide.md
+color_uri = get_color_scheme_uri('Corporate Blue')
+inject(pptx_path, output_path, slide_index, 'pyramid/pyramid1', color_scheme_uri=color_uri)
 ```
+
+Color scheme automatically matches the selected style preset. See `SMARTART_COLOR_SCHEMES` in smartart_inject.py for available options.
 
 150+ SmartArt templates are available under `templates/smartart/`, organized by 8 categories.
 The `smartart-catalog.md` reference helps AI select the correct template for each content need.

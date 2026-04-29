@@ -528,7 +528,7 @@ def _inject_text_into_data(data_xml: str, texts: list) -> str:
             text_idx += 1
             new_inner = re.sub(
                 r'(<a:p>)',
-                f'\\1<a:r><a:rPr lang="zh-CN" sz="1200" dirty="0"/><a:t>{_xml_escape(text)}</a:t></a:r>',
+                f'\\1<a:r><a:rPr lang="zh-CN" dirty="0"/><a:t>{_xml_escape(text)}</a:t></a:r>',
                 inner
             )
             parts.append(data_xml[last_end:m.start()])

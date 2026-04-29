@@ -215,6 +215,57 @@ STYLE_TO_SMARTART_COLOR = {
         'accent5': 'BEC8AD',  # lighten(accent2, 30%)
         'accent6': 'A99D87',  # darken(accent3, 20%)
     }),
+    # ── Layout template color schemes (6 entries) ──
+    'teal_medical': ('colorful2', {
+        'accent1': '0D7377',  # Teal
+        'accent2': '5EA8A7',  # Light Teal
+        'accent3': 'FF6B35',  # Coral
+        'accent4': '559D9F',  # lighten(accent1, 30%)
+        'accent5': '8EC2C1',  # lighten(accent2, 30%)
+        'accent6': 'CC552A',  # darken(accent3, 20%)
+    }),
+    'tech_blue': ('colorful2', {
+        'accent1': '0078D7',  # Tech Blue
+        'accent2': '106EBE',  # Darker Blue
+        'accent3': 'E1EFFF',  # Light Blue
+        'accent4': '4CA0E3',  # lighten(accent1, 30%)
+        'accent5': '5799D1',  # lighten(accent2, 30%)
+        'accent6': 'B4BFCC',  # darken(accent3, 20%)
+    }),
+    'smart_red': ('colorful2', {
+        'accent1': 'DE3545',  # Smart Red-Orange
+        'accent2': 'C12D3B',  # Darker Red
+        'accent3': 'FF6B6B',  # Light Red
+        'accent4': 'E7717C',  # lighten(accent1, 30%)
+        'accent5': 'D36C75',  # lighten(accent2, 30%)
+        'accent6': 'CC5555',  # darken(accent3, 20%)
+    }),
+    'dark_neon': ('dark1', {
+        'accent1': '00D2FF',  # Cyan
+        'accent2': '7A2FCD',  # Purple
+        'accent3': 'FF0080',  # Neon Pink
+        'accent4': '4CDFFF',  # lighten(accent1, 30%)
+        'accent5': 'A16DDC',  # lighten(accent2, 30%)
+        'accent6': 'CC0066',  # darken(accent3, 20%)
+        'lt1': '0A0A14',     # Background
+        'dk1': 'EAEAEA',     # Text
+    }),
+    'organic_warm': ('colorful2', {
+        'accent1': '2D6A4F',  # Forest Green
+        'accent2': '7D8A6E',  # Sage
+        'accent3': 'D4A373',  # Warm Gold
+        'accent4': '6C9683',  # lighten(accent1, 30%)
+        'accent5': 'A4AD99',  # lighten(accent2, 30%)
+        'accent6': 'A9825C',  # darken(accent3, 20%)
+    }),
+    'exhibit': ('colorful2', {
+        'accent1': '1A1A1A',  # Dark base
+        'accent2': 'D4AF37',  # Gold accent
+        'accent3': 'C9A84C',  # Light Gold
+        'accent4': '5E5E5E',  # lighten(accent1, 30%)
+        'accent5': 'E0C773',  # lighten(accent2, 30%)
+        'accent6': 'A0863C',  # darken(accent3, 20%)
+    }),
 }
 
 

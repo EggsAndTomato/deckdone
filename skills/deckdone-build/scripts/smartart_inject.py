@@ -43,41 +43,102 @@ SMARTART_COLOR_SCHEMES = {
     'dark2':       'urn:microsoft.com/office/officeart/2005/8/colors/dark2',
 }
 
-# Style-preset → recommended SmartArt color scheme
-# Based on the 18 DeckDone style presets
+# Style-preset → recommended SmartArt color scheme + drawing color mapping
+# Maps schemeClr references in drawing.xml to actual hex colors from style-presets
 STYLE_TO_SMARTART_COLOR = {
-    # Corporate/professional → accent-based
-    'Corporate Blue':    'accent1_2',
-    'Steel Gray':        'accent1',
-    'Navy Gold':         'accent1_2',
-    'Arctic Blue':       'accent1_2',
-    'Dark Carbon':       'dark1',
-    'Clean White':       'accent1',
-    'Royal Indigo':      'accent1_2',
-    # Warm/creative → colorful
-    'Sunset Warmth':     'colorful1',
-    'Ocean Teal':        'colorful2',
-    'Forest Green':      'colorful2',
-    'Terracotta Earth':  'colorful2',
-    'Warm Sand':         'colorful2',
-    # Bold/impact → colorful
-    'Midnight Purple':   'colorful3',
-    'Cherry Red':        'colorful1',
-    'Crimson Elite':     'colorful3',
-    'Electric Neon':     'dark2',
-    # Soft/approachable → colorful
-    'Teal Coral':        'colorful2',
-    'Sage Serenity':     'accent1_3',
+    # Corporate/professional
+    'Corporate Blue':    ('accent1_2', {
+        'accent1': '1B365D', 'accent2': '2E5C8A', 'accent3': '0D7377',
+        'accent4': '5B9BD5', 'accent5': '70AD47', 'accent6': 'E54C5E',
+    }),
+    'Steel Gray':        ('accent1', {
+        'accent1': '2D3436', 'accent2': '636E72', 'accent3': '0984E3',
+        'accent4': '74B9FF', 'accent5': '00B894', 'accent6': 'E17055',
+    }),
+    'Navy Gold':         ('accent1_2', {
+        'accent1': '1B2838', 'accent2': 'D4AF37', 'accent3': '2C3E50',
+        'accent4': '8B7D3C', 'accent5': 'C0A050', 'accent6': '6B5B3E',
+    }),
+    'Arctic Blue':       ('accent1_2', {
+        'accent1': '2980B9', 'accent2': '3498DB', 'accent3': 'E67E22',
+        'accent4': '85C1E9', 'accent5': '2ECC71', 'accent6': 'E74C3C',
+    }),
+    'Dark Carbon':       ('dark1', {
+        'accent1': '0F3460', 'accent2': '16213E', 'accent3': '533483',
+        'accent4': 'E94560', 'accent5': '0F3460', 'accent6': 'F5A623',
+    }),
+    'Clean White':       ('accent1', {
+        'accent1': '333333', 'accent2': '666666', 'accent3': '0066CC',
+        'accent4': '999999', 'accent5': '3399FF', 'accent6': 'CC3333',
+    }),
+    'Royal Indigo':      ('accent1_2', {
+        'accent1': '4B0082', 'accent2': 'FFD700', 'accent3': '6A0DAD',
+        'accent4': '9370DB', 'accent5': 'DAA520', 'accent6': '8B0000',
+    }),
+    # Warm/creative
+    'Sunset Warmth':     ('colorful1', {
+        'accent1': 'E76F51', 'accent2': 'F4A261', 'accent3': '264653',
+        'accent4': 'E9C46A', 'accent5': '2A9D8F', 'accent6': 'E63946',
+    }),
+    'Ocean Teal':        ('colorful2', {
+        'accent1': '0D7377', 'accent2': '14A3A8', 'accent3': 'FF6B35',
+        'accent4': '32B5C0', 'accent5': 'FFB627', 'accent6': 'E54C5E',
+    }),
+    'Forest Green':      ('colorful2', {
+        'accent1': '2D6A4F', 'accent2': '40916C', 'accent3': 'D4A373',
+        'accent4': '52B788', 'accent5': '95D5B2', 'accent6': 'BC6C25',
+    }),
+    'Terracotta Earth':  ('colorful2', {
+        'accent1': 'A0522D', 'accent2': 'CD853F', 'accent3': '2E4057',
+        'accent4': 'DEB887', 'accent5': '6B8E23', 'accent6': '8B4513',
+    }),
+    'Warm Sand':         ('colorful2', {
+        'accent1': 'C19A6B', 'accent2': 'DEB887', 'accent3': '8B4513',
+        'accent4': 'D2B48C', 'accent5': 'CD853F', 'accent6': 'A0522D',
+    }),
+    # Bold/impact
+    'Midnight Purple':   ('colorful3', {
+        'accent1': '2D1B69', 'accent2': 'FFB627', 'accent3': '5B3E96',
+        'accent4': '7B68EE', 'accent5': '00CEC9', 'accent6': 'FF6B6B',
+    }),
+    'Cherry Red':        ('colorful1', {
+        'accent1': 'C0392B', 'accent2': 'E74C3C', 'accent3': '2C3E50',
+        'accent4': 'F1948A', 'accent5': 'F39C12', 'accent6': '8E44AD',
+    }),
+    'Crimson Elite':     ('colorful3', {
+        'accent1': '8B0000', 'accent2': 'FFD700', 'accent3': 'B22222',
+        'accent4': 'DC143C', 'accent5': 'DAA520', 'accent6': '4B0082',
+    }),
+    'Electric Neon':     ('dark2', {
+        'accent1': '00D2FF', 'accent2': 'FF0080', 'accent3': '7A2FCD',
+        'accent4': '00FF88', 'accent5': 'FFB800', 'accent6': 'FF3366',
+    }),
+    # Soft/approachable
+    'Teal Coral':        ('colorful2', {
+        'accent1': '5EA8A7', 'accent2': 'FF6F61', 'accent3': '3D8B8A',
+        'accent4': '81C7C7', 'accent5': 'FF9F80', 'accent6': '6B5B95',
+    }),
+    'Sage Serenity':     ('accent1_3', {
+        'accent1': '7D8A6E', 'accent2': 'A3B18A', 'accent3': 'D4C5A9',
+        'accent4': 'B7C4A7', 'accent5': 'C4B5A0', 'accent6': '8B9475',
+    }),
 }
 
 
 def get_color_scheme_uri(style_name: str = None) -> str:
     """Get the SmartArt color scheme URI for a given style preset name."""
     if style_name and style_name in STYLE_TO_SMARTART_COLOR:
-        scheme_key = STYLE_TO_SMARTART_COLOR[style_name]
+        scheme_key = STYLE_TO_SMARTART_COLOR[style_name][0]
     else:
-        scheme_key = 'accent1_2'  # default
+        scheme_key = 'accent1_2'
     return SMARTART_COLOR_SCHEMES.get(scheme_key, SMARTART_COLOR_SCHEMES['accent1_2'])
+
+
+def get_style_color_map(style_name: str = None) -> dict:
+    """Get the scheme→hex color mapping for drawing.xml replacement."""
+    if style_name and style_name in STYLE_TO_SMARTART_COLOR:
+        return STYLE_TO_SMARTART_COLOR[style_name][1]
+    return {}
 
 
 def _build_colors_xml(scheme_uri: str) -> str:
@@ -290,7 +351,8 @@ def _add_graphic_frame(slide_xml: str, shape_id: int, rid_map: dict) -> str:
 
 
 def inject(pptx_path: str, output_path: str, slide_index: int,
-           template_name: str, color_scheme_uri: str = None) -> Optional[str]:
+           template_name: str, color_scheme_uri: str = None,
+           style_name: str = None) -> Optional[str]:
     """Inject a SmartArt template into a PPTX slide.
 
     Args:
@@ -302,6 +364,9 @@ def inject(pptx_path: str, output_path: str, slide_index: int,
         color_scheme_uri: Optional SmartArt color scheme URI. If not provided,
                           uses the template's default colors.
                           Get from get_color_scheme_uri(style_name).
+        style_name: Optional DeckDone style preset name (e.g. 'Corporate Blue').
+                    When provided, replaces schemeClr references in drawing.xml
+                    with actual hex colors from the style preset.
 
     Returns:
         The diagram index string (e.g. 'dgmData5') or None on failure.
@@ -373,10 +438,29 @@ def inject(pptx_path: str, output_path: str, slide_index: int,
         dst_name = f'ppt/diagrams/{prefix}{diag_idx}.xml'
         entries[dst_name] = (template_folder / fname).read_bytes()
 
-    # Override colors.xml if a color scheme URI was specified
+    # Override colors and data if color scheme URI specified
     if color_scheme_uri:
         colors_dst = f'ppt/diagrams/{_TYPE_CLASSES["colors"][0]}{diag_idx}.xml'
         entries[colors_dst] = _build_colors_xml(color_scheme_uri).encode('utf-8')
+        data_dst = f'ppt/diagrams/{_TYPE_CLASSES["data"][0]}{diag_idx}.xml'
+        data_xml = entries[data_dst].decode('utf-8')
+        data_xml = re.sub(r'csTypeId="[^"]*"', f'csTypeId="{color_scheme_uri}"', data_xml)
+        entries[data_dst] = data_xml.encode('utf-8')
+
+    # Replace schemeClr references in drawing.xml with style-preset colors
+    color_map = get_style_color_map(style_name) if style_name else {}
+    if color_map:
+        drawing_dst = f'ppt/diagrams/{_TYPE_CLASSES["drawing"][0]}{diag_idx}.xml'
+        drawing_xml = entries[drawing_dst].decode('utf-8')
+        for scheme_name, hex_color in color_map.items():
+            drawing_xml = re.sub(
+                f'(<a:schemeClr val="{scheme_name}">)',
+                f'<a:srgbClr val="{hex_color}">',
+                drawing_xml
+            )
+        # Remove leftover val attributes from converted schemeClr tags  
+        drawing_xml = re.sub(r'<a:schemeClr val="\w+"/>', '', drawing_xml)
+        entries[drawing_dst] = drawing_xml.encode('utf-8')
 
     # Ensure we have a diagrams directory placeholder
     if 'ppt/diagrams/' not in entries:

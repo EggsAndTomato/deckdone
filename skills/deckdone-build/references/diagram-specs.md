@@ -1,60 +1,42 @@
-# Diagram Type → Native Shape Mapping
+# Diagram Type → SVG Generation
 
-Reference for generating diagram slides using python-pptx native shapes. Each diagram type is implemented as a function in `scripts/diagram_shapes.py`.
+Reference for generating diagram slides using programmatic SVG (not AI-generated). Each diagram type is implemented as a function in `scripts/diagram_svg.py`.
 
 ## How It Works
 
 When a page has `Page Type: Content-Diagram`, the build phase:
 1. Reads `diagram-data/<page-slug>.md` for structured content
 2. Parses the YAML data into a Python dict
-3. Calls `draw_diagram(slide, diagram_key, data, style)` from `diagram_shapes.py`
-4. The function creates autoshapes, text boxes, and connectors on the slide
+3. Calls `draw_diagram(diagram_key, data, style)` from `diagram_svg.py`
+4. The function returns a complete SVG string with precise coordinates calculated programmatically
+5. The SVG is saved to `svg_output/` and converted to PPTX via `svg_to_pptx.py`
 
-No sub-agents, no AI generation, no SVG — pure deterministic Python code. The approach mirrors WPS "智能图形": regular PowerPoint shapes with precise positioning.
+No sub-agents, no AI generation — pure deterministic Python code computing pixel positions with math.
 
 ## Diagram Key Mapping
 
 | DeckDone Type | diagram_key | Function |
 |--------------|-------------|----------|
-| Pyramid | `pyramid` | `draw_pyramid()` |
-| Hub-and-Spoke | `hub_spoke` | `draw_hub_spoke()` |
-| Dual-Gears | `dual_gears` | `draw_dual_gears()` |
-| Tension-Triangle | `tension_triangle` | `draw_tension_triangle()` |
-| Bubble-Matrix | `bubble_matrix` | `draw_bubble_matrix()` |
-| Staircase | `staircase` | `draw_staircase()` |
-| Split-Comparison | `split_comparison` | `draw_split_comparison()` |
-| Data-Card-Grid | `data_card_grid` | `draw_data_card_grid()` |
-| Layered-Architecture | `layered_architecture` | `draw_layered_architecture()` |
-| Filter-Funnel | `filter_funnel` | `draw_filter_funnel()` |
-| Overlapping-Spheres | `overlapping_spheres` | `draw_overlapping_spheres()` |
-| Iterative-Cycle | `iterative_cycle` | `draw_iterative_cycle()` |
-| Bridge-and-Gap | `bridge_gap` | `draw_bridge_gap()` |
-| Timeline | `timeline_diagram` | `draw_timeline_diagram()` |
+| Pyramid | `pyramid` | Gradient-layered triangle |
+| Hub-and-Spoke | `hub_spoke` | Center circle + 4 corner cards |
+| Dual-Gears | `dual_gears` | Two circles + synergy arrow |
+| Tension-Triangle | `tension_triangle` | 3 nodes + connector edges |
+| Bubble-Matrix | `bubble_matrix` | 2×2 grid + sized bubbles |
+| Staircase | `staircase` | Ascending blocks + badges |
+| Split-Comparison | `split_comparison` | Vertical divider + dual sides |
+| Data-Card-Grid | `data_card_grid` | Card grid with large numbers |
+| Layered-Architecture | `layered_architecture` | Stacked blocks + subcomponents |
+| Filter-Funnel | `filter_funnel` | Centered trapezoids |
+| Overlapping-Spheres | `overlapping_spheres` | Circles with fill-opacity |
+| Iterative-Cycle | `iterative_cycle` | Circular arrangement + center |
+| Bridge-and-Gap | `bridge_gap` | Current → bridge → future |
+| Timeline | `timeline_diagram` | Horizontal axis + nodes |
 
-## Data Format
+## SVG Quality
 
-Each `diagram-data/<page-slug>.md` file contains YAML matching the function's expected data structure. See `scripts/diagram_shapes.py` docstrings for each function's data format.
-
-## Style Integration
-
-Colors come from `style-guide.md` via a style dict:
-```python
-style = {
-    'primary': RGBColor(...),      # from Style Guide Primary
-    'secondary': RGBColor(...),    # from Style Guide Secondary
-    'accent': RGBColor(...),       # from Style Guide Accent
-    'bg': RGBColor(...),           # from Style Guide Background
-    'text': RGBColor(...),         # from Style Guide Text
-    'text_light': RGBColor(...),   # lighter text variant
-    'font_heading': 'Arial',
-    'font_body': 'Arial',
-}
-```
-
-## Usage
-
-```python
-from diagram_shapes import draw_diagram
-
-draw_diagram(slide, 'pyramid', data, style)
-```
+All SVGs feature:
+- Gradient fills for depth (via `<linearGradient>`)
+- Drop shadows on cards (via `<filter>`)
+- Rounded corners on cards (via `<path>` arc commands)
+- Accent color highlights
+- Type-specific visual treatments

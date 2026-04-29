@@ -453,13 +453,20 @@ def inject(pptx_path: str, output_path: str, slide_index: int,
         drawing_dst = f'ppt/diagrams/{_TYPE_CLASSES["drawing"][0]}{diag_idx}.xml'
         drawing_xml = entries[drawing_dst].decode('utf-8')
         for scheme_name, hex_color in color_map.items():
+            # Opening tags with content: <a:schemeClr val="X"> → <a:srgbClr val="Y">
             drawing_xml = re.sub(
-                f'(<a:schemeClr val="{scheme_name}">)',
+                f'<a:schemeClr val="{scheme_name}">',
                 f'<a:srgbClr val="{hex_color}">',
                 drawing_xml
             )
-        # Remove leftover val attributes from converted schemeClr tags  
-        drawing_xml = re.sub(r'<a:schemeClr val="\w+"/>', '', drawing_xml)
+            # Self-closing tags: <a:schemeClr val="X"/> → <a:srgbClr val="Y"/>
+            drawing_xml = re.sub(
+                f'<a:schemeClr val="{scheme_name}"\\s*/>',
+                f'<a:srgbClr val="{hex_color}"/>',
+                drawing_xml
+            )
+        # Fix closing tags — schemeClr → srgbClr
+        drawing_xml = drawing_xml.replace('</a:schemeClr>', '</a:srgbClr>')
         entries[drawing_dst] = drawing_xml.encode('utf-8')
 
     # Ensure we have a diagrams directory placeholder

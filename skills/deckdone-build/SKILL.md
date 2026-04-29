@@ -106,7 +106,7 @@ Optional: `layout-system.md` (Step 4), `brief.md` (Step 1).
 1.5 **Separate standard and diagram pages:**
    - Scan content-plan.md for pages with Page Type: Content-Diagram.
    - Standard pages → batch SVG generation (existing protocol).
-   - Diagram pages → SmartArt injection via `scripts/smartart_inject.py` (no sub-agent needed).
+   - Diagram pages → native shape drawing via `scripts/diagram_shapes.py` (no sub-agent, no SVG).
 2. **Read `references/sub-agent-protocols.md`** for the Step 7a prompt template and batch splitting logic.
 3. **Split pages into batches** for standard SVG generation:
    - Standard pages only (Content-Diagram pages excluded from SVG batches).
@@ -163,29 +163,34 @@ Every SVG must contain graphical elements (not just `<text>`). The following rul
 **Cover / Section Divider / Closing pages:**
 - Layout template provides visual chrome (background, sidebar, decorations). Ensure these decorative elements are preserved from the template.
 
-#### Diagram Page Rules (Content-Diagram — SmartArt Injection)
+#### Diagram Page Rules (Content-Diagram — Native Shapes)
 
-Content-Diagram pages do NOT go through SVG generation. Instead, use SmartArt injection:
+Content-Diagram pages do NOT go through SVG generation. Instead, draw directly with python-pptx shapes:
 
 ```python
-from smartart_inject import SmartArtInjector
+from diagram_shapes import draw_diagram
+import yaml
 
-injector = SmartArtInjector()
-items = [
-    {'text': 'Main 1', 'children': ['Sub A', 'Sub B']},
-    {'text': 'Main 2', 'children': ['Sub C']},
-]
-injector.inject(pptx_path, output_path, slide_index, diagram_type, items)
+with open('diagram-data/p05_hub-and-spoke.md') as f:
+    data = yaml.safe_load(f)
+
+# Build style dict from style-guide.md
+style = {
+    'primary': RGBColor(0x1B, 0x36, 0x5D),
+    'secondary': RGBColor(0x2E, 0x5C, 0x8A),
+    'accent': RGBColor(0x0D, 0x73, 0x77),
+    'bg': RGBColor(0xFF, 0xFF, 0xFF),
+    'text': RGBColor(0x1A, 0x1A, 0x1A),
+    'font_heading': 'Arial',
+    'font_body': 'Arial',
+}
+draw_diagram(slide, data['Type'].lower().replace(' ', '_'), data, style)
 ```
 
-The diagram type (Pyramid, Hub-and-Spoke, etc.) maps automatically to the correct SmartArt layout via `DIAGRAM_TO_SMARTART` mapping in smartart_inject.py.
-
-**After all SVGs generated:** Run SmartArt injection for each Content-Diagram page:
-```bash
-python scripts/svg_to_pptx.py <project-dir> -s svg_output -o output.pptx --only native
-# Then inject SmartArt into the PPTX
-python scripts/smartart_inject.py output.pptx --diagrams diagram-data/ --output final.pptx
-```
+**After all SVGs generated and converted to PPTX:**
+1. Open the PPTX with python-pptx
+2. For each Content-Diagram page, call `draw_diagram()` on the corresponding slide
+3. Save the final PPTX
 
 ### 7b. Quality Review
 
@@ -275,7 +280,7 @@ After Step 8, the user may request modifications to the finished PPTX. The AI su
 | `scripts/validate-svg-slides.py` | SVG compliance validator (checks constraints from svg-constraints.md) |
 | `scripts/embed_icons.py` | Resolve `<use data-icon>` placeholders with actual SVG icon paths |
 | `scripts/embed_images.py` | Convert image file references to base64 data URIs |
-| `scripts/smartart_inject.py` | SmartArt OOXML injection for Content-Diagram pages |
+| `scripts/diagram_shapes.py` | Native shape diagram generator (14 types) for Content-Diagram pages |
 
 ## Template Assets
 

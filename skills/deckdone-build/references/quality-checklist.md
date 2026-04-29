@@ -46,12 +46,12 @@
 - [ ] **Color palette is uniform** — every page uses colors from style-guide.md
 - [ ] **No blank or partially rendered slides**
 
-### SmartArt Checks (Content-Diagram pages)
+### Native Shape Diagram Checks (Content-Diagram pages)
 
-- [ ] **All diagram-data items are present** — every item and child from diagram-data/*.md appears as a SmartArt node
-- [ ] **Diagram opens without repair prompt** — PPTX opens cleanly in PowerPoint/WPS
-- [ ] **Layout type is correct** — the SmartArt layout matches the DeckDone diagram type (pyramid→Pyramid, radial→Hub-and-Spoke, etc.)
-- [ ] **Node hierarchy preserved** — parent-child relationships from diagram-data are reflected in SmartArt
+- [ ] **All diagram-data items are present** — every node from diagram-data/*.md appears as a shape on the slide
+- [ ] **No text overflow** — all text fits within its shape boundaries
+- [ ] **Color consistency** — diagram colors match style-guide.md palette
+- [ ] **Layout type is correct** — the diagram visual matches the DeckDone diagram type
 
 ## Step 8: Final Export + Presentation Guide Validation
 

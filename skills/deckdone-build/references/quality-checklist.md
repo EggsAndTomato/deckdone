@@ -46,15 +46,12 @@
 - [ ] **Color palette is uniform** — every page uses colors from style-guide.md
 - [ ] **No blank or partially rendered slides**
 
-### Diagram SVG Checks (Content-Diagram pages)
+### SmartArt Checks (Content-Diagram pages)
 
-- [ ] **All diagram-data fields consumed** — every Label and Item from diagram-data/*.md appears in the SVG; no data lost in translation
-- [ ] **Branch/node counts match** — e.g., Hub-and-Spoke SVG has as many branch cards as Branches[] in diagram-data
-- [ ] **Color-Role consistency** — same role yields same hex color across all diagram SVGs in the deck
-- [ ] **Diagram structure recognizable** — the visual metaphor matches the relationship type (gears look like gears, pyramid looks like pyramid)
-- [ ] **No text-only diagrams** — every diagram page contains graphical SVG elements (paths, circles, lines) beyond just <text>
-- [ ] **Reference image alignment** — if a reference image was provided, the generated SVG follows the same visual structure
-- [ ] **Constraints respected** — no diagram exceeds its max nodes/layers/branches limit
+- [ ] **All diagram-data items are present** — every item and child from diagram-data/*.md appears as a SmartArt node
+- [ ] **Diagram opens without repair prompt** — PPTX opens cleanly in PowerPoint/WPS
+- [ ] **Layout type is correct** — the SmartArt layout matches the DeckDone diagram type (pyramid→Pyramid, radial→Hub-and-Spoke, etc.)
+- [ ] **Node hierarchy preserved** — parent-child relationships from diagram-data are reflected in SmartArt
 
 ## Step 8: Final Export + Presentation Guide Validation
 

@@ -106,7 +106,7 @@ Optional: `layout-system.md` (Step 4), `brief.md` (Step 1).
 1.5 **Separate standard and diagram pages:**
    - Scan content-plan.md for pages with Page Type: Content-Diagram.
    - Standard pages → batch SVG generation (existing protocol).
-   - Diagram pages → SVG generation via `scripts/diagram_svg.py` (programmatic coordinates, no sub-agent, no AI guessing).
+   - Diagram pages → SmartArt template injection via `scripts/smartart_inject.py` (no sub-agent, no SVG).
 2. **Read `references/sub-agent-protocols.md`** for the Step 7a prompt template and batch splitting logic.
 3. **Split pages into batches** for standard SVG generation:
    - Standard pages only (Content-Diagram pages excluded from SVG batches).
@@ -163,19 +163,19 @@ Every SVG must contain graphical elements (not just `<text>`). The following rul
 **Cover / Section Divider / Closing pages:**
 - Layout template provides visual chrome (background, sidebar, decorations). Ensure these decorative elements are preserved from the template.
 
-#### Diagram Page Rules (Content-Diagram — Programmatic SVG)
+#### Diagram Page Rules (Content-Diagram — SmartArt Template Injection)
 
-Content-Diagram pages use programmatic SVG generation (NOT AI-dynamic, NOT sub-agent):
+Content-Diagram pages use SmartArt template injection. The AI selects a template from `references/smartart-catalog.md` matching the relationship type.
 
 ```python
-from diagram_svg import draw_diagram
+from smartart_inject import inject
 
-svg_string = draw_diagram('pyramid', data, style)
-with open('svg_output/P05_Pyramid.svg', 'w') as f:
-    f.write(svg_string)
+# AI picks 'pyramid1' from smartart-catalog.md based on content relationship type
+inject(pptx_path, output_path, slide_index, 'pyramid1')
 ```
 
-The generated SVG goes through the same `svg_to_pptx` pipeline as standard pages.
+150+ SmartArt templates are available under `templates/smartart/`, organized by 8 categories.
+The `smartart-catalog.md` reference helps AI select the correct template for each content need.
 
 ### 7b. Quality Review
 
@@ -265,7 +265,7 @@ After Step 8, the user may request modifications to the finished PPTX. The AI su
 | `scripts/validate-svg-slides.py` | SVG compliance validator (checks constraints from svg-constraints.md) |
 | `scripts/embed_icons.py` | Resolve `<use data-icon>` placeholders with actual SVG icon paths |
 | `scripts/embed_images.py` | Convert image file references to base64 data URIs |
-| `scripts/diagram_svg.py` | Programmatic SVG generator (14 types) for Content-Diagram pages |
+| `scripts/smartart_inject.py` | SmartArt template injection (150+ types) for Content-Diagram pages |
 
 ## Template Assets
 

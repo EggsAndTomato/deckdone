@@ -1,6 +1,6 @@
 ---
 name: deckdone-plan
-description: "Structured workflow for planning presentation content (15-40 slides). Orchestrates content discovery, layout planning, and detailed content writing through a phased, gate-controlled process. Produces editable markdown deliverables: brief, outline, layout system, and a content plan with layout skeleton. Visual style selection is deferred to deckdone-build. Use when the user needs to plan what a presentation should contain — the output can be used by deckdone-build or any PPT generation tool."
+description: "Structured workflow for planning presentation content (15-40 slides). Orchestrates content discovery, layout planning, and detailed content writing. Produces editable markdown deliverables: brief, outline, layout system, diagram-data files for SmartArt/charts, content-plan with layout skeleton. Automatically detects content relationships (Pyramid/Cycle/Gear/Matrix etc.) and assigns SmartArt diagram types. Use whenever the user needs to plan presentation content, structure slide decks, outline presentations, or prepare materials for PPT generation."
 ---
 
 # DeckDone Plan — Presentation Content Planning Workflow
@@ -220,7 +220,7 @@ Goal: Define page layouts and fill in real content with live HTML wireframe revi
 #### 5a-2. Diagram Data Generation (for Content-Diagram pages only)
 
 For each Content-Diagram page from layout-system.md:
-- Read `../deckdone-build/references/diagram-specs.md` to understand the required data structure for the diagram type.
+- Read the diagram data schema from deckdone-build's `references/diagram-specs.md` to understand the required data structure for the diagram type.
 - Based on the wireframe content, fill in a `diagram-data/<page-slug>.md` file following the schema for the diagram type.
 - Each file must include: Type, required fields per type, and all content.
 - The slug follows the convention: P##_Name.svg → lowercase name with hyphens → e.g., p05_hub-and-spoke.

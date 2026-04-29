@@ -1,6 +1,6 @@
 ---
 name: deckdone-build
-description: "Convert presentation content plans into high-quality PPTX files. Starts with visual style selection and test page generation, then batch-generates all slides via SVG→DrawingML pipeline. Takes markdown deliverables from deckdone-plan (content-plan, layout-skeleton, outline) and generates SVG slides, then converts to native PPTX shapes. Use when the user has a completed content plan and wants to produce the final PPT."
+description: "Convert presentation content plans into high-quality PPTX files with native SmartArt diagrams. Visual style selection → SVG generation (standard pages) → SmartArt injection (diagram pages, 150+ templates) → PPTX export. Takes markdown deliverables from deckdone-plan and produces a complete, theme-colored PPTX. Use when the user has a content plan and wants to produce final slides with diagrams, charts, and SmartArt graphics."
 ---
 
 # DeckDone Build Skill

@@ -105,15 +105,13 @@ Optional: `layout-system.md` (Step 4), `brief.md` (Step 1).
    - Decoration patterns (dividers, accent shapes, icon usage)
 1.5 **Separate standard and diagram pages:**
    - Scan content-plan.md for pages with Page Type: Content-Diagram.
-   - These pages require the diagram sub-agent protocol (see references/sub-agent-protocols.md).
-   - Standard pages use the existing batch protocol (template replacement).
-   - Diagram pages are split into batches of 2-3 (smaller because AI dynamic SVG construction is more token-intensive).
+   - Standard pages → batch SVG generation (existing protocol).
+   - Diagram pages → SmartArt injection via `scripts/smartart_inject.py` (no sub-agent needed).
 2. **Read `references/sub-agent-protocols.md`** for the Step 7a prompt template and batch splitting logic.
-3. **Split pages into batches** and dispatch:
-   - Separate pages into two groups: standard (non-Content-Diagram) and diagram (Content-Diagram).
-   - Standard page batches: 3-5 pages per sub-agent.
-   - Diagram page batches: 2-3 pages per sub-agent.
-   - Total concurrent sub-agents ≤ 6 across both groups.
+3. **Split pages into batches** for standard SVG generation:
+   - Standard pages only (Content-Diagram pages excluded from SVG batches).
+   - 3-5 standard pages per sub-agent batch.
+   - Total concurrent sub-agents ≤ 6.
 4. **Launch all sub-agents in parallel** in a single message (multiple Task tool calls). Each prompt must contain:
    - The FULL locked design context (pasted inline — do not abbreviate)
    - The specific pages assigned to that batch (from `content-plan.md` + `layout-skeleton.md`)
@@ -165,16 +163,29 @@ Every SVG must contain graphical elements (not just `<text>`). The following rul
 **Cover / Section Divider / Closing pages:**
 - Layout template provides visual chrome (background, sidebar, decorations). Ensure these decorative elements are preserved from the template.
 
-#### Diagram Page Visual Element Rules (Content-Diagram pages)
+#### Diagram Page Rules (Content-Diagram — SmartArt Injection)
 
-When a page has Page Type: Content-Diagram with Relationship Type:
-- Read `references/diagram-specs.md` section for the specific diagram type.
-- Read `diagram-data/<page-slug>.md` for structured layout data (slug: P##_Name lowercase with hyphens).
-- Read `extracted_images/<reference>.png` if annotated in diagram-specs.md as reference for that type.
-- Generate SVG dynamically (NOT from layout templates) following the Design Principle and Content Mapping from diagram-specs.md.
-- All Color-Role references → locked style-guide.md colors (see diagram-specs.md General Rules).
-- Icons auto-selected based on Label semantics; use `<use data-icon="..."/>` syntax.
-- Diagram SVGs MUST contain graphical elements (paths, circles, lines) proportional to the diagram complexity — never render diagram data as text-only.
+Content-Diagram pages do NOT go through SVG generation. Instead, use SmartArt injection:
+
+```python
+from smartart_inject import SmartArtInjector
+
+injector = SmartArtInjector()
+items = [
+    {'text': 'Main 1', 'children': ['Sub A', 'Sub B']},
+    {'text': 'Main 2', 'children': ['Sub C']},
+]
+injector.inject(pptx_path, output_path, slide_index, diagram_type, items)
+```
+
+The diagram type (Pyramid, Hub-and-Spoke, etc.) maps automatically to the correct SmartArt layout via `DIAGRAM_TO_SMARTART` mapping in smartart_inject.py.
+
+**After all SVGs generated:** Run SmartArt injection for each Content-Diagram page:
+```bash
+python scripts/svg_to_pptx.py <project-dir> -s svg_output -o output.pptx --only native
+# Then inject SmartArt into the PPTX
+python scripts/smartart_inject.py output.pptx --diagrams diagram-data/ --output final.pptx
+```
 
 ### 7b. Quality Review
 
@@ -192,7 +203,7 @@ When a page has Page Type: Content-Diagram with Relationship Type:
  
 
 
-**Deliverable:** `output.pptx` + all SVGs in `svg_output/` (standard + diagram)
+**Deliverable:** `output.pptx` (standard SVGs converted + SmartArt injected)
 
 ---
 
@@ -264,6 +275,7 @@ After Step 8, the user may request modifications to the finished PPTX. The AI su
 | `scripts/validate-svg-slides.py` | SVG compliance validator (checks constraints from svg-constraints.md) |
 | `scripts/embed_icons.py` | Resolve `<use data-icon>` placeholders with actual SVG icon paths |
 | `scripts/embed_images.py` | Convert image file references to base64 data URIs |
+| `scripts/smartart_inject.py` | SmartArt OOXML injection for Content-Diagram pages |
 
 ## Template Assets
 

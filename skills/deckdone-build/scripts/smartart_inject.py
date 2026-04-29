@@ -43,84 +43,177 @@ SMARTART_COLOR_SCHEMES = {
     'dark2':       'urn:microsoft.com/office/officeart/2005/8/colors/dark2',
 }
 
+def _lighten(hex_color, pct):
+    """Lighten a hex color by percentage (0-100)."""
+    r, g, b = int(hex_color[0:2], 16), int(hex_color[2:4], 16), int(hex_color[4:6], 16)
+    r = min(255, int(r + (255 - r) * pct / 100))
+    g = min(255, int(g + (255 - g) * pct / 100))
+    b = min(255, int(b + (255 - b) * pct / 100))
+    return f'{r:02X}{g:02X}{b:02X}'
+
+def _darken(hex_color, pct):
+    """Darken a hex color by percentage (0-100)."""
+    r, g, b = int(hex_color[0:2], 16), int(hex_color[2:4], 16), int(hex_color[4:6], 16)
+    r = max(0, int(r * (1 - pct / 100)))
+    g = max(0, int(g * (1 - pct / 100)))
+    b = max(0, int(b * (1 - pct / 100)))
+    return f'{r:02X}{g:02X}{b:02X}'
+
 # Style-preset → recommended SmartArt color scheme + drawing color mapping
 # Maps schemeClr references in drawing.xml to actual hex colors from style-presets
+# accent4/accent5/accent6 are auto-derived via _lighten/_darken from accent1/2/3
 STYLE_TO_SMARTART_COLOR = {
     # Corporate/professional
-    'Corporate Blue':    ('accent1_2', {
-        'accent1': '1B365D', 'accent2': '2E5C8A', 'accent3': '0D7377',
-        'accent4': '5B9BD5', 'accent5': '70AD47', 'accent6': 'E54C5E',
+    'Corporate Blue': ('accent1_2', {
+        'accent1': '1B365D',  # Primary
+        'accent2': '2E5C8A',  # Secondary
+        'accent3': 'E8A838',  # Accent
+        'accent4': '5F728D',  # lighten(accent1, 30%)
+        'accent5': '6C8CAD',  # lighten(accent2, 30%)
+        'accent6': 'B9862C',  # darken(accent3, 20%)
     }),
-    'Steel Gray':        ('accent1', {
-        'accent1': '2D3436', 'accent2': '636E72', 'accent3': '0984E3',
-        'accent4': '74B9FF', 'accent5': '00B894', 'accent6': 'E17055',
+    'Steel Gray': ('accent1', {
+        'accent1': '2D3436',  # Primary
+        'accent2': '636E72',  # Secondary
+        'accent3': '0984E3',  # Accent
+        'accent4': '6C7072',  # lighten(accent1, 30%)
+        'accent5': '91999C',  # lighten(accent2, 30%)
+        'accent6': '0769B5',  # darken(accent3, 20%)
     }),
-    'Navy Gold':         ('accent1_2', {
-        'accent1': '1B2838', 'accent2': 'D4AF37', 'accent3': '2C3E50',
-        'accent4': '8B7D3C', 'accent5': 'C0A050', 'accent6': '6B5B3E',
+    'Navy Gold': ('accent1_2', {
+        'accent1': '1B2838',  # Primary
+        'accent2': '2C3E50',  # Secondary
+        'accent3': 'D4AF37',  # Accent
+        'accent4': '5F6873',  # lighten(accent1, 30%)
+        'accent5': '6B7784',  # lighten(accent2, 30%)
+        'accent6': 'A98C2C',  # darken(accent3, 20%)
     }),
-    'Arctic Blue':       ('accent1_2', {
-        'accent1': '2980B9', 'accent2': '3498DB', 'accent3': 'E67E22',
-        'accent4': '85C1E9', 'accent5': '2ECC71', 'accent6': 'E74C3C',
+    'Arctic Blue': ('accent1_2', {
+        'accent1': '2980B9',  # Primary
+        'accent2': '3498DB',  # Secondary
+        'accent3': 'E67E22',  # Accent
+        'accent4': '69A6CE',  # lighten(accent1, 30%)
+        'accent5': '70B6E5',  # lighten(accent2, 30%)
+        'accent6': 'B8641B',  # darken(accent3, 20%)
     }),
-    'Dark Carbon':       ('dark1', {
-        'accent1': '0F3460', 'accent2': '16213E', 'accent3': '533483',
-        'accent4': 'E94560', 'accent5': '0F3460', 'accent6': 'F5A623',
+    'Dark Carbon': ('dark1', {
+        'accent1': '1A1A2E',  # Primary
+        'accent2': '16213E',  # Secondary
+        'accent3': '0F3460',  # Accent
+        'accent4': '5E5E6C',  # lighten(accent1, 30%)
+        'accent5': '5B6377',  # lighten(accent2, 30%)
+        'accent6': '0C294C',  # darken(accent3, 20%)
+        'lt1': '0A0A14',     # Background
+        'dk1': 'E0E0E0',     # Text
     }),
-    'Clean White':       ('accent1', {
-        'accent1': '333333', 'accent2': '666666', 'accent3': '0066CC',
-        'accent4': '999999', 'accent5': '3399FF', 'accent6': 'CC3333',
+    'Clean White': ('accent1', {
+        'accent1': '333333',  # Primary
+        'accent2': '666666',  # Secondary
+        'accent3': '0066CC',  # Accent
+        'accent4': '707070',  # lighten(accent1, 30%)
+        'accent5': '939393',  # lighten(accent2, 30%)
+        'accent6': '0051A3',  # darken(accent3, 20%)
     }),
-    'Royal Indigo':      ('accent1_2', {
-        'accent1': '4B0082', 'accent2': 'FFD700', 'accent3': '6A0DAD',
-        'accent4': '9370DB', 'accent5': 'DAA520', 'accent6': '8B0000',
+    'Royal Indigo': ('accent1_2', {
+        'accent1': '4B0082',  # Primary
+        'accent2': '6A0DAD',  # Secondary
+        'accent3': 'FFD700',  # Accent
+        'accent4': '814CA7',  # lighten(accent1, 30%)
+        'accent5': '9655C5',  # lighten(accent2, 30%)
+        'accent6': 'CCAC00',  # darken(accent3, 20%)
     }),
     # Warm/creative
-    'Sunset Warmth':     ('colorful1', {
-        'accent1': 'E76F51', 'accent2': 'F4A261', 'accent3': '264653',
-        'accent4': 'E9C46A', 'accent5': '2A9D8F', 'accent6': 'E63946',
+    'Sunset Warmth': ('colorful1', {
+        'accent1': 'E76F51',  # Primary
+        'accent2': 'F4A261',  # Secondary
+        'accent3': '264653',  # Accent
+        'accent4': 'EE9A85',  # lighten(accent1, 30%)
+        'accent5': 'F7BD90',  # lighten(accent2, 30%)
+        'accent6': '1E3842',  # darken(accent3, 20%)
     }),
-    'Ocean Teal':        ('colorful2', {
-        'accent1': '0D7377', 'accent2': '14A3A8', 'accent3': 'FF6B35',
-        'accent4': '32B5C0', 'accent5': 'FFB627', 'accent6': 'E54C5E',
+    'Ocean Teal': ('colorful2', {
+        'accent1': '0D7377',  # Primary
+        'accent2': '14A3A8',  # Secondary
+        'accent3': 'FF6B35',  # Accent
+        'accent4': '559D9F',  # lighten(accent1, 30%)
+        'accent5': '5ABEC2',  # lighten(accent2, 30%)
+        'accent6': 'CC552A',  # darken(accent3, 20%)
     }),
-    'Forest Green':      ('colorful2', {
-        'accent1': '2D6A4F', 'accent2': '40916C', 'accent3': 'D4A373',
-        'accent4': '52B788', 'accent5': '95D5B2', 'accent6': 'BC6C25',
+    'Forest Green': ('colorful2', {
+        'accent1': '2D6A4F',  # Primary
+        'accent2': '40916C',  # Secondary
+        'accent3': 'D4A373',  # Accent
+        'accent4': '6C9683',  # lighten(accent1, 30%)
+        'accent5': '79B298',  # lighten(accent2, 30%)
+        'accent6': 'A9825C',  # darken(accent3, 20%)
     }),
-    'Terracotta Earth':  ('colorful2', {
-        'accent1': 'A0522D', 'accent2': 'CD853F', 'accent3': '2E4057',
-        'accent4': 'DEB887', 'accent5': '6B8E23', 'accent6': '8B4513',
+    'Terracotta Earth': ('colorful2', {
+        'accent1': 'A0522D',  # Primary
+        'accent2': 'CD853F',  # Secondary
+        'accent3': '2E4057',  # Accent
+        'accent4': 'BC856C',  # lighten(accent1, 30%)
+        'accent5': 'DCA978',  # lighten(accent2, 30%)
+        'accent6': '243345',  # darken(accent3, 20%)
     }),
-    'Warm Sand':         ('colorful2', {
-        'accent1': 'C19A6B', 'accent2': 'DEB887', 'accent3': '8B4513',
-        'accent4': 'D2B48C', 'accent5': 'CD853F', 'accent6': 'A0522D',
+    'Warm Sand': ('colorful2', {
+        'accent1': 'C19A6B',  # Primary
+        'accent2': 'DEB887',  # Secondary
+        'accent3': '8B4513',  # Accent
+        'accent4': 'D3B897',  # lighten(accent1, 30%)
+        'accent5': 'E7CDAB',  # lighten(accent2, 30%)
+        'accent6': '6F370F',  # darken(accent3, 20%)
     }),
     # Bold/impact
-    'Midnight Purple':   ('colorful3', {
-        'accent1': '2D1B69', 'accent2': 'FFB627', 'accent3': '5B3E96',
-        'accent4': '7B68EE', 'accent5': '00CEC9', 'accent6': 'FF6B6B',
+    'Midnight Purple': ('colorful3', {
+        'accent1': '2D1B69',  # Primary
+        'accent2': '5B3E96',  # Secondary
+        'accent3': 'FFB627',  # Accent
+        'accent4': '6C5F96',  # lighten(accent1, 30%)
+        'accent5': '8C77B5',  # lighten(accent2, 30%)
+        'accent6': 'CC911F',  # darken(accent3, 20%)
     }),
-    'Cherry Red':        ('colorful1', {
-        'accent1': 'C0392B', 'accent2': 'E74C3C', 'accent3': '2C3E50',
-        'accent4': 'F1948A', 'accent5': 'F39C12', 'accent6': '8E44AD',
+    'Cherry Red': ('colorful1', {
+        'accent1': 'C0392B',  # Primary
+        'accent2': 'E74C3C',  # Secondary
+        'accent3': '2C3E50',  # Accent
+        'accent4': 'D2746A',  # lighten(accent1, 30%)
+        'accent5': 'EE8176',  # lighten(accent2, 30%)
+        'accent6': '233140',  # darken(accent3, 20%)
     }),
-    'Crimson Elite':     ('colorful3', {
-        'accent1': '8B0000', 'accent2': 'FFD700', 'accent3': 'B22222',
-        'accent4': 'DC143C', 'accent5': 'DAA520', 'accent6': '4B0082',
+    'Crimson Elite': ('colorful3', {
+        'accent1': '8B0000',  # Primary
+        'accent2': 'B22222',  # Secondary
+        'accent3': 'FFD700',  # Accent
+        'accent4': 'AD4C4C',  # lighten(accent1, 30%)
+        'accent5': 'C96464',  # lighten(accent2, 30%)
+        'accent6': 'CCAC00',  # darken(accent3, 20%)
     }),
-    'Electric Neon':     ('dark2', {
-        'accent1': '00D2FF', 'accent2': 'FF0080', 'accent3': '7A2FCD',
-        'accent4': '00FF88', 'accent5': 'FFB800', 'accent6': 'FF3366',
+    'Electric Neon': ('dark2', {
+        'accent1': '00D2FF',  # Primary
+        'accent2': '7A2FCD',  # Secondary
+        'accent3': 'FF0080',  # Accent
+        'accent4': '4CDFFF',  # lighten(accent1, 30%)
+        'accent5': 'A16DDC',  # lighten(accent2, 30%)
+        'accent6': 'CC0066',  # darken(accent3, 20%)
+        'lt1': '0A0A0A',     # Background
+        'dk1': 'EAEAEA',     # Text
     }),
     # Soft/approachable
-    'Teal Coral':        ('colorful2', {
-        'accent1': '5EA8A7', 'accent2': 'FF6F61', 'accent3': '3D8B8A',
-        'accent4': '81C7C7', 'accent5': 'FF9F80', 'accent6': '6B5B95',
+    'Teal Coral': ('colorful2', {
+        'accent1': '5EA8A7',  # Primary
+        'accent2': '3D8B8A',  # Secondary
+        'accent3': 'FF6F61',  # Accent
+        'accent4': '8EC2C1',  # lighten(accent1, 30%)
+        'accent5': '77ADAD',  # lighten(accent2, 30%)
+        'accent6': 'CC584D',  # darken(accent3, 20%)
     }),
-    'Sage Serenity':     ('accent1_3', {
-        'accent1': '7D8A6E', 'accent2': 'A3B18A', 'accent3': 'D4C5A9',
-        'accent4': 'B7C4A7', 'accent5': 'C4B5A0', 'accent6': '8B9475',
+    'Sage Serenity': ('accent1_3', {
+        'accent1': '7D8A6E',  # Primary
+        'accent2': 'A3B18A',  # Secondary
+        'accent3': 'D4C5A9',  # Accent
+        'accent4': 'A4AD99',  # lighten(accent1, 30%)
+        'accent5': 'BEC8AD',  # lighten(accent2, 30%)
+        'accent6': 'A99D87',  # darken(accent3, 20%)
     }),
 }
 
@@ -169,11 +262,24 @@ def inject_theme(pptx_path: str, output_path: str = None,
 
     theme_xml = entries[theme_path].decode('utf-8')
     for slot, hex_color in colors.items():
-        theme_xml = re.sub(
-            f'(<a:{slot}>)\\s*<a:srgbClr val="[^"]*"\\s*/>\\s*(</a:{slot}>)',
-            f'\\1<a:srgbClr val="{hex_color}"/></a:{slot}>',
-            theme_xml
-        )
+        if slot.startswith('accent'):
+            theme_xml = re.sub(
+                f'(<a:{slot}>)\\s*<a:srgbClr val="[^"]*"\\s*/>\\s*(</a:{slot}>)',
+                f'\\1<a:srgbClr val="{hex_color}"/></a:{slot}>',
+                theme_xml
+            )
+        else:
+            # Handle lt1, dk1 etc. — may use <a:srgbClr> or <a:sysClr>
+            theme_xml = re.sub(
+                f'(<a:{slot}>)\\s*<a:sysClr val="[^"]*"\\s*/>\\s*(</a:{slot}>)',
+                f'\\1<a:srgbClr val="{hex_color}"/></a:{slot}>',
+                theme_xml
+            )
+            theme_xml = re.sub(
+                f'(<a:{slot}>)\\s*<a:srgbClr val="[^"]*"\\s*/>\\s*(</a:{slot}>)',
+                f'\\1<a:srgbClr val="{hex_color}"/></a:{slot}>',
+                theme_xml
+            )
     entries[theme_path] = theme_xml.encode('utf-8')
 
     with zipfile.ZipFile(output_path, 'w', zipfile.ZIP_DEFLATED) as z:
